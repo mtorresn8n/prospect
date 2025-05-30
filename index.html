@@ -5,14 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Analítico — Localiza</title>
   
-  <!-- Google Fonts: Poppins para un look moderno y legible -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Font Awesome (si lo mantienes, actualiza tu kit ID) -->
-  <!-- <script src="https://kit.fontawesome.com/YOUR_KIT_ID.js" crossorigin="anonymous"></script> -->
-  <!-- Alternativa: Feather Icons (SVG) - más ligeros y modernos. Se incluirán directamente en el HTML o vía JS -->
   <script src="https://unpkg.com/feather-icons"></script>
 
   <style>
@@ -20,11 +16,11 @@
        VARIABLES Y ESTILOS GLOBALES
     ────────────────────────────────────────────────────────────────────────────── */
     :root {
-      --brand-green: #00A859; /* Un verde Localiza más vibrante */
+      --brand-green: #00A859; 
       --brand-green-dark: #007F43;
-      --brand-yellow: #FFCC00; /* Acento de Localiza */
+      --brand-yellow: #FFCC00; 
       
-      --bg-page: #E9EEF2; /* Un gris azulado muy claro */
+      --bg-page: #E9EEF2; 
       --bg-header: linear-gradient(135deg, var(--brand-green), var(--brand-green-dark));
       --bg-card: #FFFFFF;
       
@@ -69,13 +65,12 @@
     .site-header {
       background: var(--bg-header);
       color: var(--text-light);
-      padding: 4rem 1.5rem 6rem; /* Más padding para impacto */
+      padding: 4rem 1.5rem 6rem; 
       text-align: center;
       position: relative;
-      overflow: hidden; /* Para efectos de fondo */
+      overflow: hidden; 
     }
 
-    /* Efecto de fondo sutil (opcional) */
     .site-header::before {
       content: '';
       position: absolute;
@@ -89,14 +84,14 @@
     }
 
     .header-content {
-      position: relative; /* Para que esté sobre el ::before */
+      position: relative; 
       z-index: 1;
       max-width: 700px;
       margin: 0 auto;
     }
 
     .site-header h1 {
-      font-size: clamp(2.5rem, 5vw, 3.5rem); /* Tamaño fluido */
+      font-size: clamp(2.5rem, 5vw, 3.5rem); 
       font-weight: 700;
       margin-bottom: 0.75rem;
       letter-spacing: -0.5px;
@@ -110,8 +105,6 @@
       margin: 0 auto 1.5rem;
     }
     
-    /* Botón de "Volver" (si es necesario en esta página) */
-    /* Si esta es la página principal, quizás no necesite un "volver" aquí */
     .back-button {
       position: absolute;
       left: 1.5rem;
@@ -136,15 +129,14 @@
       height: 20px;
     }
 
-
     /* ──────────────────────────────────────────────────────────────────────────────
        CONTENEDOR PRINCIPAL Y TARJETAS DE MENÚ
     ────────────────────────────────────────────────────────────────────────────── */
     .main-content {
-      flex-grow: 1; /* Para que el footer se quede abajo */
+      flex-grow: 1; 
       max-width: 1100px;
       width: 90%;
-      margin: -3rem auto 3rem; /* Margen negativo para que las tarjetas se superpongan al header */
+      margin: -3rem auto 3rem; 
       padding: 0 1rem;
       position: relative;
       z-index: 2;
@@ -169,6 +161,7 @@
         box-shadow var(--transition-smooth);
       overflow: hidden;
       position: relative;
+      cursor: pointer; /* Indica que es clickeable */
     }
 
     .menu-card:hover {
@@ -178,13 +171,12 @@
     
     .menu-card-icon {
       margin-bottom: 1.5rem;
-      /* El SVG se estiliza directamente o con una clase */
     }
     .menu-card-icon svg {
       width: 48px;
       height: 48px;
       color: var(--brand-green);
-      stroke-width: 1.5; /* Para Feather Icons */
+      stroke-width: 1.5; 
       transition: color var(--transition-smooth);
     }
     .menu-card:hover .menu-card-icon svg {
@@ -200,10 +192,9 @@
     .menu-card p {
       font-size: 0.9rem;
       color: var(--text-muted);
-      min-height: 40px; /* Para alinear tarjetas con descripciones de diferente longitud */
+      min-height: 40px; 
     }
 
-    /* Pequeño acento de color en hover */
     .menu-card::after {
       content: '';
       position: absolute;
@@ -221,6 +212,135 @@
     }
     
     /* ──────────────────────────────────────────────────────────────────────────────
+       MODAL DE CONTRASEÑA
+    ────────────────────────────────────────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0s 0.3s; /* Delay visibility transition */
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.3s ease, visibility 0s 0s;
+    }
+
+    .modal-content {
+      background-color: var(--bg-card);
+      padding: 2.5rem 2rem;
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-lg);
+      width: 90%;
+      max-width: 450px;
+      text-align: center;
+      transform: scale(0.95) translateY(20px);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      opacity: 0;
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+
+    .modal-content h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--brand-green);
+      margin-bottom: 0.75rem;
+    }
+
+    .modal-content p#modalPromptText { /* ID específico para este p */
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+    .modal-content p#modalPromptText strong {
+        color: var(--text-dark);
+        font-weight: 500;
+    }
+
+    #passwordInput {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #DDE2E7;
+      border-radius: var(--border-radius-md);
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      font-family: 'Poppins', sans-serif;
+    }
+    #passwordInput:focus {
+      outline: none;
+      border-color: var(--brand-green);
+      box-shadow: 0 0 0 3px rgba(0, 168, 89, 0.2);
+    }
+
+    .modal-error-message {
+      color: #D32F2F; 
+      font-size: 0.9rem;
+      margin-top: 0.5rem; /* Espacio sobre el error */
+      margin-bottom: 1.5rem !important; 
+      font-weight: 500;
+      min-height: 1.2em; /* Para evitar saltos de layout cuando aparece/desaparece */
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    .modal-actions button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: var(--border-radius-md);
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color var(--transition-smooth), box-shadow var(--transition-smooth);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #submitPasswordBtn {
+      background-color: var(--brand-green);
+      color: var(--text-light);
+    }
+    #submitPasswordBtn:hover {
+      background-color: var(--brand-green-dark);
+      box-shadow: var(--shadow-sm);
+    }
+
+    #cancelPasswordBtn {
+      background-color: #E9ECEF; 
+      color: var(--text-dark);
+      border: 1px solid #DDE2E7;
+    }
+    #cancelPasswordBtn:hover {
+      background-color: #CFD8DC;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+    .input-error-shake {
+      animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    /* ──────────────────────────────────────────────────────────────────────────────
        PIE DE PÁGINA
     ────────────────────────────────────────────────────────────────────────────── */
     .site-footer {
@@ -228,7 +348,7 @@
       padding: 2rem 1rem;
       font-size: 0.9rem;
       color: var(--text-muted);
-      background-color: var(--bg-page); /* Para asegurar que no sea transparente si el contenido es corto */
+      background-color: var(--bg-page);
     }
 
     /* ──────────────────────────────────────────────────────────────────────────────
@@ -249,7 +369,7 @@
     .site-header p {
       animation-delay: 0.2s;
     }
-    .menu-card {
+    .menu-card { /* Para que la animación se aplique a todas las tarjetas */
       animation: fadeInUp 0.5s var(--transition-smooth) backwards;
     }
     /* Aplicar delay escalonado a las tarjetas */
@@ -257,17 +377,13 @@
     .menu-grid .menu-card:nth-child(2) { animation-delay: 0.4s; }
     .menu-grid .menu-card:nth-child(3) { animation-delay: 0.5s; }
     .menu-grid .menu-card:nth-child(4) { animation-delay: 0.6s; }
-    /* Añadir más si tienes más tarjetas */
+    .menu-grid .menu-card:nth-child(5) { animation-delay: 0.7s; } /* Si tienes una 5ta tarjeta */
 
   </style>
 </head>
 <body>
 
   <header class="site-header">
-    <!-- Botón Volver, si es aplicable en la página de menú principal -->
-    <!-- <a href="pagina_anterior.html" class="back-button" title="Volver">
-      <i data-feather="arrow-left"></i>
-    </a> -->
     <div class="header-content">
       <h1>Plataforma Analítica Localiza</h1>
       <p>Explora tus datos, descubre insights y toma decisiones informadas para impulsar el crecimiento.</p>
@@ -277,51 +393,149 @@
   <main class="main-content">
     <div class="menu-grid">
       
-      <a href="reservas.html" class="menu-card">
+      <div class="menu-card protected-link" data-target-url="reservas.html" data-section-name="Análisis de Reservas">
         <div class="menu-card-icon"><i data-feather="calendar"></i></div>
         <h3>Análisis de Reservas</h3>
-        <p>Visualiza tendencias, ocupación y rendimiento de tus reservas.</p>
-      </a>
+        <p>Visualiza tendencias, segmentos, y comparaciones de tus reservas.</p>
+      </div>
       
-      <a href="CorporativoProspect.html" class="menu-card">
+      <div class="menu-card protected-link" data-target-url="CorporativoProspect.html" data-section-name="Gestión Corporativa">
         <div class="menu-card-icon"><i data-feather="briefcase"></i></div>
         <h3>Gestión Corporativa</h3>
-        <p>Seguimiento de clientes corporativos y oportunidades de negocio.</p>
-      </a>
+        <p>Prospecto de clientes corporativos y oportunidades de negocio.</p>
+      </div>
       
-      <a href="sucursales.html" class="menu-card">
-        <div class="menu-card-icon"><i data-feather="map-pin"></i></div>
-        <h3>Rendimiento de Sucursales</h3>
-        <p>Compara métricas clave y optimiza la operativa por sucursal.</p>
-      </a>
+      <!-- Tarjeta Sucursales MODIFICADA -->
+      <div class="menu-card protected-link" data-target-url="sucursales.html" data-section-name="Análisis de Adicionales por Sucursal">
+        <div class="menu-card-icon"><i data-feather="trending-up"></i></div>
+        <h3>Venta de Adicionales 2025</h3>
+        <p>Seguimiento detallado del programa de Adicionales por sucursal. Mide el impacto y optimiza estrategias.</p>
+      </div>
       
-      <a href="reportes.html" class="menu-card">
-        <div class="menu-card-icon"><i data-feather="bar-chart-2"></i></div>
-        <h3>Reportes Personalizados</h3>
-        <p>Genera y consulta informes detallados según tus necesidades.</p>
-      </a>
-
-      <!-- Puedes añadir más tarjetas aquí -->
-      <!-- Ejemplo de tarjeta deshabilitada o "Próximamente" -->
-      <a href="#" class="menu-card" style="opacity: 0.6; cursor: not-allowed;" title="Próximamente">
+      <div class="menu-card" style="opacity: 0.6; cursor: not-allowed;" title="Próximamente">
         <div class="menu-card-icon"><i data-feather="trending-up"></i></div>
         <h3>Inteligencia de Mercado</h3>
         <p>Análisis competitivo y tendencias del sector (Próximamente).</p>
-      </a>
+      </div>
 
     </div>
   </main>
 
+  <!-- Footer MODIFICADO -->
   <footer class="site-footer">
-    © <span id="year"></span> Localiza Rent a Car. Potenciado por Datos.
+    © <span id="year"></span> Localiza Rent a Car  •  Desarrollado y analizado por Mateus Torres.
   </footer>
 
-  <script>
-    // Actualiza el año en el footer
-    document.getElementById('year').textContent = new Date().getFullYear();
+  <!-- Modal de Contraseña -->
+  <div id="passwordModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <h2 id="modalTitle">Acceso Restringido</h2>
+      <p id="modalPromptText">Ingresa la contraseña para <strong id="modalSectionName"></strong>:</p>
+      <input type="password" id="passwordInput" placeholder="Contraseña" autocomplete="current-password">
+      <p id="modalError" class="modal-error-message" style="display: none;">Contraseña incorrecta.</p>
+      <div class="modal-actions">
+        <button id="submitPasswordBtn">Acceder</button>
+        <button id="cancelPasswordBtn">Cancelar</button>
+      </div>
+    </div>
+  </div>
 
-    // Inicializa Feather Icons
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
     feather.replace();
+
+    const modalOverlay = document.getElementById('passwordModal');
+    const passwordInput = document.getElementById('passwordInput');
+    const submitPasswordBtn = document.getElementById('submitPasswordBtn');
+    const cancelPasswordBtn = document.getElementById('cancelPasswordBtn');
+    const modalSectionNameEl = document.getElementById('modalSectionName');
+    const modalErrorEl = document.getElementById('modalError');
+
+    let currentTargetUrl = '';
+    let currentSectionName = '';
+
+    const sectionPasswords = {
+      "reservas.html": "Password01",
+      "CorporativoProspect.html": "Password01",
+      "sucursales.html": "Password01",
+      "reportes.html": "Password01"
+    };
+
+    document.querySelectorAll('.protected-link').forEach(card => {
+      card.addEventListener('click', function(event) {
+        // Si la tarjeta es un <a>, prevenir la navegación por defecto
+        // if (this.tagName === 'A') {
+        //   event.preventDefault();
+        // }
+        
+        currentTargetUrl = this.dataset.targetUrl;
+        currentSectionName = this.dataset.sectionName;
+        
+        if (!sectionPasswords.hasOwnProperty(currentTargetUrl)) {
+            console.warn(`No se encontró contraseña definida para ${currentTargetUrl}. Accediendo directamente.`);
+            window.location.href = currentTargetUrl;
+            return;
+        }
+
+        modalSectionNameEl.textContent = currentSectionName;
+        passwordInput.value = '';
+        modalErrorEl.style.display = 'none'; 
+        modalOverlay.style.display = 'flex'; // Usar flex para centrar
+        // Forzar la animación del modal para que se vea al mostrar
+        setTimeout(() => {
+            modalOverlay.classList.add('active');
+            passwordInput.focus();
+        }, 10); // Pequeño delay para asegurar que display:flex se aplique antes de la transición de opacidad/transform
+      });
+    });
+
+    function closeModal() {
+      modalOverlay.classList.remove('active');
+      // Esperar a que termine la transición de opacidad antes de ocultar con display:none
+      setTimeout(() => {
+        if (!modalOverlay.classList.contains('active')) { // Comprobar de nuevo por si se reabrió rápido
+            modalOverlay.style.display = 'none';
+        }
+      }, 300); // Debe coincidir con la duración de la transición en CSS
+    }
+
+    cancelPasswordBtn.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', function(event) {
+      if (event.target === modalOverlay) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && modalOverlay.classList.contains('active')) {
+            closeModal();
+        }
+    });
+    
+    function checkPassword() {
+        const enteredPassword = passwordInput.value;
+        const correctPassword = sectionPasswords[currentTargetUrl];
+
+        if (enteredPassword === correctPassword) {
+          modalErrorEl.style.display = 'none';
+          window.location.href = currentTargetUrl; 
+          closeModal(); 
+        } else {
+          modalErrorEl.style.display = 'block';
+          passwordInput.focus();
+          passwordInput.classList.add('input-error-shake');
+          setTimeout(() => {
+            passwordInput.classList.remove('input-error-shake');
+          }, 500);
+        }
+    }
+
+    submitPasswordBtn.addEventListener('click', checkPassword);
+    passwordInput.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            checkPassword();
+        }
+    });
   </script>
 
 </body>
