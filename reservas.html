@@ -7,28 +7,39 @@
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
+  /* ───────────────────────────────────────────────────────────────────────────────────
+     VARIABLES CSS
+     ─────────────────────────────────────────────────────────────────────────────────── */
   :root {
-    --localiza-bg: #03662b;
-    --on-bg: #ffffff;
-    --agency-bg: #F1F8E9;
-    --region-bg: #A5D6A7;
-    --border: #B0BEC5;
-    --hdr1: var(--localiza-bg);
-    --hdr2: #047a3b;
-    --total-row-bg: #C8E6C9;
-    --total-row-text: #1B5E20;
-    --total-ly-diff-bg: #cccccc;
-    --border-grueso-color: #757575;
-    --border-grueso-width: 2px;
-    --act-val-bg: #dcedc8; 
-    --act-val-total-bg: #c8e6c9; 
+    --localiza-bg:          #03662b;
+    --on-bg:                #ffffff;
+    --agency-bg:            #F1F8E9;
+    --region-bg:            #A5D6A7;
+    --border:               #B0BEC5;
+    --hdr1:                 var(--localiza-bg);
+    --hdr2:                 #047a3b;
+    --total-row-bg:         #C8E6C9;
+    --total-row-text:       #1B5E20;
+    --total-ly-diff-bg:     #cccccc;
+    --border-grueso-color:  #757575;
+    --border-grueso-width:  2px;
+    --act-val-bg:           #dcedc8;
+    --act-val-total-bg:     #c8e6c9;
   }
+
+  /* ───────────────────────────────────────────────────────────────────────────────────
+     RESET Y TIPOGRAFÍA
+     ─────────────────────────────────────────────────────────────────────────────────── */
   body {
     margin: 0;
     font-family: 'Roboto', Arial, sans-serif;
     background: #ECEFF1;
     color: #263238;
   }
+
+  /* ───────────────────────────────────────────────────────────────────────────────────
+     ENCABEZADOS FIJOS
+     ─────────────────────────────────────────────────────────────────────────────────── */
   .page-header {
     background: var(--hdr1);
     color: var(--on-bg);
@@ -38,20 +49,20 @@
     z-index: 1000;
     border-bottom: 3px solid #025022;
   }
+
   .glossary {
     padding: 5px 20px;
-    background-color: #f0f7f0;
+    background: #f0f7f0;
     border-bottom: 1px solid var(--border);
     font-size: 0.85em;
     color: #37474F;
     text-align: center;
   }
-  .glossary p {
-    margin: 5px 0;
-  }
-  .glossary strong {
-    color: var(--localiza-bg);
-  }
+  .glossary strong { color: var(--hdr1); }
+
+  /* ───────────────────────────────────────────────────────────────────────────────────
+     CONTENEDORES DE SECCIÓN
+     ─────────────────────────────────────────────────────────────────────────────────── */
   section.month-section {
     background: #f0f7f0;
     border-radius: 6px;
@@ -59,7 +70,10 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     margin-bottom: 20px;
   }
-  .controls { margin-bottom: 12px; }
+
+  .controls {
+    margin-bottom: 12px;
+  }
   .controls button {
     padding: 6px 12px;
     background: var(--hdr1);
@@ -69,6 +83,10 @@
     cursor: pointer;
     font-size: 0.9em;
   }
+
+  /* ───────────────────────────────────────────────────────────────────────────────────
+     BOTONES DE COLUMNA
+     ─────────────────────────────────────────────────────────────────────────────────── */
   .col-controls {
     display: flex;
     flex-wrap: wrap;
@@ -89,28 +107,29 @@
     color: #fff;
     border-color: var(--hdr1);
   }
-  .btn-group {
-  margin-bottom: 16px;
-  padding: 8px;
-  border-radius: 4px;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-.btn-group h4 {
-  margin: 0 0 6px;
-  font-size: 0.9em;
-  color: var(--hdr1);
-  text-transform: uppercase;
-  letter-spacing: .5px;
-}
-.btn-group.estados { border-left: 4px solid #047a3b; }
-.btn-group.segmentos { border-left: 4px solid #225522; }
-.btn-group.totales { border-left: 4px solid #555555; }
 
-/* Ajustes para que los botones internos respeten el flow */
-.btn-group button {
-  margin: 4px 6px 4px 0;
-}
+  .btn-group {
+    margin-bottom: 16px;
+    padding: 8px;
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  .btn-group h4 {
+    margin-bottom: 6px;
+    font-size: 0.9em;
+    color: var(--hdr1);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+  .btn-group.estados    { border-left: 4px solid #047a3b; }
+  .btn-group.segmentos  { border-left: 4px solid #225522; }
+  .btn-group.totales    { border-left: 4px solid #555555; }
+  .btn-group button     { margin: 4px 6px 4px 0; }
+
+  /* ───────────────────────────────────────────────────────────────────────────────────
+     TABLA: ESTILOS BÁSICOS
+     ─────────────────────────────────────────────────────────────────────────────────── */
   .table-wrapper { overflow-x: auto; }
   table {
     width: 100%;
@@ -119,132 +138,140 @@
   }
   th, td {
     border: 1px solid var(--border);
-    padding: 6px 8px; 
+    padding: 6px 8px;
     white-space: nowrap;
-    text-align: left; 
-    vertical-align: middle; 
+    vertical-align: middle;
   }
-
-  thead th { 
+  thead th {
     position: sticky;
+    top: 0;
     color: var(--on-bg);
-    text-align: center; 
+    text-align: center;
   }
-  thead tr:nth-child(1) th { 
-    background: var(--hdr1); 
-    top: 0; 
-    z-index: 5; 
+  thead tr:nth-child(1) th {
+    background: var(--hdr1);
+    z-index: 5;
   }
-  thead tr:nth-child(2) th { /* Segunda fila de encabezados: NO FLEX */
-    background: var(--hdr2); 
-    top: 2.4em; /* Ajustar si la primera fila del header cambia de altura */ 
-    z-index: 4; 
+  thead tr:nth-child(2) th {
+    background: var(--hdr2);
+    top: 2.4em; /* ajustar si cambia altura */
+    z-index: 4;
   }
-
-  thead th:first-child,
-  tbody td:first-child,
-  tfoot td:first-child {
+  th:first-child,
+  td:first-child {
     position: sticky;
     left: 0;
-    z-index: 3; 
+    z-index: 3;
   }
-  thead tr:nth-child(1) th:first-child { z-index: 6; }
-  thead tr:nth-child(2) th:first-child { z-index: 6; }
-  
-  .region-row td:first-child { background: var(--region-bg); }
-  .agency-row td:first-child { background: var(--agency-bg); padding-left: 20px; }
-  tfoot .total-row td:first-child { background: var(--total-row-bg); }
+  thead tr th:first-child { z-index: 6; }
 
-  .region-row:hover td:first-child { background: #95c697; } 
-  .agency-row:hover td:first-child { background: #e0f0d7; }
-  tfoot .total-row:hover td:first-child { background: #b8d6b9; }
-
-  .region-row {
+  /* ───────────────────────────────────────────────────────────────────────────────────
+     FILAS DE REGIÓN (+ SIN AGENCIAS)
+     ─────────────────────────────────────────────────────────────────────────────────── */
+  /* color, negrita y puntero sólo para filas expansibles */
+  .region-row,
+  .region-no-expand {
     color: #000;
     font-weight: bold;
-    cursor: pointer;
   }
-  .region-row.expanded td:first-child::before { content:'▼ '; }
-  .region-row:not(.expanded) td:first-child::before { content:'▶ '; }
-  .agency-row { display: none; }
-  
+  .region-row { cursor: pointer; }
+
+  /* fondo verde para primera celda de ambas clases */
+  .region-row td:first-child,
+  .region-no-expand td:first-child {
+    background: var(--region-bg);
+    /* borde derecho grueso */
+    border-right: var(--border-grueso-width) solid var(--border-grueso-color) !important;
+  }
+  /* hover idéntico en ambas */
+  .region-row:hover td:first-child,
+  .region-no-expand:hover td:first-child {
+    background: #95c697;
+  }
+
+  /* triángulos sólo en filas expansibles */
+  .region-row.expanded td:first-child::before { content: '▼ '; }
+  .region-row:not(.expanded) td:first-child::before { content: '▶ '; }
+
+  /* borde inferior grueso para separar secciones */
+  .region-row td,
+  .region-no-expand td {
+    border-bottom: var(--border-grueso-width) solid var(--border-grueso-color) !important;
+  }
+
+  /* ───────────────────────────────────────────────────────────────────────────────────
+     FILAS DE AGENCIA
+     ─────────────────────────────────────────────────────────────────────────────────── */
+  .agency-row {
+    display: none;
+  }
+  .agency-row td:first-child {
+    background: var(--agency-bg);
+    padding-left: 20px;
+  }
+  .agency-row.last-agency td {
+    /* borde grueso bajo última agencia de cada región */
+    border-bottom: var(--border-grueso-width) solid var(--border-grueso-color) !important;
+  }
+  .agency-row:hover td:first-child {
+    background: #e0f0d7;
+  }
+
+  /* ───────────────────────────────────────────────────────────────────────────────────
+     FILA TOTAL (FOOTER)
+     ─────────────────────────────────────────────────────────────────────────────────── */
   tfoot .total-row {
     background: var(--total-row-bg);
     font-weight: bold;
   }
   tfoot .total-row td {
     color: var(--total-row-text);
+    /* borde superior grueso */
+    border-top: var(--border-grueso-width) solid var(--border-grueso-color) !important;
+    /* doble línea base más gruesa (3×) */
+    border-bottom: calc(var(--border-grueso-width) * 3) double var(--border-grueso-color) !important;
+  }
+  tfoot .total-row td:first-child {
+    background: var(--total-row-bg);
   }
   tfoot .total-row .ly-col,
   tfoot .total-row .diff-col {
-    background-color: var(--total-ly-diff-bg);
+    background: var(--total-ly-diff-bg);
+  }
+  tfoot .total-row .act-val-cell {
+    background: var(--act-val-total-bg);
+  }
+  tfoot .total-row td.pct-col {
+    font-weight: normal !important;
   }
 
+  /* ───────────────────────────────────────────────────────────────────────────────────
+     MÉTRICAS (CLASES AUXILIARES)
+     ─────────────────────────────────────────────────────────────────────────────────── */
   .numeric { text-align: right; }
   .centered { text-align: center; }
-
   tbody .ly-col,
   tbody .diff-col {
-    background-color: #f5f5f5;
-    font-weight: normal; 
+    background: #f5f5f5;
+    font-weight: normal;
   }
-      /* Quita la negrita de toda la columna “% Cant” */
-      th.pct-col,
-      td.pct-col {
-      font-weight: normal !important;
-    }
-  .act-header-col { }
-  .act-val-cell { 
-      background-color: var(--act-val-bg);
+  th.pct-col,
+  td.pct-col {
+    font-weight: normal !important;
   }
-  tfoot .total-row .act-val-cell { 
-      background-color: var(--act-val-total-bg); 
-  }
-
-  td.pct-col::after { 
-    content: '%';
-    padding-left: 2px;
-  }
-  tfoot .total-row td.pct-col { 
-      font-weight: normal !important; 
-  }
-
+  td.pct-col::after { content: '%'; padding-left: 2px; }
   .diff-percentage::after { content: '%'; }
   .diff-percentage.positive { color: var(--hdr2); }
-  .diff-percentage.positive::before { content:'▲ '; }
+  .diff-percentage.positive::before { content: '▲ '; }
   .diff-percentage.negative { color: #d32f2f; }
-  .diff-percentage.negative::before { content:'▼ '; }
-  
-  .region-row td {
-    border-bottom-width: var(--border-grueso-width);
-    border-bottom-color: var(--border-grueso-color);
-  }
-  /* ── Borde grueso en la última agencia de cada región ── */
-tr.agency-row.last-agency td {
-  /* Sobrescribe el borde inferior normal por uno grueso */
-  border-bottom: var(--border-grueso-width) solid var(--border-grueso-color) !important;
-}
-  /*.region-row td:first-child {
-      border-bottom-width: var(--border-grueso-width);
-      border-bottom-color: var(--border-grueso-color);
-  }*/
-/* Borde fino cuando la región está expandida */
-tr.region-row.expanded td {
-  border-bottom: 1px solid var(--border);
-}
-
-  thead th:first-child,
-  tbody td:first-child,
-  tfoot td:first-child {
-    border-right-width: var(--border-grueso-width);
-    border-right-color: var(--border-grueso-color); 
+  .diff-percentage.negative::before { content: '▼ '; }
+  .act-val-cell {
+    background: var(--act-val-bg);
   }
 
-  .is-last-in-group {
-    border-right-width: var(--border-grueso-width);
-    border-right-color: var(--border-grueso-color);
-  }
-
+  /* ───────────────────────────────────────────────────────────────────────────────────
+     OCULTAR COLUMNAS DINÁMICAS
+     ─────────────────────────────────────────────────────────────────────────────────── */
   .hide-distribucion .group-distribucion { display: none; }
   .hide-deldia .group-deldia { display: none; }
   .hide-reservastotalgeneral .group-reservastotalgeneral { display: none; }
@@ -262,41 +289,8 @@ tr.region-row.expanded td {
   .hide-enconsultainternacional .group-enconsultainternacional { display: none; }
   .hide-reservastotalesutab .group-reservastotalesutab { display: none; }
   .hide-qdiarias .group-qdiarias { display: none; }
-  
-/* ─── Unificar fondo y borde de regiones con o sin agencias ─── */
-.region-row td:first-child,
-.region-no-expand td:first-child {
-  /* Fondo verde igual que las regiones normales */
-  background: var(--region-bg);
-  /* Borde derecho grueso igual */
-  border-right: var(--border-grueso-width) solid var(--border-grueso-color) !important;
-}
-/* Borde inferior grueso para separar la fila completa */
-.region-row td,
-.region-no-expand td {
-  border-bottom: var(--border-grueso-width) solid var(--border-grueso-color) !important;
-}
-/* Hover también con el mismo tono para ambas clases */
-.region-row:hover td:first-child,
-.region-no-expand:hover td:first-child {
-  background: #95c697;
-}
-
-
-/* ─── Total: doble línea más gruesa ─── */
-tfoot .total-row td {
-  /* Borde superior grueso igual */
-  border-top: var(--border-grueso-width) solid var(--border-grueso-color) !important;
-  /* Doble línea 3× el grosor original */
-  border-bottom: calc(var(--border-grueso-width) * 3) double var(--border-grueso-color) !important;
-}
-/* ─── Negrita para regiones sin agencias ─── */
-.region-no-expand,
-.region-no-expand td:first-child {
-  font-weight: bold;
-}
-  
 </style>
+
 </head>
 <body>
   <header class="page-header">
