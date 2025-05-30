@@ -7,9 +7,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  /* ───────────────────────────────────────────────────────────────────────────────────
-     VARIABLES CSS
-     ─────────────────────────────────────────────────────────────────────────────────── */
+  /* ───────────────────────────────────────────── VARIABLES CSS ───────────────────────────────────────────── */
   :root {
     --localiza-bg:          #03662b;
     --on-bg:                #ffffff;
@@ -27,9 +25,7 @@
     --act-val-total-bg:     #c8e6c9;
   }
 
-  /* ───────────────────────────────────────────────────────────────────────────────────
-     RESET Y TIPOGRAFÍA
-     ─────────────────────────────────────────────────────────────────────────────────── */
+  /* ───────────────────────────────────────────── RESET Y TIPOGRAFÍA ───────────────────────────────────────────── */
   body {
     margin: 0;
     font-family: 'Roboto', Arial, sans-serif;
@@ -37,9 +33,7 @@
     color: #263238;
   }
 
-  /* ───────────────────────────────────────────────────────────────────────────────────
-     ENCABEZADOS FIJOS
-     ─────────────────────────────────────────────────────────────────────────────────── */
+  /* ───────────────────────────────────────────── ENCABEZADOS FIJOS ───────────────────────────────────────────── */
   .page-header {
     background: var(--hdr1);
     color: var(--on-bg);
@@ -49,7 +43,6 @@
     z-index: 1000;
     border-bottom: 3px solid #025022;
   }
-
   .glossary {
     padding: 5px 20px;
     background: #f0f7f0;
@@ -60,9 +53,7 @@
   }
   .glossary strong { color: var(--hdr1); }
 
-  /* ───────────────────────────────────────────────────────────────────────────────────
-     CONTENEDORES DE SECCIÓN
-     ─────────────────────────────────────────────────────────────────────────────────── */
+  /* ───────────────────────────────────────────── CONTENEDORES DE SECCIÓN ───────────────────────────────────────────── */
   section.month-section {
     background: #f0f7f0;
     border-radius: 6px;
@@ -70,7 +61,6 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     margin-bottom: 20px;
   }
-
   .controls {
     margin-bottom: 12px;
   }
@@ -84,9 +74,7 @@
     font-size: 0.9em;
   }
 
-  /* ───────────────────────────────────────────────────────────────────────────────────
-     BOTONES DE COLUMNA
-     ─────────────────────────────────────────────────────────────────────────────────── */
+  /* ───────────────────────────────────────────── BOTONES DE COLUMNA ───────────────────────────────────────────── */
   .col-controls {
     display: flex;
     flex-wrap: wrap;
@@ -107,7 +95,6 @@
     color: #fff;
     border-color: var(--hdr1);
   }
-
   .btn-group {
     margin-bottom: 16px;
     padding: 8px;
@@ -127,9 +114,7 @@
   .btn-group.totales    { border-left: 4px solid #555555; }
   .btn-group button     { margin: 4px 6px 4px 0; }
 
-  /* ───────────────────────────────────────────────────────────────────────────────────
-     TABLA: ESTILOS BÁSICOS
-     ─────────────────────────────────────────────────────────────────────────────────── */
+  /* ───────────────────────────────────────────── TABLA: ESTILOS BÁSICOS ───────────────────────────────────────────── */
   .table-wrapper { overflow-x: auto; }
   table {
     width: 100%;
@@ -165,10 +150,7 @@
   }
   thead tr th:first-child { z-index: 6; }
 
-  /* ───────────────────────────────────────────────────────────────────────────────────
-     FILAS DE REGIÓN (+ SIN AGENCIAS)
-     ─────────────────────────────────────────────────────────────────────────────────── */
-  /* color, negrita y puntero sólo para filas expansibles */
+  /* ───────────────────────────────────────────── FILAS DE REGIÓN (EXPAND/COLLAPSE) ───────────────────────────────────────────── */
   .region-row,
   .region-no-expand {
     color: #000;
@@ -176,20 +158,18 @@
   }
   .region-row { cursor: pointer; }
 
-  /* fondo verde para primera celda de ambas clases */
+  /* fondo y borde uniforme para ambas clases */
   .region-row td:first-child,
   .region-no-expand td:first-child {
     background: var(--region-bg);
-    /* borde derecho grueso */
     border-right: var(--border-grueso-width) solid var(--border-grueso-color) !important;
   }
-  /* hover idéntico en ambas */
   .region-row:hover td:first-child,
   .region-no-expand:hover td:first-child {
     background: #95c697;
   }
 
-  /* triángulos sólo en filas expansibles */
+  /* triángulos sólo en filas expandibles */
   .region-row.expanded td:first-child::before { content: '▼ '; }
   .region-row:not(.expanded) td:first-child::before { content: '▶ '; }
 
@@ -199,9 +179,7 @@
     border-bottom: var(--border-grueso-width) solid var(--border-grueso-color) !important;
   }
 
-  /* ───────────────────────────────────────────────────────────────────────────────────
-     FILAS DE AGENCIA
-     ─────────────────────────────────────────────────────────────────────────────────── */
+  /* ───────────────────────────────────────────── FILAS DE AGENCIA ───────────────────────────────────────────── */
   .agency-row {
     display: none;
   }
@@ -210,25 +188,20 @@
     padding-left: 20px;
   }
   .agency-row.last-agency td {
-    /* borde grueso bajo última agencia de cada región */
     border-bottom: var(--border-grueso-width) solid var(--border-grueso-color) !important;
   }
   .agency-row:hover td:first-child {
     background: #e0f0d7;
   }
 
-  /* ───────────────────────────────────────────────────────────────────────────────────
-     FILA TOTAL (FOOTER)
-     ─────────────────────────────────────────────────────────────────────────────────── */
+  /* ───────────────────────────────────────────── FILA TOTAL (FOOTER) ───────────────────────────────────────────── */
   tfoot .total-row {
     background: var(--total-row-bg);
     font-weight: bold;
   }
   tfoot .total-row td {
     color: var(--total-row-text);
-    /* borde superior grueso */
     border-top: var(--border-grueso-width) solid var(--border-grueso-color) !important;
-    /* doble línea base más gruesa (3×) */
     border-bottom: calc(var(--border-grueso-width) * 3) double var(--border-grueso-color) !important;
   }
   tfoot .total-row td:first-child {
@@ -245,33 +218,33 @@
     font-weight: normal !important;
   }
 
-  /* ───────────────────────────────────────────────────────────────────────────────────
-     MÉTRICAS (CLASES AUXILIARES)
-     ─────────────────────────────────────────────────────────────────────────────────── */
-  .numeric { text-align: right; }
-  .centered { text-align: center; }
+  /* ───────────────────────────────────────────── MÉTRICAS (CLASES AUXILIARES) ───────────────────────────────────────────── */
+  .numeric        { text-align: right; }
+  .centered       { text-align: center; }
   tbody .ly-col,
-  tbody .diff-col {
-    background: #f5f5f5;
-    font-weight: normal;
-  }
+  tbody .diff-col { background: #f5f5f5; font-weight: normal; }
   th.pct-col,
-  td.pct-col {
-    font-weight: normal !important;
-  }
-  td.pct-col::after { content: '%'; padding-left: 2px; }
+  td.pct-col     { font-weight: normal !important; }
+  td.pct-col::after       { content: '%'; padding-left: 2px; }
   .diff-percentage::after { content: '%'; }
   .diff-percentage.positive { color: var(--hdr2); }
   .diff-percentage.positive::before { content: '▲ '; }
   .diff-percentage.negative { color: #d32f2f; }
   .diff-percentage.negative::before { content: '▼ '; }
-  .act-val-cell {
-    background: var(--act-val-bg);
+  .act-val-cell   { background: var(--act-val-bg); }
+
+  /* ───────────────────────────────────────────── SEPARADORES GRUESOS PARA COLUMNAS CLAVE ───────────────────────────────────────────── */
+  /* Asegura grosor uniforme en Total General, Abiertas, Utilizadas, Canceladas, Propia, Total AB+UT */
+  .group-reservastotalgeneral,
+  .group-abiertas,
+  .group-utilizadas,
+  .group-canceladas,
+  .group-propia,
+  .group-reservastotalesutab {
+    border-right: var(--border-grueso-width) solid var(--border-grueso-color) !important;
   }
 
-  /* ───────────────────────────────────────────────────────────────────────────────────
-     OCULTAR COLUMNAS DINÁMICAS
-     ─────────────────────────────────────────────────────────────────────────────────── */
+  /* ───────────────────────────────────────────── OCULTAR COLUMNAS DINÁMICAS ───────────────────────────────────────────── */
   .hide-distribucion .group-distribucion { display: none; }
   .hide-deldia .group-deldia { display: none; }
   .hide-reservastotalgeneral .group-reservastotalgeneral { display: none; }
@@ -290,6 +263,7 @@
   .hide-reservastotalesutab .group-reservastotalesutab { display: none; }
   .hide-qdiarias .group-qdiarias { display: none; }
 </style>
+
 
 </head>
 <body>
