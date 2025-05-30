@@ -224,10 +224,14 @@ tr.agency-row.last-agency td {
   /* Sobrescribe el borde inferior normal por uno grueso */
   border-bottom: var(--border-grueso-width) solid var(--border-grueso-color) !important;
 }
-  .region-row td:first-child {
+  /*.region-row td:first-child {
       border-bottom-width: var(--border-grueso-width);
       border-bottom-color: var(--border-grueso-color);
-  }
+  }*/
+  /* Borde grueso SOLO cuando la región está colapsada */
+tr.region-row:not(.expanded) td {
+  border-bottom: var(--border-grueso-width) solid var(--border-grueso-color);
+}
 
   thead th:first-child,
   tbody td:first-child,
