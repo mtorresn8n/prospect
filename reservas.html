@@ -262,16 +262,23 @@ tr.region-row.expanded td {
   .hide-enconsultainternacional .group-enconsultainternacional { display: none; }
   .hide-reservastotalesutab .group-reservastotalesutab { display: none; }
   .hide-qdiarias .group-qdiarias { display: none; }
-/* Unifica el fondo de primera celda para ambas clases */
+/* Unifica borde grueso para ambas clases */
+.region-row td,
+.region-no-expand td {
+  border-bottom: var(--border-grueso-width) solid var(--border-grueso-color) !important;
+}
 .region-row td:first-child,
 .region-no-expand td:first-child {
-  background: var(--region-bg);
+  border-right-width: var(--border-grueso-width) !important;
+  border-right-color: var(--border-grueso-color) !important;
 }
-.region-row:hover td:first-child,
-.region-no-expand:hover td:first-child {
-  background: #95c697;
+/* ─── Resaltar línea TOTAL con borde grueso arriba y doble abajo ─── */
+tfoot .total-row td {
+  /* Borde superior igual de grueso que los separadores */
+  border-top: var(--border-grueso-width) solid var(--border-grueso-color) !important;
+  /* Borde inferior doble para énfasis */
+  border-bottom: calc(var(--border-grueso-width) * 2) double var(--border-grueso-color) !important;
 }
-
   
 </style>
 </head>
