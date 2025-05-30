@@ -228,9 +228,9 @@ tr.agency-row.last-agency td {
       border-bottom-width: var(--border-grueso-width);
       border-bottom-color: var(--border-grueso-color);
   }*/
-  /* Borde grueso SOLO cuando la región está colapsada */
-tr.region-row:not(.expanded) td {
-  border-bottom: var(--border-grueso-width) solid var(--border-grueso-color);
+/* Borde fino cuando la región está expandida */
+tr.region-row.expanded td {
+  border-bottom: 1px solid var(--border);
 }
 
   thead th:first-child,
