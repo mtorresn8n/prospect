@@ -218,55 +218,64 @@
     font-weight: normal !important;
   }
 
-  /* ───────────────────────────────────────────── MÉTRICAS (CLASES AUXILIARES) ───────────────────────────────────────────── */
-  .numeric        { text-align: right; }
-  .centered       { text-align: center; }
-  tbody .ly-col,
-  tbody .diff-col { background: #f5f5f5; font-weight: normal; }
-  th.pct-col,
-  td.pct-col     { font-weight: normal !important; }
-  td.pct-col::after       { content: '%'; padding-left: 2px; }
-  .diff-percentage::after { content: '%'; }
-  .diff-percentage.positive { color: var(--hdr2); }
-  .diff-percentage.positive::before { content: '▲ '; }
-  .diff-percentage.negative { color: #d32f2f; }
-  .diff-percentage.negative::before { content: '▼ '; }
-  .act-val-cell   { background: var(--act-val-bg); }
+/* ───────────────────────────────────────────── MÉTRICAS (CLASES AUXILIARES) ───────────────────────────────────────────── */
+.numeric                  { text-align: right; }
+.centered                 { text-align: center; }
+tbody .ly-col,
+tbody .diff-col           { background: #f5f5f5; font-weight: normal; }
+th.pct-col,
+td.pct-col                { font-weight: normal !important; }
+td.pct-col::after         { content: '%'; padding-left: 2px; }
+.diff-percentage::after   { content: '%'; }
+.diff-percentage.positive { color: var(--hdr2); }
+.diff-percentage.positive::before { content: '▲ '; }
+.diff-percentage.negative { color: #d32f2f; }
+.diff-percentage.negative::before { content: '▼ '; }
+.act-val-cell             { background: var(--act-val-bg); }
 
-    /* ─── SEPARADORES GRUESOS ENTRE BLOQUES DE MÉTRICAS ─── */
-    /* Borde izquierdo grueso al inicio de cada bloque */
-    td.group-reservastotalgeneral,
-    th.group-reservastotalgeneral,
-    td.group-abiertas,
-    th.group-abiertas,
-    td.group-utilizadas,
-    th.group-utilizadas,
-    td.group-canceladas,
-    th.group-canceladas,
-    td.group-propia,
-    th.group-propia,
-    td.group-reservastotalesutab,
-    th.group-reservastotalesutab {
-      border-left: var(--border-grueso-width) solid var(--border-grueso-color) !important;
-    }
-    
-    /* Borde derecho grueso al final de cada bloque */
-    td.group-reservastotalgeneral.is-last-in-group,
-    th.group-reservastotalgeneral.is-last-in-group,
-    td.group-abiertas.is-last-in-group,
-    th.group-abiertas.is-last-in-group,
-    td.group-utilizadas.is-last-in-group,
-    th.group-utilizadas.is-last-in-group,
-    td.group-canceladas.is-last-in-group,
-    th.group-canceladas.is-last-in-group,
-    td.group-propia.is-last-in-group,
-    th.group-propia.is-last-in-group,
-    td.group-reservastotalesutab.is-last-in-group,
-    th.group-reservastotalesutab.is-last-in-group {
-      border-right: var(--border-grueso-width) solid var(--border-grueso-color) !important;
-    }
+/* ───────────────────────────────────────────── SEPARADORES GRUESOS ENTRE BLOQUES DE MÉTRICAS ───────────────────────────────────────────── */
+/* Borde izquierdo grueso al inicio de cada bloque */
+td.group-reservastotalgeneral,
+th.group-reservastotalgeneral,
+td.group-abiertas,
+th.group-abiertas,
+td.group-utilizadas,
+th.group-utilizadas,
+td.group-canceladas,
+th.group-canceladas,
+td.group-propia,
+th.group-propia,
+td.group-reservastotalesutab,
+th.group-reservastotalesutab {
+  border-left: var(--border-grueso-width) solid var(--border-grueso-color) !important;
+}
 
-  /* ───────────────────────────────────────────── OCULTAR COLUMNAS DINÁMICAS ───────────────────────────────────────────── */
+/* Borde derecho grueso al final de cada bloque */
+td.group-reservastotalgeneral.is-last-in-group,
+th.group-reservastotalgeneral.is-last-in-group,
+td.group-abiertas.is-last-in-group,
+th.group-abiertas.is-last-in-group,
+td.group-utilizadas.is-last-in-group,
+th.group-utilizadas.is-last-in-group,
+td.group-canceladas.is-last-in-group,
+th.group-canceladas.is-last-in-group,
+td.group-propia.is-last-in-group,
+th.group-propia.is-last-in-group,
+td.group-reservastotalesutab.is-last-in-group,
+th.group-reservastotalesutab.is-last-in-group {
+  border-right: var(--border-grueso-width) solid var(--border-grueso-color) !important;
+}
+
+/* ───────────────────────────────────────────── OCULTAR COLUMNAS DINÁMICAS ───────────────────────────────────────────── */
+
+
+
+
+
+
+
+
+
   .hide-distribucion .group-distribucion { display: none; }
   .hide-deldia .group-deldia { display: none; }
   .hide-reservastotalgeneral .group-reservastotalgeneral { display: none; }
