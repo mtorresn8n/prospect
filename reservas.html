@@ -99,31 +99,24 @@
     border: 1px solid var(--border);
     padding: 6px 8px; 
     white-space: nowrap;
-    text-align: left; /* Base para celdas de datos */
-    vertical-align: middle; /* Base para alineación vertical */
+    text-align: left; 
+    vertical-align: middle; 
   }
 
-  thead th { /* Estilos generales para todos los encabezados <th> */
+  thead th { 
     position: sticky;
     color: var(--on-bg);
-    text-align: center; /* Centra el texto horizontalmente */
-    /* vertical-align: middle; ya está en th,td pero podemos ser explícitos */
+    text-align: center; 
   }
-  thead tr:nth-child(1) th { /* Primera fila de encabezados (con colspan) */
+  thead tr:nth-child(1) th { 
     background: var(--hdr1); 
     top: 0; 
     z-index: 5; 
-    vertical-align: middle; /* Asegurar centrado para rowspan */
   }
-  thead tr:nth-child(2) th { /* Segunda fila de encabezados (LY, Act, % Cant, Diff %) */
+  thead tr:nth-child(2) th { /* Segunda fila de encabezados: NO FLEX */
     background: var(--hdr2); 
-    top: 2.4em; /* Ajustar si la altura de la 1ra fila del header cambia */ 
+    top: 2.4em; /* Ajustar si la primera fila del header cambia de altura */ 
     z-index: 4; 
-    /* --- Usar Flexbox para centrar el contenido DENTRO de cada celda th --- */
-    display: flex;
-    align-items: center;     /* Centra verticalmente el texto/contenido del th */
-    justify-content: center; /* Centra horizontalmente el texto/contenido del th */
-    /* El padding original de 6px 8px se mantiene y el contenido flex se centrará dentro de ese padding box */
   }
 
   thead th:first-child,
@@ -187,10 +180,12 @@
     font-size: 0.88em; 
   }
 thead tr:nth-child(2) th.pct-col {
-    padding-top: 14px;        /* mayor separación arriba */
-    padding-bottom: 4px;
-    vertical-align: bottom;   /* fuerza el texto al fondo de la celda */
+  font-size: 0.88em;
+  line-height: 1.4;       /* hace más alto el cuadro de texto */
+  padding: 0;             /* reinicia paddings si vas a controlar todo con line-height */
+  vertical-align: middle; /* o bottom, según prefieras */
 }
+
 
   td.pct-col::after { 
     content: '%';
