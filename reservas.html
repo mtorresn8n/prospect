@@ -296,15 +296,41 @@ td.is-last-in-group {
   .hide-enconsultainternacional .group-enconsultainternacional { display: none; }
   .hide-reservastotalesutab .group-reservastotalesutab { display: none; }
   .hide-qdiarias .group-qdiarias { display: none; }
+/* ─── Botón “Atrás” junto al título ─── */
+.back-button {
+  display: inline-block;
+  margin-right: 12px;
+  font-size: 1.5em;
+  line-height: 1;
+  color: var(--on-bg);
+  text-decoration: none;
+  vertical-align: middle;
+}
+.back-button:hover {
+  opacity: 0.8;
+}
+.page-header h1 {
+  display: inline-block;
+  margin: 0;
+  vertical-align: middle;
+}
+
+
+    
 </style>
 
 
 
 </head>
 <body>
-  <header class="page-header">
-    <h1>Reporte de Reservas Interactivo</h1>
-  </header>
+<header class="page-header">
+  <!-- Botón “atrás” -->
+  <a href="index.html" class="back-button" title="Volver al inicio">
+    ←
+  </a>
+  <h1>Analítico de Reservas Interactivo</h1>
+</header>
+
   <div class="glossary">
     <p>
       <strong>LY:</strong> Last Year (Año Anterior)  |  
