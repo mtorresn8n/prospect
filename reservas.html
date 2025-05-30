@@ -99,24 +99,31 @@
     border: 1px solid var(--border);
     padding: 6px 8px; 
     white-space: nowrap;
-    text-align: left; 
-    vertical-align: middle; 
+    text-align: left; /* Base para celdas de datos */
+    vertical-align: middle; /* Base para alineación vertical */
   }
 
-  thead th { 
+  thead th { /* Estilos generales para todos los encabezados <th> */
     position: sticky;
     color: var(--on-bg);
-    text-align: center; 
+    text-align: center; /* Centra el texto horizontalmente */
+    /* vertical-align: middle; ya está en th,td pero podemos ser explícitos */
   }
-  thead tr:nth-child(1) th { 
+  thead tr:nth-child(1) th { /* Primera fila de encabezados (con colspan) */
     background: var(--hdr1); 
     top: 0; 
     z-index: 5; 
+    vertical-align: middle; /* Asegurar centrado para rowspan */
   }
-  thead tr:nth-child(2) th { /* Segunda fila de encabezados: NO FLEX */
+  thead tr:nth-child(2) th { /* Segunda fila de encabezados (LY, Act, % Cant, Diff %) */
     background: var(--hdr2); 
-    top: 2.4em; /* Ajustar si la primera fila del header cambia de altura */ 
+    top: 2.4em; /* Ajustar si la altura de la 1ra fila del header cambia */ 
     z-index: 4; 
+    /* --- Usar Flexbox para centrar el contenido DENTRO de cada celda th --- */
+    display: flex;
+    align-items: center;     /* Centra verticalmente el texto/contenido del th */
+    justify-content: center; /* Centra horizontalmente el texto/contenido del th */
+    /* El padding original de 6px 8px se mantiene y el contenido flex se centrará dentro de ese padding box */
   }
 
   thead th:first-child,
