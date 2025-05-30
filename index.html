@@ -3,176 +3,325 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menú Principal — Localiza</title>
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  <!-- Font Awesome for icons -->
-  <script src="https://kit.fontawesome.com/yourkitid.js" crossorigin="anonymous"></script>
+  <title>Dashboard Analítico — Localiza</title>
+  
+  <!-- Google Fonts: Poppins para un look moderno y legible -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome (si lo mantienes, actualiza tu kit ID) -->
+  <!-- <script src="https://kit.fontawesome.com/YOUR_KIT_ID.js" crossorigin="anonymous"></script> -->
+  <!-- Alternativa: Feather Icons (SVG) - más ligeros y modernos. Se incluirán directamente en el HTML o vía JS -->
+  <script src="https://unpkg.com/feather-icons"></script>
+
   <style>
     /* ──────────────────────────────────────────────────────────────────────────────
-       VARIABLES Y RESET
+       VARIABLES Y ESTILOS GLOBALES
     ────────────────────────────────────────────────────────────────────────────── */
     :root {
-      --brand-green:       #03662b;
-      --brand-green-dark:  #024a20;
-      --bg-page:           #f4f4f4;
-      --text-main:         #333;
-      --card-bg:           #ffffff;
-      --shadow-light:      rgba(0, 0, 0, 0.08);
-      --shadow-heavy:      rgba(0, 0, 0, 0.15);
-      --transition-fast:   0.2s ease-out;
+      --brand-green: #00A859; /* Un verde Localiza más vibrante */
+      --brand-green-dark: #007F43;
+      --brand-yellow: #FFCC00; /* Acento de Localiza */
+      
+      --bg-page: #E9EEF2; /* Un gris azulado muy claro */
+      --bg-header: linear-gradient(135deg, var(--brand-green), var(--brand-green-dark));
+      --bg-card: #FFFFFF;
+      
+      --text-light: #F8F9FA;
+      --text-dark: #212529;
+      --text-muted: #6C757D;
+      
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+      --shadow-md: 0 5px 15px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
+      
+      --border-radius-md: 8px;
+      --border-radius-lg: 12px;
+      
+      --transition-smooth: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      height: 100%;
-      font-family: 'Montserrat', sans-serif;
-      background: var(--bg-page);
-      color: var(--text-main);
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-dark);
+      line-height: 1.6;
       overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     /* ──────────────────────────────────────────────────────────────────────────────
-       CABECERA / HERO
+       CABECERA / HERO SECTION
     ────────────────────────────────────────────────────────────────────────────── */
-    header {
-      width: 100%;
-      padding: 2rem 1rem;
-      background: linear-gradient(135deg, var(--brand-green), var(--brand-green-dark));
-      color: #fff;
+    .site-header {
+      background: var(--bg-header);
+      color: var(--text-light);
+      padding: 4rem 1.5rem 6rem; /* Más padding para impacto */
       text-align: center;
       position: relative;
-    }
-    header h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      margin-bottom: 0.5rem;
-    }
-    header p {
-      font-size: 1rem;
-      opacity: 0.9;
+      overflow: hidden; /* Para efectos de fondo */
     }
 
-    /* Back button in header */
-    .back-button {
-      position: absolute;
-      left: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.5rem;
-      color: #fff;
-      text-decoration: none;
-      padding: 0.5rem;
-      transition: opacity var(--transition-fast);
-    }
-    .back-button:hover {
-      opacity: 0.7;
-    }
-
-    /* ──────────────────────────────────────────────────────────────────────────────
-       CONTENEDOR DE MENÚ
-    ────────────────────────────────────────────────────────────────────────────── */
-    main {
-      max-width: 960px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-    .menu-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-    }
-    .menu-card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      box-shadow: 0 4px 8px var(--shadow-light), 0 8px 16px var(--shadow-heavy);
-      text-align: center;
-      padding: 2rem 1rem;
-      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-    .menu-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 6px 14px var(--shadow-light), 0 12px 24px var(--shadow-heavy);
-    }
-    .menu-card i {
-      font-size: 2.5rem;
-      color: var(--brand-green);
-      margin-bottom: 1rem;
-      transition: color var(--transition-fast);
-    }
-    .menu-card:hover i {
-      color: var(--brand-green-dark);
-    }
-    .menu-card span {
-      display: block;
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--text-main);
-      margin-top: 0.5rem;
-    }
-
-    /* Decorative corner accent */
-    .menu-card::before {
+    /* Efecto de fondo sutil (opcional) */
+    .site-header::before {
       content: '';
       position: absolute;
-      top: 0; right: 0;
-      width: 60px; height: 60px;
-      background: var(--brand-green);
-      clip-path: polygon(100% 0, 100% 100%, 0 0);
-      opacity: 0.1;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,0.1) 0%, transparent 30%),
+        radial-gradient(circle at 90% 80%, rgba(255,204,0,0.1) 0%, transparent 30%);
+      opacity: 0.5;
+      z-index: 0;
+    }
+
+    .header-content {
+      position: relative; /* Para que esté sobre el ::before */
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .site-header h1 {
+      font-size: clamp(2.5rem, 5vw, 3.5rem); /* Tamaño fluido */
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .site-header p {
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
+      opacity: 0.9;
+      max-width: 500px;
+      margin: 0 auto 1.5rem;
+    }
+    
+    /* Botón de "Volver" (si es necesario en esta página) */
+    /* Si esta es la página principal, quizás no necesite un "volver" aquí */
+    .back-button {
+      position: absolute;
+      left: 1.5rem;
+      top: 1.5rem;
+      color: var(--text-light);
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: background-color var(--transition-smooth);
+      z-index: 2;
+    }
+    .back-button:hover {
+      background-color: rgba(255,255,255,0.2);
+    }
+    .back-button svg {
+      width: 20px;
+      height: 20px;
+    }
+
+
+    /* ──────────────────────────────────────────────────────────────────────────────
+       CONTENEDOR PRINCIPAL Y TARJETAS DE MENÚ
+    ────────────────────────────────────────────────────────────────────────────── */
+    .main-content {
+      flex-grow: 1; /* Para que el footer se quede abajo */
+      max-width: 1100px;
+      width: 90%;
+      margin: -3rem auto 3rem; /* Margen negativo para que las tarjetas se superpongan al header */
+      padding: 0 1rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+
+    .menu-card {
+      background-color: var(--bg-card);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      text-decoration: none;
+      color: var(--text-dark);
+      transition: 
+        transform var(--transition-smooth), 
+        box-shadow var(--transition-smooth);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .menu-card-icon {
+      margin-bottom: 1.5rem;
+      /* El SVG se estiliza directamente o con una clase */
+    }
+    .menu-card-icon svg {
+      width: 48px;
+      height: 48px;
+      color: var(--brand-green);
+      stroke-width: 1.5; /* Para Feather Icons */
+      transition: color var(--transition-smooth);
+    }
+    .menu-card:hover .menu-card-icon svg {
+      color: var(--brand-green-dark);
+    }
+
+    .menu-card h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .menu-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      min-height: 40px; /* Para alinear tarjetas con descripciones de diferente longitud */
+    }
+
+    /* Pequeño acento de color en hover */
+    .menu-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background-color: var(--brand-yellow);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition-smooth);
+    }
+    .menu-card:hover::after {
+      transform: scaleX(1);
+    }
+    
+    /* ──────────────────────────────────────────────────────────────────────────────
+       PIE DE PÁGINA
+    ────────────────────────────────────────────────────────────────────────────── */
+    .site-footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      background-color: var(--bg-page); /* Para asegurar que no sea transparente si el contenido es corto */
     }
 
     /* ──────────────────────────────────────────────────────────────────────────────
-       FOOTER
+       ANIMACIONES SUTILES (al cargar la página)
     ────────────────────────────────────────────────────────────────────────────── */
-    footer {
-      text-align: center;
-      padding: 1rem 0;
-      font-size: 0.85rem;
-      color: #777;
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .site-header h1, .site-header p {
+      animation: fadeInUp 0.6s var(--transition-smooth) backwards;
+    }
+    .site-header p {
+      animation-delay: 0.2s;
+    }
+    .menu-card {
+      animation: fadeInUp 0.5s var(--transition-smooth) backwards;
+    }
+    /* Aplicar delay escalonado a las tarjetas */
+    .menu-grid .menu-card:nth-child(1) { animation-delay: 0.3s; }
+    .menu-grid .menu-card:nth-child(2) { animation-delay: 0.4s; }
+    .menu-grid .menu-card:nth-child(3) { animation-delay: 0.5s; }
+    .menu-grid .menu-card:nth-child(4) { animation-delay: 0.6s; }
+    /* Añadir más si tienes más tarjetas */
+
   </style>
 </head>
 <body>
 
-  <header>
-    <a href="index.html" class="back-button" title="Volver al menú">←</a>
-    <h1>Menú Principal</h1>
-    <p>Elige una sección y potencia tu gestión</p>
+  <header class="site-header">
+    <!-- Botón Volver, si es aplicable en la página de menú principal -->
+    <!-- <a href="pagina_anterior.html" class="back-button" title="Volver">
+      <i data-feather="arrow-left"></i>
+    </a> -->
+    <div class="header-content">
+      <h1>Plataforma Analítica Localiza</h1>
+      <p>Explora tus datos, descubre insights y toma decisiones informadas para impulsar el crecimiento.</p>
+    </div>
   </header>
 
-  <main>
-    <div class="menu-container">
-      <div class="menu-card" onclick="location.href='reservas.html'">
-        <i class="fas fa-calendar-check"></i>
-        <span>Reservas</span>
-      </div>
-      <div class="menu-card" onclick="location.href='CorporativoProspect.html'">
-        <i class="fas fa-building"></i>
-        <span>Corporativo</span>
-      </div>
-      <div class="menu-card" onclick="location.href='sucursales.html'">
-        <i class="fas fa-map-marker-alt"></i>
-        <span>Sucursales</span>
-      </div>
-      <!-- Nuevo ejemplo: módulo de reportes -->
-      <div class="menu-card" onclick="location.href='reportes.html'">
-        <i class="fas fa-chart-line"></i>
-        <span>Reportes</span>
-      </div>
+  <main class="main-content">
+    <div class="menu-grid">
+      
+      <a href="reservas.html" class="menu-card">
+        <div class="menu-card-icon"><i data-feather="calendar"></i></div>
+        <h3>Análisis de Reservas</h3>
+        <p>Visualiza tendencias, ocupación y rendimiento de tus reservas.</p>
+      </a>
+      
+      <a href="CorporativoProspect.html" class="menu-card">
+        <div class="menu-card-icon"><i data-feather="briefcase"></i></div>
+        <h3>Gestión Corporativa</h3>
+        <p>Seguimiento de clientes corporativos y oportunidades de negocio.</p>
+      </a>
+      
+      <a href="sucursales.html" class="menu-card">
+        <div class="menu-card-icon"><i data-feather="map-pin"></i></div>
+        <h3>Rendimiento de Sucursales</h3>
+        <p>Compara métricas clave y optimiza la operativa por sucursal.</p>
+      </a>
+      
+      <a href="reportes.html" class="menu-card">
+        <div class="menu-card-icon"><i data-feather="bar-chart-2"></i></div>
+        <h3>Reportes Personalizados</h3>
+        <p>Genera y consulta informes detallados según tus necesidades.</p>
+      </a>
+
+      <!-- Puedes añadir más tarjetas aquí -->
+      <!-- Ejemplo de tarjeta deshabilitada o "Próximamente" -->
+      <a href="#" class="menu-card" style="opacity: 0.6; cursor: not-allowed;" title="Próximamente">
+        <div class="menu-card-icon"><i data-feather="trending-up"></i></div>
+        <h3>Inteligencia de Mercado</h3>
+        <p>Análisis competitivo y tendencias del sector (Próximamente).</p>
+      </a>
+
     </div>
   </main>
 
-  <footer>
-    &copy; <span id="year"></span> Localiza — Todos los derechos reservados
+  <footer class="site-footer">
+    © <span id="year"></span> Localiza Rent a Car. Potenciado por Datos.
   </footer>
 
   <script>
     // Actualiza el año en el footer
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Inicializa Feather Icons
+    feather.replace();
   </script>
 
 </body>
