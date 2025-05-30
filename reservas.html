@@ -89,6 +89,28 @@
     color: #fff;
     border-color: var(--hdr1);
   }
+  .btn-group {
+  margin-bottom: 16px;
+  padding: 8px;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.btn-group h4 {
+  margin: 0 0 6px;
+  font-size: 0.9em;
+  color: var(--hdr1);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.btn-group.estados { border-left: 4px solid #047a3b; }
+.btn-group.segmentos { border-left: 4px solid #225522; }
+.btn-group.totales { border-left: 4px solid #555555; }
+
+/* Ajustes para que los botones internos respeten el flow */
+.btn-group button {
+  margin: 4px 6px 4px 0;
+}
   .table-wrapper { overflow-x: auto; }
   table {
     width: 100%;
@@ -251,24 +273,9 @@
         <button id="toggle-mayo2025">Ver Agencias</button>
       </div>
       <div class="col-controls">
-    <button
-      class=""
-      data-section="mayo2025"
-      data-group="distribucion"
-    >Distribucion</button>
-  
-    <button
-      class=""
-      data-section="mayo2025"
-      data-group="deldia"
-    >Del Dia</button>
-  
-    <button
-      class="active"
-      data-section="mayo2025"
-      data-group="reservastotalgeneral"
-    >Reservas Total General</button>
-  
+  <div class="btn-group estados">
+    <h4>Estados</h4>
+    
     <button
       class="active"
       data-section="mayo2025"
@@ -306,6 +313,16 @@
     >Pendiente Gds</button>
   
     <button
+      class=""
+      data-section="mayo2025"
+      data-group="enconsultainternacional"
+    >En Consulta Internacional</button>
+  
+  </div>
+  <div class="btn-group segmentos">
+    <h4>Segmentos</h4>
+    
+    <button
       class="active"
       data-section="mayo2025"
       data-group="propia"
@@ -335,11 +352,27 @@
       data-group="industriadeviagens"
     >Industria De Viagens</button>
   
+  </div>
+  <div class="btn-group totales">
+    <h4>Totales & Distribución</h4>
+    
     <button
       class=""
       data-section="mayo2025"
-      data-group="enconsultainternacional"
-    >En Consulta Internacional</button>
+      data-group="distribucion"
+    >Distribucion</button>
+  
+    <button
+      class=""
+      data-section="mayo2025"
+      data-group="deldia"
+    >Del Dia</button>
+  
+    <button
+      class="active"
+      data-section="mayo2025"
+      data-group="reservastotalgeneral"
+    >Reservas Total General</button>
   
     <button
       class="active"
@@ -352,7 +385,9 @@
       data-section="mayo2025"
       data-group="qdiarias"
     >Q Diarias</button>
+  
   </div>
+</div>
       <div class="table-wrapper">
         <table>
           <thead>
@@ -375,24 +410,9 @@
         <button id="toggle-junio2025">Ver Agencias</button>
       </div>
       <div class="col-controls">
-    <button
-      class=""
-      data-section="junio2025"
-      data-group="distribucion"
-    >Distribucion</button>
-  
-    <button
-      class=""
-      data-section="junio2025"
-      data-group="deldia"
-    >Del Dia</button>
-  
-    <button
-      class="active"
-      data-section="junio2025"
-      data-group="reservastotalgeneral"
-    >Reservas Total General</button>
-  
+  <div class="btn-group estados">
+    <h4>Estados</h4>
+    
     <button
       class="active"
       data-section="junio2025"
@@ -430,6 +450,16 @@
     >Pendiente Gds</button>
   
     <button
+      class=""
+      data-section="junio2025"
+      data-group="enconsultainternacional"
+    >En Consulta Internacional</button>
+  
+  </div>
+  <div class="btn-group segmentos">
+    <h4>Segmentos</h4>
+    
+    <button
       class="active"
       data-section="junio2025"
       data-group="propia"
@@ -459,11 +489,27 @@
       data-group="industriadeviagens"
     >Industria De Viagens</button>
   
+  </div>
+  <div class="btn-group totales">
+    <h4>Totales & Distribución</h4>
+    
     <button
       class=""
       data-section="junio2025"
-      data-group="enconsultainternacional"
-    >En Consulta Internacional</button>
+      data-group="distribucion"
+    >Distribucion</button>
+  
+    <button
+      class=""
+      data-section="junio2025"
+      data-group="deldia"
+    >Del Dia</button>
+  
+    <button
+      class="active"
+      data-section="junio2025"
+      data-group="reservastotalgeneral"
+    >Reservas Total General</button>
   
     <button
       class="active"
@@ -476,7 +522,9 @@
       data-section="junio2025"
       data-group="qdiarias"
     >Q Diarias</button>
+  
   </div>
+</div>
       <div class="table-wrapper">
         <table>
           <thead>
@@ -499,24 +547,9 @@
         <button id="toggle-julio2025">Ver Agencias</button>
       </div>
       <div class="col-controls">
-    <button
-      class=""
-      data-section="julio2025"
-      data-group="distribucion"
-    >Distribucion</button>
-  
-    <button
-      class=""
-      data-section="julio2025"
-      data-group="deldia"
-    >Del Dia</button>
-  
-    <button
-      class="active"
-      data-section="julio2025"
-      data-group="reservastotalgeneral"
-    >Reservas Total General</button>
-  
+  <div class="btn-group estados">
+    <h4>Estados</h4>
+    
     <button
       class="active"
       data-section="julio2025"
@@ -554,6 +587,16 @@
     >Pendiente Gds</button>
   
     <button
+      class=""
+      data-section="julio2025"
+      data-group="enconsultainternacional"
+    >En Consulta Internacional</button>
+  
+  </div>
+  <div class="btn-group segmentos">
+    <h4>Segmentos</h4>
+    
+    <button
       class="active"
       data-section="julio2025"
       data-group="propia"
@@ -583,11 +626,27 @@
       data-group="industriadeviagens"
     >Industria De Viagens</button>
   
+  </div>
+  <div class="btn-group totales">
+    <h4>Totales & Distribución</h4>
+    
     <button
       class=""
       data-section="julio2025"
-      data-group="enconsultainternacional"
-    >En Consulta Internacional</button>
+      data-group="distribucion"
+    >Distribucion</button>
+  
+    <button
+      class=""
+      data-section="julio2025"
+      data-group="deldia"
+    >Del Dia</button>
+  
+    <button
+      class="active"
+      data-section="julio2025"
+      data-group="reservastotalgeneral"
+    >Reservas Total General</button>
   
     <button
       class="active"
@@ -600,7 +659,9 @@
       data-section="julio2025"
       data-group="qdiarias"
     >Q Diarias</button>
+  
   </div>
+</div>
       <div class="table-wrapper">
         <table>
           <thead>
