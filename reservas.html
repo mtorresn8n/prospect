@@ -262,6 +262,14 @@ tr.region-row.expanded td {
   .hide-enconsultainternacional .group-enconsultainternacional { display: none; }
   .hide-reservastotalesutab .group-reservastotalesutab { display: none; }
   .hide-qdiarias .group-qdiarias { display: none; }
+/* Regiones sin agencias: sin flechita ni cursor pointer */
+.region-no-expand td:first-child::before {
+  content: "";
+}
+.region-no-expand {
+  cursor: default;
+}
+  
 </style>
 </head>
 <body>
