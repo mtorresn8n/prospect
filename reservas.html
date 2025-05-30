@@ -180,12 +180,10 @@
     font-size: 0.88em; 
   }
 thead tr:nth-child(2) th.pct-col {
-  font-size: 0.88em;
-  line-height: 1.4;       /* hace más alto el cuadro de texto */
-  padding: 0;             /* reinicia paddings si vas a controlar todo con line-height */
-  vertical-align: middle; /* o bottom, según prefieras */
+    padding-top: 14px;        /* mayor separación arriba */
+    padding-bottom: 4px;
+    vertical-align: bottom;   /* fuerza el texto al fondo de la celda */
 }
-
 
   td.pct-col::after { 
     content: '%';
