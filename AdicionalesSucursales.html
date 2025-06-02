@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Adicionales Acumulado: Junio 01 (Datos abiertos) - Localiza</title>
+  <title>Detalle de Venta de Adicionales - Localiza</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -11,7 +11,7 @@
   <style>
     
   :root {
-    /* Variables de marca y layout (iguales al index.html) */
+    /* Variables de marca y layout */
     --brand-green: #00A859; 
     --brand-green-dark: #007F43;
     --brand-yellow: #FFCC00; 
@@ -19,7 +19,7 @@
     --bg-section: #FFFFFF; 
     --text-dark: #212529;
     --text-medium: #495057;
-    --text-light: #F8F9FA;
+    --text-light: #F8F9FA; /* Color para texto sobre fondos oscuros */
     --text-muted: #6C757D;
     --border-color: #DEE2E6;
     --border-radius-md: 8px;
@@ -29,12 +29,12 @@
     --transition-smooth: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
     /* Variables dinámicas basadas en el estado del reporte */
-    --header-bg-dynamic: #a7f3d0;
-    --header-color-dynamic: #065f46;
-    --header-border-dynamic: #6ee7b7;
-    --total-bg-dynamic: #d1fae5;
-    --total-color-dynamic: #047857;
-    --body-bg-dynamic: #f0fdf4;
+    --header-bg-dynamic: #065f46;
+    --header-color-dynamic: #f0fdf4;
+    --header-border-dynamic: #047857;
+    --total-bg-dynamic: #a7f3d0;
+    --total-color-dynamic: #065f46;
+    --body-bg-dynamic: #f8fafc;
   }
 
 
@@ -44,207 +44,148 @@
       font-family: 'Poppins', sans-serif;
       font-size: 14px;
       line-height: 1.6;
-      background-color: var(--body-bg-dynamic); /* Usar variable dinámica para fondo del body */
+      background-color: var(--body-bg-dynamic);
       color: var(--text-dark);
       margin: 0;
-      padding: 20px;
+      padding: 0; /* Sin padding en el body, se maneja por .page-container */
     }
 
+    .page-top-bar { /* Barra superior para el botón volver y título */
+      background-color: var(--brand-green-dark); /* Usar un color de header consistente */
+      color: var(--text-light);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100; /* Encima del contenido scrolleable */
+      box-shadow: var(--shadow-sm);
+    }
+    .back-button-bar {
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 1.5rem; /* Tamaño del ícono/flecha */
+      margin-right: 15px;
+      padding: 5px;
+      line-height: 1;
+      transition: opacity 0.2s ease;
+    }
+    .back-button-bar:hover {
+      opacity: 0.8;
+    }
+    .page-top-bar h1 {
+      font-size: 1.2rem; /* Tamaño del título en la barra */
+      font-weight: 500;
+      margin: 0;
+    }
+    .update-timestamp-bar {
+        margin-left: auto; /* Empuja la fecha a la derecha */
+        font-size: 0.8em;
+        opacity: 0.9;
+    }
+
+
     .report-container {
-        max-width: 95%; /* Usar porcentaje para mejor adaptabilidad */
-        margin: 0 auto;
+        max-width: 95%;
+        margin: 20px auto; /* Espacio arriba después de la barra fija */
         background-color: var(--bg-section);
         padding: 20px;
         border-radius: var(--border-radius-md);
         box-shadow: var(--shadow-md);
     }
-
-    h1.report-title {
-      font-size: 1.6rem;
-      font-weight: 600;
-      color: var(--brand-green-dark);
-      text-align: center;
-      margin-bottom: 20px;
-      padding-bottom: 15px;
-      border-bottom: 1px solid var(--border-color);
-    }
     
+    /* --- Estilos de tabla y desplegables (copiados de tu versión anterior, con pequeños ajustes) --- */
     .table-wrapper {
-        overflow-x: auto; /* Permite scroll horizontal en tablas anchas */
-        margin-bottom: 20px; /* Espacio después de cada wrapper de tabla */
+        overflow-x: auto; 
+        margin-bottom: 20px; 
     }
-
     .data-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      /* margin-bottom: 25px; Quitado, manejado por table-wrapper */
-      border: 1px solid var(--border-color);
-      border-radius: var(--border-radius-sm);
-      overflow: hidden; 
-      font-size: 0.85rem; /* Tamaño de fuente ligeramente más pequeño para tablas densas */
+      width: 100%; border-collapse: separate; border-spacing: 0;
+      border: 1px solid var(--border-color); border-radius: var(--border-radius-sm);
+      overflow: hidden; font-size: 0.85rem; 
     }
-
-    .data-table th,
-    .data-table td {
-      padding: 8px 10px; 
-      text-align: left;
-      border-bottom: 1px solid var(--border-color);
-      vertical-align: middle;
-      white-space: nowrap; /* Evitar que el texto se rompa en varias líneas */
+    .data-table th, .data-table td {
+      padding: 8px 10px; text-align: left;
+      border-bottom: 1px solid var(--border-color); vertical-align: middle;
+      white-space: nowrap; 
     }
-    .data-table td:first-child, 
+    .data-table td:first-child, .data-table th:first-child {
+        text-align: left; font-weight: 500; position: sticky; left: 0;
+        background-color: var(--bg-section); z-index: 1;
+    }
     .data-table th:first-child {
-        text-align: left;
-        font-weight: 500;
-        position: sticky; /* Hacer la primera columna fija */
-        left: 0;
-        background-color: var(--bg-section); /* Fondo para que no se transparente */
-        z-index: 1;
+        z-index: 2; background-color: var(--header-bg-dynamic);
+        color: var(--header-color-dynamic);
     }
-     .data-table th:first-child {
-        z-index: 2; /* Encima de las celdas de datos */
-         background-color: var(--header-bg-dynamic); /* Para que coincida con el header */
-         color: var(--header-color-dynamic);
-    }
-
-    .data-table td:not(:first-child),
-    .data-table th:not(:first-child) {
+    .data-table td:not(:first-child), .data-table th:not(:first-child) {
         text-align: right; 
     }
-
     .data-table thead th {
-      background-color: var(--header-bg-dynamic); 
-      color: var(--header-color-dynamic); 
-      font-weight: 600;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border-bottom-width: 2px;
-      border-bottom-color: var(--header-border-dynamic);
-      position: sticky; /* Encabezados fijos */
-      top: 0;
-      z-index: 2; /* Encima de las celdas de la primera columna */
+      background-color: var(--header-bg-dynamic); color: var(--header-color-dynamic); 
+      font-weight: 600; font-size: 0.8rem; text-transform: uppercase;
+      letter-spacing: 0.5px; border-bottom-width: 2px;
+      border-bottom-color: var(--header-border-dynamic); position: sticky; top: 0;
+      z-index: 2; 
     }
-    /* Para que el primer th del header esté encima de todo */
-     .data-table thead th:first-child {
-        z-index: 3;
-    }
-
-
-    .data-table tbody tr:hover td:not(:first-child) { /* Hover solo en celdas no sticky */
-        background-color: rgba(0, 168, 89, 0.05); 
-    }
-     .data-table tbody tr:hover td:first-child { /* Mantener fondo de primera celda en hover */
-        background-color: #f0f0f0; /* Un gris claro o var(--bg-section) ligeramente modificado */
-    }
-
-    .data-table tbody tr:last-child td {
-        border-bottom: none; 
-    }
-
+    .data-table thead th:first-child { z-index: 3; }
+    .data-table tbody tr:hover td:not(:first-child) { background-color: rgba(0, 168, 89, 0.05); }
+    .data-table tbody tr:hover td:first-child { background-color: #f0f0f0; }
+    .data-table tbody tr:last-child td { border-bottom: none; }
     .total-row-main td { 
-      font-weight: 700 !important;
-      background-color: var(--total-bg-dynamic) !important; 
-      color: var(--total-color-dynamic) !important;
-      font-size: 0.9rem !important;
+      font-weight: 700 !important; background-color: var(--total-bg-dynamic) !important; 
+      color: var(--total-color-dynamic) !important; font-size: 0.9rem !important;
     }
-    .total-row-main td:first-child {
-        background-color: var(--total-bg-dynamic) !important; /* Asegurar fondo para sticky */
-    }
-
-
+    .total-row-main td:first-child { background-color: var(--total-bg-dynamic) !important; }
     .collapsible-section {
-      margin-bottom: 15px;
-      border: 1px solid var(--border-color);
-      border-radius: var(--border-radius-md);
-      background-color: var(--bg-section);
-      box-shadow: var(--shadow-sm);
-      transition: box-shadow var(--transition-smooth);
+      margin-bottom: 15px; border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-md); background-color: var(--bg-section);
+      box-shadow: var(--shadow-sm); transition: box-shadow var(--transition-smooth);
     }
-    .collapsible-section:hover {
-        box-shadow: var(--shadow-md);
-    }
-
+    .collapsible-section:hover { box-shadow: var(--shadow-md); }
     .collapsible-section summary {
-      display: flex; 
-      align-items: center;
-      padding: 10px 15px;
-      font-weight: 600;
-      font-size: 1rem;
-      color: var(--text-dark);
-      background-color: #f8f9fa; 
-      cursor: pointer;
-      list-style: none; 
+      display: flex; align-items: center; padding: 10px 15px;
+      font-weight: 600; font-size: 1rem; color: var(--text-dark);
+      background-color: #f8f9fa; cursor: pointer; list-style: none; 
       border-bottom: 1px solid var(--border-color);
-      transition: background-color var(--transition-smooth);
-      position: relative; /* Para el ícono */
+      transition: background-color var(--transition-smooth); position: relative;
     }
-    .collapsible-section[open] summary {
-      background-color: #f1f3f5;
-      border-bottom-color: transparent; 
-    }
-    .collapsible-section summary:hover {
-        background-color: #e9ecef;
-    }
-
+    .collapsible-section[open] summary { background-color: #f1f3f5; border-bottom-color: transparent; }
+    .collapsible-section summary:hover { background-color: #e9ecef; }
     .collapsible-section summary::-webkit-details-marker { display: none; } 
-
     .summary-icon { 
-      margin-right: 10px;
-      transition: transform 0.2s ease-out;
-      color: var(--brand-green);
-      width: 18px; height: 18px; /* Tamaño del ícono */
+      margin-right: 10px; transition: transform 0.2s ease-out;
+      color: var(--brand-green); width: 18px; height: 18px;
     }
-    .collapsible-section[open] summary .summary-icon {
-      transform: rotate(90deg);
-    }
-
-    .collapsible-content { 
-        padding: 0; 
-    }
+    .collapsible-section[open] summary .summary-icon { transform: rotate(90deg); }
+    .collapsible-content { padding: 0; }
     .collapsible-content .data-table {
-        margin-bottom: 0;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-        border-top: none; 
-        box-shadow: none;
+        margin-bottom: 0; border-top-left-radius: 0; border-top-right-radius: 0;
+        border-top: none; box-shadow: none;
     }
-    .collapsible-content .table-wrapper {
-        margin-bottom: 0; /* Sin margen si es el último elemento */
-    }
-
+    .collapsible-content .table-wrapper { margin-bottom: 0; }
     .footer-note {
-      text-align: center;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-top: 30px;
-      padding-top: 15px;
-      border-top: 1px solid var(--border-color);
+      text-align: center; font-size: 0.85rem; color: var(--text-muted);
+      margin-top: 30px; padding-top: 15px; border-top: 1px solid var(--border-color);
     }
   </style>
 </head>
 <body>
+  <div class="page-top-bar">
+    <a href="submenu_adicionales.html" class="back-button-bar" title="Volver al Submenú de Adicionales">
+      <i data-feather="arrow-left"></i>
+    </a>
+    <h1>Detalle de Venta de Adicionales</h1>
+    <span class="update-timestamp-bar">Actualizado: 02/06/2025 14:47</span>
+  </div>
+
   <div class="report-container">
-    <h1 class="report-title">Adicionales Acumulado: Junio 01 (Datos abiertos)</h1>
+    <!-- El título principal h1.report-title ya no es necesario aquí, se muestra en la barra superior -->
 <div class="table-wrapper">
     <table class="data-table total-table-main">
-      <thead><tr><th>Agencia</th><th>Contratos</th><th>Ingresos</th><th>New Ingresos</th><th>WI</th><th>% WI</th><th>Adic. ($)</th><th>% Adic/Ingr</th><th>Cob. P+</th><th>Cob. P+ ($)</th><th>% Cob. P+</th><th>Peaje</th><th>Peaje ($)</th><th>% Peaje</th><th>Cond. Ad.</th><th>Cond. Ad. ($)</th><th>Cadeira</th><th>Cadeira ($)</th><th>Upgrade</th><th>Valor Upgrade</th></tr></thead>
-      <tbody><tr class='total-row-main'><td>Total Abril 2025</td><td>2561</td><td>$1.160.642</td><td>$753.954</td><td>373</td><td>14,6%</td><td>$92.988</td><td>12%</td><td>1141</td><td>$60.213</td><td>48,5%</td><td>809</td><td>$9.944</td><td>37,5%</td><td>352</td><td>$9.066</td><td>56</td><td>$0</td><td>30</td><td>$941</td></tr></tbody>
+      <thead><tr><th>Agencia</th><th>Contratos</th><th>Ingresos Totales</th><th>Ingresos Nuevos</th><th>WI</th><th>WI %</th><th>Valor de adicionales</th><th>% Adicionales / Ingresos</th><th>Cobertura Premium Plus</th><th>Valor Cobertura Premium Plus</th><th>Porcentaje Cobertura Premium Plus</th><th>Peaje</th><th>Valor Peaje</th><th>Porcentaje Peaje</th><th>Condutor Adicional</th><th>Valor Condutor Adicional</th><th>Cadeira de bebê</th><th>Valor Cadeira de bebé</th><th>Diferencia modelo superior</th><th>Valor Upgrade</th></tr></thead>
+      <tbody><tr class='total-row-main'><td>Total Abril 2025</td><td>2561</td><td>$1.160.642</td><td>$753.954</td><td>373</td><td>14,6%</td><td>92987539.86999996</td><td>12%</td><td>1141</td><td>60213007.53</td><td>48,5%</td><td>809</td><td>9943905.679999987</td><td>37,5%</td><td>352</td><td>9065781.55</td><td>56</td><td></td><td>30</td><td>$941</td></tr></tbody>
     </table>
-  </div><details class="collapsible-section">
-    <summary>
-      <i data-feather="chevron-right" class="summary-icon"></i>
-      <span>BARILOCHE</span>
-    </summary>
-    <div class="collapsible-content">
-      <div class="table-wrapper">
-        <table class="data-table">
-          <thead><tr><th>Agencia</th><th>Contratos</th><th>Ingresos</th><th>New Ingresos</th><th>WI</th><th>% WI</th><th>Adic. ($)</th><th>% Adic/Ingr</th><th>Cob. P+</th><th>Cob. P+ ($)</th><th>% Cob. P+</th><th>Peaje</th><th>Peaje ($)</th><th>% Peaje</th><th>Cond. Ad.</th><th>Cond. Ad. ($)</th><th>Cadeira</th><th>Cadeira ($)</th><th>Upgrade</th><th>Valor Upgrade</th></tr></thead>
-          <tbody><tr><td>AABRL</td><td>229</td><td>$68.986</td><td>$61.785</td><td>36</td><td>16%</td><td>$7.816</td><td>13%</td><td>99</td><td>$5.824</td><td>44%</td><td>0</td><td>$0</td><td>0%</td><td>29</td><td>$755</td><td>15</td><td>$0</td><td>0</td><td>$0</td></tr><tr><td>ACBRL</td><td>127</td><td>$21.179</td><td>$21.179</td><td>44</td><td>35%</td><td>$5.067</td><td>24%</td><td>98</td><td>$3.473</td><td>77%</td><td>0</td><td>$0</td><td>0%</td><td>14</td><td>$358</td><td>6</td><td>$0</td><td>1</td><td>$10</td></tr></tbody></table>
-      </div>
-    </div>
-  </details><details class="collapsible-section">
+  </div><details class="collapsible-section" open> <!-- Desplegables abiertos por defecto si el estado es "Cerrado" -->
     <summary>
       <i data-feather="chevron-right" class="summary-icon"></i>
       <span>BUENOS AIRES</span>
@@ -252,95 +193,11 @@
     <div class="collapsible-content">
       <div class="table-wrapper">
         <table class="data-table">
-          <thead><tr><th>Agencia</th><th>Contratos</th><th>Ingresos</th><th>New Ingresos</th><th>WI</th><th>% WI</th><th>Adic. ($)</th><th>% Adic/Ingr</th><th>Cob. P+</th><th>Cob. P+ ($)</th><th>% Cob. P+</th><th>Peaje</th><th>Peaje ($)</th><th>% Peaje</th><th>Cond. Ad.</th><th>Cond. Ad. ($)</th><th>Cadeira</th><th>Cadeira ($)</th><th>Upgrade</th><th>Valor Upgrade</th></tr></thead>
-          <tbody><tr><td>AAAER</td><td>542</td><td>$183.481</td><td>$165.456</td><td>81</td><td>15%</td><td>$22.177</td><td>13,4%</td><td>284</td><td>$15.229</td><td>53,5%</td><td>403</td><td>$4.864</td><td>82%</td><td>36</td><td>$581</td><td>7</td><td>$0</td><td>2</td><td>$77</td></tr><tr><td>ACOLV</td><td>226</td><td>$308.029</td><td>$97.015</td><td>2</td><td>1%</td><td>$5.644</td><td>6%</td><td>41</td><td>$3.474</td><td>36%</td><td>29</td><td>$582</td><td>58%</td><td>24</td><td>$1.087</td><td>3</td><td>$0</td><td>1</td><td>$43</td></tr><tr><td>ACRTR</td><td>179</td><td>$82.663</td><td>$50.597</td><td>11</td><td>6%</td><td>$5.161</td><td>10%</td><td>63</td><td>$2.795</td><td>40%</td><td>116</td><td>$1.505</td><td>88,5%</td><td>33</td><td>$677</td><td>2</td><td>$0</td><td>0</td><td>$0</td></tr><tr><td>AAEZZ</td><td>153</td><td>$64.185</td><td>$56.868</td><td>23</td><td>15%</td><td>$7.742</td><td>14%</td><td>68</td><td>$3.979</td><td>46%</td><td>134</td><td>$1.891</td><td>98%</td><td>18</td><td>$924</td><td>2</td><td>$0</td><td>12</td><td>$449</td></tr></tbody></table>
+          <thead><tr><th>Agencia</th><th>Contratos</th><th>Ingresos Totales</th><th>Ingresos Nuevos</th><th>WI</th><th>WI %</th><th>Valor de adicionales</th><th>% Adicionales / Ingresos</th><th>Cobertura Premium Plus</th><th>Valor Cobertura Premium Plus</th><th>Porcentaje Cobertura Premium Plus</th><th>Peaje</th><th>Valor Peaje</th><th>Porcentaje Peaje</th><th>Condutor Adicional</th><th>Valor Condutor Adicional</th><th>Cadeira de bebê</th><th>Valor Cadeira de bebé</th><th>Diferencia modelo superior</th><th>Valor Upgrade</th></tr></thead>
+          <tbody><tr><td>AAAER</td><td>542</td><td>$183.481</td><td>$165.456</td><td>81</td><td>15%</td><td>22176553.129999984</td><td>13,4%</td><td>284</td><td>15229462.139999997</td><td>53,5%</td><td>403</td><td>4864178.359999987</td><td>82%</td><td>36</td><td>581490</td><td>7</td><td></td><td>2</td><td>$77</td></tr><tr><td>ACRTR</td><td>179</td><td>$82.663</td><td>$50.597</td><td>11</td><td>6%</td><td>5161293.2299999995</td><td>10%</td><td>63</td><td>2795236.3499999996</td><td>40%</td><td>116</td><td>1504968.4899999998</td><td>88,5%</td><td>33</td><td>677340</td><td>2</td><td></td><td>0</td><td>$0</td></tr></tbody></table>
       </div>
     </div>
-  </details><details class="collapsible-section">
-    <summary>
-      <i data-feather="chevron-right" class="summary-icon"></i>
-      <span>CORDOBA</span>
-    </summary>
-    <div class="collapsible-content">
-      <div class="table-wrapper">
-        <table class="data-table">
-          <thead><tr><th>Agencia</th><th>Contratos</th><th>Ingresos</th><th>New Ingresos</th><th>WI</th><th>% WI</th><th>Adic. ($)</th><th>% Adic/Ingr</th><th>Cob. P+</th><th>Cob. P+ ($)</th><th>% Cob. P+</th><th>Peaje</th><th>Peaje ($)</th><th>% Peaje</th><th>Cond. Ad.</th><th>Cond. Ad. ($)</th><th>Cadeira</th><th>Cadeira ($)</th><th>Upgrade</th><th>Valor Upgrade</th></tr></thead>
-          <tbody><tr><td>AACDB</td><td>170</td><td>$97.139</td><td>$53.986</td><td>30</td><td>18%</td><td>$5.167</td><td>9,6%</td><td>81</td><td>$3.836</td><td>53%</td><td>70</td><td>$567</td><td>54%</td><td>39</td><td>$377</td><td>3</td><td>$0</td><td>1</td><td>$12</td></tr><tr><td>ACORD</td><td>33</td><td>$13.284</td><td>$8.656</td><td>17</td><td>51,5%</td><td>$1.804</td><td>21%</td><td>28</td><td>$1.126</td><td>87,5%</td><td>29</td><td>$286</td><td>93,5%</td><td>18</td><td>$375</td><td>0</td><td>$0</td><td>0</td><td>$0</td></tr><tr><td>ACDCB</td><td>11</td><td>$2.612</td><td>$2.612</td><td>3</td><td>27%</td><td>$638</td><td>24,4%</td><td>6</td><td>$338</td><td>60%</td><td>10</td><td>$120</td><td>100%</td><td>4</td><td>$173</td><td>1</td><td>$0</td><td>0</td><td>$0</td></tr></tbody></table>
-      </div>
-    </div>
-  </details><details class="collapsible-section">
-    <summary>
-      <i data-feather="chevron-right" class="summary-icon"></i>
-      <span>EL CALAFATE</span>
-    </summary>
-    <div class="collapsible-content">
-      <div class="table-wrapper">
-        <table class="data-table">
-          <thead><tr><th>Agencia</th><th>Contratos</th><th>Ingresos</th><th>New Ingresos</th><th>WI</th><th>% WI</th><th>Adic. ($)</th><th>% Adic/Ingr</th><th>Cob. P+</th><th>Cob. P+ ($)</th><th>% Cob. P+</th><th>Peaje</th><th>Peaje ($)</th><th>% Peaje</th><th>Cond. Ad.</th><th>Cond. Ad. ($)</th><th>Cadeira</th><th>Cadeira ($)</th><th>Upgrade</th><th>Valor Upgrade</th></tr></thead>
-          <tbody><tr><td>AACLF</td><td>133</td><td>$42.848</td><td>$39.990</td><td>5</td><td>4%</td><td>$7.013</td><td>17,5%</td><td>33</td><td>$1.839</td><td>25%</td><td>0</td><td>$0</td><td>0%</td><td>15</td><td>$326</td><td>2</td><td>$0</td><td>1</td><td>$51</td></tr></tbody></table>
-      </div>
-    </div>
-  </details><details class="collapsible-section">
-    <summary>
-      <i data-feather="chevron-right" class="summary-icon"></i>
-      <span>JUJUY</span>
-    </summary>
-    <div class="collapsible-content">
-      <div class="table-wrapper">
-        <table class="data-table">
-          <thead><tr><th>Agencia</th><th>Contratos</th><th>Ingresos</th><th>New Ingresos</th><th>WI</th><th>% WI</th><th>Adic. ($)</th><th>% Adic/Ingr</th><th>Cob. P+</th><th>Cob. P+ ($)</th><th>% Cob. P+</th><th>Peaje</th><th>Peaje ($)</th><th>% Peaje</th><th>Cond. Ad.</th><th>Cond. Ad. ($)</th><th>Cadeira</th><th>Cadeira ($)</th><th>Upgrade</th><th>Valor Upgrade</th></tr></thead>
-          <tbody><tr><td>AAJUU</td><td>105</td><td>$33.873</td><td>$25.199</td><td>25</td><td>24%</td><td>$2.932</td><td>12%</td><td>50</td><td>$2.634</td><td>49%</td><td>0</td><td>$0</td><td>0%</td><td>7</td><td>$173</td><td>0</td><td>$0</td><td>0</td><td>$0</td></tr></tbody></table>
-      </div>
-    </div>
-  </details><details class="collapsible-section">
-    <summary>
-      <i data-feather="chevron-right" class="summary-icon"></i>
-      <span>MENDOZA</span>
-    </summary>
-    <div class="collapsible-content">
-      <div class="table-wrapper">
-        <table class="data-table">
-          <thead><tr><th>Agencia</th><th>Contratos</th><th>Ingresos</th><th>New Ingresos</th><th>WI</th><th>% WI</th><th>Adic. ($)</th><th>% Adic/Ingr</th><th>Cob. P+</th><th>Cob. P+ ($)</th><th>% Cob. P+</th><th>Peaje</th><th>Peaje ($)</th><th>% Peaje</th><th>Cond. Ad.</th><th>Cond. Ad. ($)</th><th>Cadeira</th><th>Cadeira ($)</th><th>Upgrade</th><th>Valor Upgrade</th></tr></thead>
-          <tbody><tr><td>AAMEN</td><td>280</td><td>$91.878</td><td>$69.012</td><td>50</td><td>18%</td><td>$9.560</td><td>14%</td><td>136</td><td>$6.523</td><td>50,6%</td><td>0</td><td>$0</td><td>0%</td><td>69</td><td>$1.757</td><td>6</td><td>$0</td><td>2</td><td>$14</td></tr><tr><td>ACMNM</td><td>48</td><td>$6.865</td><td>$6.865</td><td>4</td><td>8%</td><td>$573</td><td>8%</td><td>15</td><td>$464</td><td>31%</td><td>0</td><td>$0</td><td>0%</td><td>7</td><td>$59</td><td>0</td><td>$0</td><td>0</td><td>$0</td></tr></tbody></table>
-      </div>
-    </div>
-  </details><details class="collapsible-section">
-    <summary>
-      <i data-feather="chevron-right" class="summary-icon"></i>
-      <span>RIO GALLEGOS</span>
-    </summary>
-    <div class="collapsible-content">
-      <div class="table-wrapper">
-        <table class="data-table">
-          <thead><tr><th>Agencia</th><th>Contratos</th><th>Ingresos</th><th>New Ingresos</th><th>WI</th><th>% WI</th><th>Adic. ($)</th><th>% Adic/Ingr</th><th>Cob. P+</th><th>Cob. P+ ($)</th><th>% Cob. P+</th><th>Peaje</th><th>Peaje ($)</th><th>% Peaje</th><th>Cond. Ad.</th><th>Cond. Ad. ($)</th><th>Cadeira</th><th>Cadeira ($)</th><th>Upgrade</th><th>Valor Upgrade</th></tr></thead>
-          <tbody><tr><td>AARGA</td><td>22</td><td>$6.253</td><td>$6.253</td><td>4</td><td>18%</td><td>$446</td><td>7%</td><td>4</td><td>$171</td><td>18%</td><td>0</td><td>$0</td><td>0%</td><td>0</td><td>$0</td><td>0</td><td>$0</td><td>0</td><td>$0</td></tr></tbody></table>
-      </div>
-    </div>
-  </details><details class="collapsible-section">
-    <summary>
-      <i data-feather="chevron-right" class="summary-icon"></i>
-      <span>ROSARIO</span>
-    </summary>
-    <div class="collapsible-content">
-      <div class="table-wrapper">
-        <table class="data-table">
-          <thead><tr><th>Agencia</th><th>Contratos</th><th>Ingresos</th><th>New Ingresos</th><th>WI</th><th>% WI</th><th>Adic. ($)</th><th>% Adic/Ingr</th><th>Cob. P+</th><th>Cob. P+ ($)</th><th>% Cob. P+</th><th>Peaje</th><th>Peaje ($)</th><th>% Peaje</th><th>Cond. Ad.</th><th>Cond. Ad. ($)</th><th>Cadeira</th><th>Cadeira ($)</th><th>Upgrade</th><th>Valor Upgrade</th></tr></thead>
-          <tbody><tr><td>AAROS</td><td>82</td><td>$55.421</td><td>$21.153</td><td>14</td><td>17%</td><td>$2.729</td><td>13%</td><td>39</td><td>$1.648</td><td>61%</td><td>18</td><td>$130</td><td>31%</td><td>12</td><td>$486</td><td>1</td><td>$0</td><td>3</td><td>$60</td></tr></tbody></table>
-      </div>
-    </div>
-  </details><details class="collapsible-section">
-    <summary>
-      <i data-feather="chevron-right" class="summary-icon"></i>
-      <span>SALTA</span>
-    </summary>
-    <div class="collapsible-content">
-      <div class="table-wrapper">
-        <table class="data-table">
-          <thead><tr><th>Agencia</th><th>Contratos</th><th>Ingresos</th><th>New Ingresos</th><th>WI</th><th>% WI</th><th>Adic. ($)</th><th>% Adic/Ingr</th><th>Cob. P+</th><th>Cob. P+ ($)</th><th>% Cob. P+</th><th>Peaje</th><th>Peaje ($)</th><th>% Peaje</th><th>Cond. Ad.</th><th>Cond. Ad. ($)</th><th>Cadeira</th><th>Cadeira ($)</th><th>Upgrade</th><th>Valor Upgrade</th></tr></thead>
-          <tbody><tr><td>AASLT</td><td>213</td><td>$79.421</td><td>$66.291</td><td>19</td><td>9%</td><td>$8.298</td><td>12,5%</td><td>90</td><td>$6.679</td><td>43%</td><td>0</td><td>$0</td><td>0%</td><td>25</td><td>$927</td><td>8</td><td>$0</td><td>7</td><td>$225</td></tr></tbody></table>
-      </div>
-    </div>
-  </details><details class="collapsible-section">
+  </details><details class="collapsible-section" open> <!-- Desplegables abiertos por defecto si el estado es "Cerrado" -->
     <summary>
       <i data-feather="chevron-right" class="summary-icon"></i>
       <span>TRELEW</span>
@@ -348,11 +205,11 @@
     <div class="collapsible-content">
       <div class="table-wrapper">
         <table class="data-table">
-          <thead><tr><th>Agencia</th><th>Contratos</th><th>Ingresos</th><th>New Ingresos</th><th>WI</th><th>% WI</th><th>Adic. ($)</th><th>% Adic/Ingr</th><th>Cob. P+</th><th>Cob. P+ ($)</th><th>% Cob. P+</th><th>Peaje</th><th>Peaje ($)</th><th>% Peaje</th><th>Cond. Ad.</th><th>Cond. Ad. ($)</th><th>Cadeira</th><th>Cadeira ($)</th><th>Upgrade</th><th>Valor Upgrade</th></tr></thead>
-          <tbody><tr><td>AATRL</td><td>9</td><td>$2.524</td><td>$1.036</td><td>5</td><td>55,6%</td><td>$221</td><td>21%</td><td>6</td><td>$181</td><td>86%</td><td>0</td><td>$0</td><td>0%</td><td>2</td><td>$32</td><td>0</td><td>$0</td><td>0</td><td>$0</td></tr></tbody></table>
+          <thead><tr><th>Agencia</th><th>Contratos</th><th>Ingresos Totales</th><th>Ingresos Nuevos</th><th>WI</th><th>WI %</th><th>Valor de adicionales</th><th>% Adicionales / Ingresos</th><th>Cobertura Premium Plus</th><th>Valor Cobertura Premium Plus</th><th>Porcentaje Cobertura Premium Plus</th><th>Peaje</th><th>Valor Peaje</th><th>Porcentaje Peaje</th><th>Condutor Adicional</th><th>Valor Condutor Adicional</th><th>Cadeira de bebê</th><th>Valor Cadeira de bebé</th><th>Diferencia modelo superior</th><th>Valor Upgrade</th></tr></thead>
+          <tbody><tr><td>AATRL</td><td>9</td><td>$2.524</td><td>$1.036</td><td>5</td><td>55,6%</td><td>220838.77000000002</td><td>21%</td><td>6</td><td>180638.76</td><td>86%</td><td>0</td><td>0</td><td>0%</td><td>2</td><td>31950</td><td>0</td><td></td><td>0</td><td>$0</td></tr></tbody></table>
       </div>
     </div>
-  </details><details class="collapsible-section">
+  </details><details class="collapsible-section" open> <!-- Desplegables abiertos por defecto si el estado es "Cerrado" -->
     <summary>
       <i data-feather="chevron-right" class="summary-icon"></i>
       <span>REGIONES (Agencias sin ciudad mapeada)</span>
@@ -360,8 +217,8 @@
     <div class="collapsible-content">
       <div class="table-wrapper">
         <table class="data-table">
-          <thead><tr><th>Agencia</th><th>Contratos</th><th>Ingresos</th><th>New Ingresos</th><th>WI</th><th>% WI</th><th>Adic. ($)</th><th>% Adic/Ingr</th><th>Cob. P+</th><th>Cob. P+ ($)</th><th>% Cob. P+</th><th>Peaje</th><th>Peaje ($)</th><th>% Peaje</th><th>Cond. Ad.</th><th>Cond. Ad. ($)</th><th>Cadeira</th><th>Cadeira ($)</th><th>Upgrade</th><th>Valor Upgrade</th></tr></thead>
-          <tbody><tr><td>BUENOS AIRES</td><td>1100</td><td>$638.357</td><td>$369.937</td><td>117</td><td>11%</td><td>$40.724</td><td>11%</td><td>456</td><td>$25.478</td><td>48%</td><td>682</td><td>$8.842</td><td>84,4%</td><td>111</td><td>$3.269</td><td>14</td><td>$0</td><td>15</td><td>$569</td></tr><tr><td>CORDOBA</td><td>214</td><td>$113.036</td><td>$65.254</td><td>50</td><td>23%</td><td>$7.609</td><td>12%</td><td>115</td><td>$5.300</td><td>59%</td><td>109</td><td>$972</td><td>64%</td><td>61</td><td>$925</td><td>4</td><td>$0</td><td>1</td><td>$12</td></tr><tr><td>ROSARIO</td><td>82</td><td>$55.421</td><td>$21.153</td><td>14</td><td>17%</td><td>$2.729</td><td>13%</td><td>39</td><td>$1.648</td><td>61%</td><td>18</td><td>$130</td><td>31%</td><td>12</td><td>$486</td><td>1</td><td>$0</td><td>3</td><td>$60</td></tr><tr><td>BARILOCHE</td><td>356</td><td>$90.166</td><td>$82.964</td><td>80</td><td>22,5%</td><td>$12.882</td><td>15,5%</td><td>197</td><td>$9.298</td><td>56%</td><td>0</td><td>$0</td><td>0%</td><td>43</td><td>$1.113</td><td>21</td><td>$0</td><td>1</td><td>$10</td></tr><tr><td>MENDOZA</td><td>328</td><td>$98.743</td><td>$75.877</td><td>54</td><td>16,5%</td><td>$10.133</td><td>13%</td><td>151</td><td>$6.986</td><td>48%</td><td>0</td><td>$0</td><td>0%</td><td>76</td><td>$1.816</td><td>6</td><td>$0</td><td>2</td><td>$14</td></tr><tr><td>CALAFATE</td><td>133</td><td>$42.848</td><td>$39.990</td><td>5</td><td>4%</td><td>$7.013</td><td>17,5%</td><td>33</td><td>$1.839</td><td>25%</td><td>0</td><td>$0</td><td>0%</td><td>15</td><td>$326</td><td>2</td><td>$0</td><td>1</td><td>$51</td></tr><tr><td>SALTA</td><td>213</td><td>$79.421</td><td>$66.291</td><td>19</td><td>9%</td><td>$8.298</td><td>12,5%</td><td>90</td><td>$6.679</td><td>43%</td><td>0</td><td>$0</td><td>0%</td><td>25</td><td>$927</td><td>8</td><td>$0</td><td>7</td><td>$225</td></tr><tr><td>JUJUY</td><td>105</td><td>$33.873</td><td>$25.199</td><td>25</td><td>24%</td><td>$2.932</td><td>12%</td><td>50</td><td>$2.634</td><td>49%</td><td>0</td><td>$0</td><td>0%</td><td>7</td><td>$173</td><td>0</td><td>$0</td><td>0</td><td>$0</td></tr><tr><td>TRELEW</td><td>9</td><td>$2.524</td><td>$1.036</td><td>5</td><td>55,6%</td><td>$221</td><td>21%</td><td>6</td><td>$181</td><td>86%</td><td>0</td><td>$0</td><td>0%</td><td>2</td><td>$32</td><td>0</td><td>$0</td><td>0</td><td>$0</td></tr><tr><td>RIO GALLEGOS</td><td>22</td><td>$6.253</td><td>$6.253</td><td>4</td><td>18%</td><td>$446</td><td>7%</td><td>4</td><td>$171</td><td>18%</td><td>0</td><td>$0</td><td>0%</td><td>0</td><td>$0</td><td>0</td><td>$0</td><td>0</td><td>$0</td></tr></tbody></table>
+          <thead><tr><th>Agencia</th><th>Contratos</th><th>Ingresos Totales</th><th>Ingresos Nuevos</th><th>WI</th><th>WI %</th><th>Valor de adicionales</th><th>% Adicionales / Ingresos</th><th>Cobertura Premium Plus</th><th>Valor Cobertura Premium Plus</th><th>Porcentaje Cobertura Premium Plus</th><th>Peaje</th><th>Valor Peaje</th><th>Porcentaje Peaje</th><th>Condutor Adicional</th><th>Valor Condutor Adicional</th><th>Cadeira de bebê</th><th>Valor Cadeira de bebé</th><th>Diferencia modelo superior</th><th>Valor Upgrade</th></tr></thead>
+          <tbody><tr><td>BUENOS AIRES</td><td>1100</td><td>$638.357</td><td>$369.937</td><td>117</td><td>11%</td><td>40724081.39999998</td><td>11%</td><td>456</td><td>25477573.47</td><td>48%</td><td>682</td><td>8842392.489999987</td><td>84,4%</td><td>111</td><td>3269482.08</td><td>14</td><td></td><td>15</td><td>$569</td></tr><tr><td>ACOLV</td><td>226</td><td>$308.029</td><td>$97.015</td><td>2</td><td>1%</td><td>5643786.7299999995</td><td>6%</td><td>41</td><td>3473632.01</td><td>36%</td><td>29</td><td>581857.52</td><td>58%</td><td>24</td><td>1087110</td><td>3</td><td></td><td>1</td><td>$43</td></tr><tr><td>AAEZZ</td><td>153</td><td>$64.185</td><td>$56.868</td><td>23</td><td>15%</td><td>7742448.3100000005</td><td>14%</td><td>68</td><td>3979242.97</td><td>46%</td><td>134</td><td>1891388.1199999996</td><td>98%</td><td>18</td><td>923542.08</td><td>2</td><td></td><td>12</td><td>$449</td></tr><tr><td>CORDOBA</td><td>214</td><td>$113.036</td><td>$65.254</td><td>50</td><td>23%</td><td>7609015.869999999</td><td>12%</td><td>115</td><td>5299677.279999999</td><td>59%</td><td>109</td><td>972012.2300000002</td><td>64%</td><td>61</td><td>924528.0800000001</td><td>4</td><td></td><td>1</td><td>$12</td></tr><tr><td>AACDB</td><td>170</td><td>$97.139</td><td>$53.986</td><td>30</td><td>18%</td><td>5166977.86</td><td>9,6%</td><td>81</td><td>3836170.71</td><td>53%</td><td>70</td><td>566807.0600000002</td><td>54%</td><td>39</td><td>377010</td><td>3</td><td></td><td>1</td><td>$12</td></tr><tr><td>ACORD</td><td>33</td><td>$13.284</td><td>$8.656</td><td>17</td><td>51,5%</td><td>1804036.8199999998</td><td>21%</td><td>28</td><td>1125606.5699999998</td><td>87,5%</td><td>29</td><td>285567.17000000004</td><td>93,5%</td><td>18</td><td>374988.08</td><td>0</td><td></td><td>0</td><td>$0</td></tr><tr><td>ACDCB</td><td>11</td><td>$2.612</td><td>$2.612</td><td>3</td><td>27%</td><td>638001.19</td><td>24,4%</td><td>6</td><td>337900</td><td>60%</td><td>10</td><td>119638</td><td>100%</td><td>4</td><td>172530</td><td>1</td><td></td><td>0</td><td>$0</td></tr><tr><td>ROSARIO</td><td>82</td><td>$55.421</td><td>$21.153</td><td>14</td><td>17%</td><td>2729404.85</td><td>13%</td><td>39</td><td>1648094.02</td><td>61%</td><td>18</td><td>129500.95999999998</td><td>31%</td><td>12</td><td>485639.99</td><td>1</td><td></td><td>3</td><td>$60</td></tr><tr><td>AAROS</td><td>82</td><td>$55.421</td><td>$21.153</td><td>14</td><td>17%</td><td>2729404.85</td><td>13%</td><td>39</td><td>1648094.02</td><td>61%</td><td>18</td><td>129500.95999999998</td><td>31%</td><td>12</td><td>485639.99</td><td>1</td><td></td><td>3</td><td>$60</td></tr><tr><td>BARILOCHE</td><td>356</td><td>$90.166</td><td>$82.964</td><td>80</td><td>22,5%</td><td>12882419.87</td><td>15,5%</td><td>197</td><td>9297775.239999998</td><td>56%</td><td>0</td><td>0</td><td>0%</td><td>43</td><td>1113268.56</td><td>21</td><td></td><td>1</td><td>$10</td></tr><tr><td>AABRL</td><td>229</td><td>$68.986</td><td>$61.785</td><td>36</td><td>16%</td><td>7815622.140000001</td><td>13%</td><td>99</td><td>5824337.23</td><td>44%</td><td>0</td><td>0</td><td>0%</td><td>29</td><td>755428.56</td><td>15</td><td></td><td>0</td><td>$0</td></tr><tr><td>ACBRL</td><td>127</td><td>$21.179</td><td>$21.179</td><td>44</td><td>35%</td><td>5066797.729999999</td><td>24%</td><td>98</td><td>3473438.009999999</td><td>77%</td><td>0</td><td>0</td><td>0%</td><td>14</td><td>357840</td><td>6</td><td></td><td>1</td><td>$10</td></tr><tr><td>MENDOZA</td><td>328</td><td>$98.743</td><td>$75.877</td><td>54</td><td>16,5%</td><td>10133121.400000002</td><td>13%</td><td>151</td><td>6986496.3100000005</td><td>48%</td><td>0</td><td>0</td><td>0%</td><td>76</td><td>1815942.84</td><td>6</td><td></td><td>2</td><td>$14</td></tr><tr><td>AAMEN</td><td>280</td><td>$91.878</td><td>$69.012</td><td>50</td><td>18%</td><td>9560094.510000002</td><td>14%</td><td>136</td><td>6522932.620000001</td><td>50,6%</td><td>0</td><td>0</td><td>0%</td><td>69</td><td>1757250</td><td>6</td><td></td><td>2</td><td>$14</td></tr><tr><td>ACMNM</td><td>48</td><td>$6.865</td><td>$6.865</td><td>4</td><td>8%</td><td>573026.8899999999</td><td>8%</td><td>15</td><td>463563.68999999994</td><td>31%</td><td>0</td><td>0</td><td>0%</td><td>7</td><td>58692.84</td><td>0</td><td></td><td>0</td><td>$0</td></tr><tr><td>CALAFATE</td><td>133</td><td>$42.848</td><td>$39.990</td><td>5</td><td>4%</td><td>7012987.74</td><td>17,5%</td><td>33</td><td>1838575.14</td><td>25%</td><td>0</td><td>0</td><td>0%</td><td>15</td><td>325890</td><td>2</td><td></td><td>1</td><td>$51</td></tr><tr><td>AACLF</td><td>133</td><td>$42.848</td><td>$39.990</td><td>5</td><td>4%</td><td>7012987.74</td><td>17,5%</td><td>33</td><td>1838575.14</td><td>25%</td><td>0</td><td>0</td><td>0%</td><td>15</td><td>325890</td><td>2</td><td></td><td>1</td><td>$51</td></tr><tr><td>SALTA</td><td>213</td><td>$79.421</td><td>$66.291</td><td>19</td><td>9%</td><td>8297791.239999999</td><td>12,5%</td><td>90</td><td>6679467.049999999</td><td>43%</td><td>0</td><td>0</td><td>0%</td><td>25</td><td>926550</td><td>8</td><td></td><td>7</td><td>$225</td></tr><tr><td>AASLT</td><td>213</td><td>$79.421</td><td>$66.291</td><td>19</td><td>9%</td><td>8297791.239999999</td><td>12,5%</td><td>90</td><td>6679467.049999999</td><td>43%</td><td>0</td><td>0</td><td>0%</td><td>25</td><td>926550</td><td>8</td><td></td><td>7</td><td>$225</td></tr><tr><td>JUJUY</td><td>105</td><td>$33.873</td><td>$25.199</td><td>25</td><td>24%</td><td>2932373.6700000004</td><td>12%</td><td>50</td><td>2634210.2600000002</td><td>49%</td><td>0</td><td>0</td><td>0%</td><td>7</td><td>172530</td><td>0</td><td></td><td>0</td><td>$0</td></tr><tr><td>AAJUU</td><td>105</td><td>$33.873</td><td>$25.199</td><td>25</td><td>24%</td><td>2932373.6700000004</td><td>12%</td><td>50</td><td>2634210.2600000002</td><td>49%</td><td>0</td><td>0</td><td>0%</td><td>7</td><td>172530</td><td>0</td><td></td><td>0</td><td>$0</td></tr><tr><td>TRELEW</td><td>9</td><td>$2.524</td><td>$1.036</td><td>5</td><td>55,6%</td><td>220838.77000000002</td><td>21%</td><td>6</td><td>180638.76</td><td>86%</td><td>0</td><td>0</td><td>0%</td><td>2</td><td>31950</td><td>0</td><td></td><td>0</td><td>$0</td></tr><tr><td>RIO GALLEGOS</td><td>22</td><td>$6.253</td><td>$6.253</td><td>4</td><td>18%</td><td>445505.06</td><td>7%</td><td>4</td><td>170500</td><td>18%</td><td>0</td><td>0</td><td>0%</td><td>0</td><td>0</td><td>0</td><td></td><td>0</td><td>$0</td></tr><tr><td>AARGA</td><td>22</td><td>$6.253</td><td>$6.253</td><td>4</td><td>18%</td><td>445505.06</td><td>7%</td><td>4</td><td>170500</td><td>18%</td><td>0</td><td>0</td><td>0%</td><td>0</td><td>0</td><td>0</td><td></td><td>0</td><td>$0</td></tr></tbody></table>
       </div>
     </div>
   </details>
@@ -369,6 +226,22 @@
   </div> <!-- Cierre de report-container -->
   <script>
     feather.replace();
+
+    // Script de "protección" si se accede directamente a esta página de detalle.
+    // Asume que la página de submenú (ej. submenu_adicionales.html) guarda un token en sessionStorage.
+    // Por ejemplo, si esta página se llama 'adicionales_operador.html' y se accedió desde
+    // una tarjeta en 'submenu_adicionales.html' que tenía data-target-url='adicionales_operador.html'
+    // y el submenú guardó 'authorized_adicionales_operador.html'
+
+    // const pageKeyForThisDetail = "adicionales_operador.html"; // CAMBIAR SEGÚN EL NOMBRE DE ESTE ARCHIVO
+    // if (sessionStorage.getItem(`authorized_${pageKeyForThisDetail}`) !== 'yes') {
+    //    // Quizás también verificar si se vino del submenú principal de adicionales
+    //    // const subMenuAdicionalesAuth = sessionStorage.getItem('authorized_submenu_adicionales.html'); // o 'authorized_sucursales.html'
+    //    // if (subMenuAdicionalesAuth !== 'yes') {
+    //        alert("Acceso no autorizado. Por favor, navega desde el menú correspondiente.");
+    //        window.location.href = 'index.html'; // Redirigir al inicio general
+    //    // }
+    // }
   </script>
 </body>
 </html>
