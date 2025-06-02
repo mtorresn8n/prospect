@@ -171,7 +171,7 @@
 </head>
 <body>
   <div class="page-top-bar">
-    <a href="submenu_adicionales.html" class="back-button-bar" title="Volver al Submenú de Adicionales">
+    <a href="sucursales.html" class="back-button-bar" title="Volver al Submenú de Adicionales">
       <i data-feather="arrow-left"></i>
     </a>
     <h1>Detalle de Venta de Adicionales</h1>
@@ -228,15 +228,15 @@
     feather.replace();
 
     // Script de "protección" si se accede directamente a esta página de detalle.
-    // Asume que la página de submenú (ej. submenu_adicionales.html) guarda un token en sessionStorage.
+    // Asume que la página de submenú (ej. sucursales.html) guarda un token en sessionStorage.
     // Por ejemplo, si esta página se llama 'adicionales_operador.html' y se accedió desde
-    // una tarjeta en 'submenu_adicionales.html' que tenía data-target-url='adicionales_operador.html'
+    // una tarjeta en 'sucursales.html' que tenía data-target-url='adicionales_operador.html'
     // y el submenú guardó 'authorized_adicionales_operador.html'
 
     // const pageKeyForThisDetail = "adicionales_operador.html"; // CAMBIAR SEGÚN EL NOMBRE DE ESTE ARCHIVO
     // if (sessionStorage.getItem(`authorized_${pageKeyForThisDetail}`) !== 'yes') {
     //    // Quizás también verificar si se vino del submenú principal de adicionales
-    //    // const subMenuAdicionalesAuth = sessionStorage.getItem('authorized_submenu_adicionales.html'); // o 'authorized_sucursales.html'
+    //    // const subMenuAdicionalesAuth = sessionStorage.getItem('authorized_sucursales.html'); // o 'authorized_sucursales.html'
     //    // if (subMenuAdicionalesAuth !== 'yes') {
     //        alert("Acceso no autorizado. Por favor, navega desde el menú correspondiente.");
     //        window.location.href = 'index.html'; // Redirigir al inicio general
