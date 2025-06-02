@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submenú: Análisis de Reservas — Localiza</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/feather-icons"></script>
+
+  <style>
+    /* ──────────────────────────────────────────────────────────────────────────────
+       VARIABLES Y ESTILOS GLOBALES (Idénticos al index.html)
+    ────────────────────────────────────────────────────────────────────────────── */
+    :root {
+      --brand-green: #00A859; 
+      --brand-green-dark: #007F43;
+      --brand-yellow: #FFCC00; 
+      
+      --bg-page: #E9EEF2; 
+      --bg-header: linear-gradient(135deg, var(--brand-green), var(--brand-green-dark));
+      --bg-card: #FFFFFF;
+      
+      --text-light: #F8F9FA;
+      --text-dark: #212529;
+      --text-muted: #6C757D;
+      
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+      --shadow-md: 0 5px 15px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
+      
+      --border-radius-md: 8px;
+      --border-radius-lg: 12px;
+      
+      --transition-smooth: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ──────────────────────────────────────────────────────────────────────────────
+       CABECERA / HERO SECTION (Adaptada para submenú)
+    ────────────────────────────────────────────────────────────────────────────── */
+    .site-header {
+      background: var(--bg-header);
+      color: var(--text-light);
+      padding: 3rem 1.5rem 5rem; /* Ligeramente menos padding vertical que el principal */
+      text-align: center;
+      position: relative;
+      overflow: hidden; 
+    }
+
+    .site-header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,0.08) 0%, transparent 25%),
+        radial-gradient(circle at 90% 80%, rgba(255,204,0,0.08) 0%, transparent 25%);
+      opacity: 0.4;
+      z-index: 0;
+    }
+
+    .header-content {
+      position: relative; 
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .site-header h1 {
+      font-size: clamp(2rem, 4vw, 3rem); /* Ligeramente más pequeño */
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .site-header p.subtitle { /* Clase para el subtítulo */
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      opacity: 0.85;
+      max-width: 500px;
+      margin: 0 auto 1rem;
+    }
+    
+    .back-button { /* Botón volver al menú principal */
+      position: absolute;
+      left: 1.5rem;
+      top: 1.5rem; /* Ajustado para estar más cerca del borde */
+      color: var(--text-light);
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: background-color var(--transition-smooth), transform var(--transition-smooth);
+      z-index: 2;
+    }
+    .back-button:hover {
+      background-color: rgba(255,255,255,0.2);
+      transform: scale(1.1);
+    }
+    .back-button svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* ──────────────────────────────────────────────────────────────────────────────
+       CONTENEDOR PRINCIPAL Y TARJETAS DE SUBMENÚ (Idéntico al index.html)
+    ────────────────────────────────────────────────────────────────────────────── */
+    .main-content {
+      flex-grow: 1; 
+      max-width: 900px; /* Puede ser un poco más estrecho para submenús */
+      width: 90%;
+      margin: -2.5rem auto 3rem; /* Ajuste del margen negativo */
+      padding: 0 1rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .menu-grid {
+      display: grid;
+      /* Ajustar columnas si hay pocas opciones, o mantener auto-fit */
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+      gap: 2rem;
+    }
+
+    .menu-card {
+      background-color: var(--bg-card);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      text-decoration: none; /* Importante si se usa <a> */
+      color: var(--text-dark);
+      transition: 
+        transform var(--transition-smooth), 
+        box-shadow var(--transition-smooth);
+      overflow: hidden;
+      position: relative;
+      display: block; /* Para que <a> ocupe todo el espacio si se usa */
+    }
+    /* Si usas DIVs para las tarjetas y JS para la navegación */
+    /* .menu-card { cursor: pointer; } */
+
+
+    .menu-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .menu-card-icon {
+      margin-bottom: 1.5rem;
+    }
+    .menu-card-icon svg {
+      width: 48px;
+      height: 48px;
+      color: var(--brand-green);
+      stroke-width: 1.5; 
+      transition: color var(--transition-smooth);
+    }
+    .menu-card:hover .menu-card-icon svg {
+      color: var(--brand-green-dark);
+    }
+
+    .menu-card h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .menu-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      min-height: 40px; 
+    }
+
+    .menu-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background-color: var(--brand-yellow);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition-smooth);
+    }
+    .menu-card:hover::after {
+      transform: scaleX(1);
+    }
+    
+    /* ──────────────────────────────────────────────────────────────────────────────
+       PIE DE PÁGINA (Idéntico al index.html)
+    ────────────────────────────────────────────────────────────────────────────── */
+    .site-footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      background-color: var(--bg-page);
+    }
+
+    /* ──────────────────────────────────────────────────────────────────────────────
+       ANIMACIONES SUTILES (Idénticas al index.html)
+    ────────────────────────────────────────────────────────────────────────────── */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    .site-header h1, .site-header p.subtitle {
+      animation: fadeInUp 0.6s var(--transition-smooth) backwards;
+    }
+    .site-header p.subtitle { animation-delay: 0.15s; }
+    .menu-card { animation: fadeInUp 0.5s var(--transition-smooth) backwards; }
+    
+    .menu-grid .menu-card:nth-child(1) { animation-delay: 0.3s; }
+    .menu-grid .menu-card:nth-child(2) { animation-delay: 0.4s; }
+    /* Añadir más si tienes más tarjetas de submenú */
+
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="index.html" class="back-button" title="Volver al Menú Principal">
+      <i data-feather="arrow-left"></i>
+    </a>
+    <div class="header-content">
+      <h1>Análisis de Reservas</h1>
+      <p class="subtitle">Selecciona un tipo de informe para profundizar en los datos.</p>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="menu-grid">
+      
+      <a href="reservas_futuro.html" class="menu-card"> <!-- Enlace a la página real -->
+        <div class="menu-card-icon"><i data-feather="trending-up"></i></div>
+        <h3>Reservas a Futuro</h3>
+        <p>Proyecciones y análisis de reservas futuras para anticipar la demanda.</p>
+      </a>
+      
+      <a href="reservas_consolidado.html" class="menu-card"> <!-- Enlace a la página real -->
+        <div class="menu-card-icon"><i data-feather="layers"></i></div>
+        <h3>Reservas Consolidadas</h3>
+        <p>Visión general y datos históricos consolidados de todas las reservas.</p>
+      </a>
+      
+      <!-- Puedes añadir más opciones de submenú aquí si es necesario -->
+      <!-- Ejemplo:
+      <a href="reservas_por_canal.html" class="menu-card">
+        <div class="menu-card-icon"><i data-feather="share-2"></i></div>
+        <h3>Análisis por Canal</h3>
+        <p>Rendimiento detallado de reservas por cada canal de venta.</p>
+      </a>
+      -->
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    &copy; <span id="year"></span> Localiza Rent a Car &nbsp;&bull;&nbsp; Desarrollado y analizado por Mateus Torres.
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    feather.replace();
+
+    // Script de "protección" si se accede directamente (copiado de la discusión anterior)
+    // Si se llega a esta página sin pasar por el index, se redirige.
+    // Esto asume que el index.html establece `sessionStorage.setItem(`authorized_reservas.html`, 'yes');`
+    // donde "reservas.html" es el `data-target-url` que lleva a ESTA PÁGINA de submenú.
+
+    // const entryPointKeyForThisSubmenu = "reservas.html"; // Este es el 'data-target-url' del index que lleva aquí
+    // if (sessionStorage.getItem(`authorized_${entryPointKeyForThisSubmenu}`) !== 'yes') {
+    //    alert("Acceso no autorizado. Por favor, ingresa desde el menú principal.");
+    //    window.location.href = 'index.html'; // O la ruta completa a tu index.html
+    // }
+    // DESCOMENTA EL BLOQUE ANTERIOR SI QUIERES IMPLEMENTAR ESTA VERIFICACIÓN BÁSICA.
+    // Necesitarás asegurarte que tu index.html está configurado para guardar `authorized_reservas.html` en sessionStorage
+    // cuando la contraseña para "Análisis de Reservas" es correcta.
+  </script>
+
+</body>
+</html>
