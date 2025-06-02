@@ -164,13 +164,13 @@
   <main class="main-content">
     <div class="menu-grid">
       
-      <a href="adicionales_operador.html" class="menu-card"> <!-- Enlace a la página real -->
+      <a href="AdicionalesOperadores.html" class="menu-card"> <!-- Enlace a la página real -->
         <div class="menu-card-icon"><i data-feather="users"></i></div> <!-- Ícono para operadores/equipo -->
         <h3>Adicionales por Operador</h3>
         <p>Analiza el rendimiento de venta de adicionales por cada operador/vendedor.</p>
       </a>
       
-      <a href="adicionales_sucursal.html" class="menu-card"> <!-- Enlace a la página real -->
+      <a href="AdicionalesSucursales.html" class="menu-card"> <!-- Enlace a la página real -->
         <div class="menu-card-icon"><i data-feather="map-pin"></i></div> <!-- Ícono para sucursales -->
         <h3>Adicionales por Sucursal</h3>
         <p>Compara la performance de venta de adicionales entre diferentes sucursales.</p>
