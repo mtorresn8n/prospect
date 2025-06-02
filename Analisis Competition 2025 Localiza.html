@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Competencia Rent a Car 2025 - Localiza</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --localiza-bg: #03662b;
+            --localiza-text-color: #03662b;
+            --localiza-on-bg-text: #FFFFFF;
+            --hertz-bg: #f6e008;
+            --hertz-text: #000000;
+            --alamo-bg: #1600fa;
+            --alamo-text: #f6e008;
+            --avis-bg: #e00b0d;
+            --avis-text: #FFFFFF;
+            --sixt-bg: #ea7909;
+            --sixt-text: #FFFFFF;
+            --europcar-bg: #08841B; /* Color de Europcar actualizado */
+            --europcar-text: #FFFFFF;
+            --cactus-bg: #8c52ff;
+            --cactus-text: #FFFFFF;
+            --fit-bg: #ff69b4;
+            --fit-text: #FFFFFF;
+            --taraborelli-bg: #2A4295;
+            --taraborelli-text: #F3692B;
+            --otros-bg: #707070;
+            --otros-text: #FFFFFF;
+            --flota-antigua-color: #aaaaaa;
+            /* Clase para indicador Localiza - usada en el HTML, no en el gráfico directamente */
+            --localiza-highlight-indicator-color: #00FF00; /* verde "marcadito" */
+        }
+        .localiza-highlight-indicator { /* Para texto HTML */
+          color: var(--localiza-highlight-indicator-color);
+          font-weight: bold;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .presentation-container {
+            width: 95%;
+            max-width: 1100px;
+            margin-top: 20px;
+            background-color: white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .slide {
+            padding: 30px;
+            border-bottom: 1px solid #eee;
+            min-height: 550px;
+            display: none;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide:last-child {
+            border-bottom: none;
+        }
+
+        .slide-header {
+            background-color: var(--localiza-bg);
+            color: var(--localiza-on-bg-text);
+            padding: 15px 30px;
+            margin: -30px -30px 20px -30px;
+            border-radius: 8px 8px 0 0;
+        }
+        .slide-header.competitor {
+             background-color: #333;
+             color: white;
+        }
+        .slide-header.competitor h1, .slide-header.competitor h2 {
+            color: white;
+        }
+        /* Estilos para Navegación Flotante SIN FONDO VISIBLE */
+        .floating-nav {
+            position: fixed;
+            bottom: 25px;    /* Distancia del borde inferior */
+            left: 0;         /* Ocupa todo el ancho inicialmente */
+            right: 0;        /* Ocupa todo el ancho inicialmente */
+            z-index: 1000;
+            background-color: transparent; /* SIN FONDO */
+            padding: 0 20px; /* Padding solo a los lados para que los botones no toquen los bordes de la pantalla */
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* CLAVE: Esto empuja los elementos a los extremos y el del medio */
+            pointer-events: none; /* El contenedor no intercepta clics, solo sus hijos */
+        }
+
+        .floating-nav > * { /* Todos los hijos directos del floating-nav */
+            pointer-events: auto; /* Los botones y el contador SÍ interceptan clics */
+        }
+
+        .floating-nav .nav-arrow {
+            background-color: var(--localiza-bg); /* Botones verdes */
+            color: var(--localiza-on-bg-text);
+            border: none;
+            border-radius: 50%; 
+            width: 45px;  /* Un poco más grandes para que se vean bien sin contenedor */
+            height: 45px; 
+            font-size: 22px; 
+            /* line-height: 45px; No necesario con flex */
+            cursor: pointer;
+            transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+            padding: 0;
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Una pequeña sombra para los botones */
+        }
+
+        .floating-nav .nav-arrow:hover {
+            background-color: #024a20; 
+            transform: scale(1.1); /* Efecto sutil al pasar el mouse */
+        }
+        
+        .floating-nav .nav-arrow:disabled {
+            background-color: #777; /* Color para deshabilitado */
+            cursor: not-allowed;
+            opacity: 0.5;
+            box-shadow: none; /* Quitar sombra si está deshabilitado */
+        }
+
+                .slide-counter-display {
+            color: #7DDD21; /* Tu color verde lima para el texto del contador */
+            font-size: 1.1em; 
+            font-weight: bold; 
+            min-width: 60px; 
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.4); 
+            padding: 5px 10px;
+            border-radius: 15px;
+            /* Simulación de contorno verde oscuro */
+            text-shadow: 
+                -1px -1px 0 var(--localiza-bg),  /* Arriba-izquierda */
+                 1px -1px 0 var(--localiza-bg),  /* Arriba-derecha */
+                -1px  1px 0 var(--localiza-bg),  /* Abajo-izquierda */
+                 1px  1px 0 var(--localiza-bg),  /* Abajo-derecha */
+                 0   -1px 0 var(--localiza-bg),  /* Arriba */
+                 0    1px 0 var(--localiza-bg),  /* Abajo */
+                -1px  0   0 var(--localiza-bg),  /* Izquierda */
+                 1px  0   0 var(--localiza-bg);  /* Derecha */
+        }
+		
+		
+		
+		
+		
+		
+        h1, h2, h3 {
+            color: var(--localiza-text-color);
+        }
+        .slide-header h1, .slide-header h2 {
+            color: var(--localiza-on-bg-text);
+            margin: 0;
+        }
+        .slide-header h2 {
+            font-size: 1.5em;
+        }
+
+        h2.main-title {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        h3.subtitle {
+            text-align: center;
+            font-weight: normal;
+            color: #555;
+            margin-top: 0;
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 380px;
+            margin-bottom: 20px;
+        }
+        .chart-container.small {
+            height: 350px;
+        }
+        .chart-container.medium {
+             height: 400px;
+        }
+
+        .summary-points {
+            margin-top: 20px;
+            padding-left: 20px;
+        }
+        .summary-points li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        .summary-points strong:not(.localiza-text-highlight):not(.localiza-text-highlight-underline) {
+            color: var(--localiza-text-color);
+        }
+
+        .navigation {
+            text-align: center;
+            padding: 20px;
+            background-color: #e9e9e9;
+        }
+        .navigation button {
+            background-color: var(--localiza-bg);
+            color: var(--localiza-on-bg-text);
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .navigation button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .company-badge { padding: 2px 5px; border-radius: 3px; color: white; font-weight:normal; }
+        .company-localiza-badge { background-color: var(--localiza-bg); color: var(--localiza-on-bg-text); }
+        .company-hertz-badge { background-color: var(--hertz-bg); color: var(--hertz-text); }
+        .company-alamo-badge { background-color: var(--alamo-bg); color: var(--alamo-text); }
+        .company-avis-badge { background-color: var(--avis-bg); color: var(--avis-text); }
+        .company-sixt-badge { background-color: var(--sixt-bg); color: var(--sixt-text); }
+        .company-europcar-badge { background-color: var(--europcar-bg); color: var(--europcar-text); }
+        .company-cactus-badge { background-color: var(--cactus-bg); color: var(--cactus-text); }
+        .company-fit-badge { background-color: var(--fit-bg); color: var(--fit-text); }
+        .company-taraborelli-badge { background-color: var(--taraborelli-bg); color: var(--taraborelli-text); }
+        .company-otros-badge { background-color: var(--otros-bg); color: var(--otros-text); }
+
+        .localiza-text-highlight {
+            color: var(--localiza-text-color);
+            font-weight: bold;
+        }
+        .localiza-text-highlight-underline {
+            color: var(--localiza-text-color);
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 6px;
+            text-align: left;
+        }
+        th {
+            background-color: #f0f0f0;
+            white-space: nowrap;
+        }
+        td.highlight-localiza-row {
+            background-color: #e6f0e9;
+        }
+        td.highlight-localiza-row strong, td.highlight-localiza-row .localiza-text-highlight {
+             color: var(--localiza-text-color) !important;
+        }
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .gap-positive { color: green; font-weight: bold; }
+        .gap-negative { color: red; font-weight: bold; }
+        .gap-neutral { color: orange; }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .kpi-card {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .kpi-card .value {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--localiza-text-color);
+        }
+        .kpi-card .label {
+            font-size: 0.9em;
+            color: #666;
+        }
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        .kpi-small-title { font-size: 1.1em; font-weight: bold; margin-bottom: 5px;}
+        .kpi-small-value { font-size: 1.5em; color: var(--localiza-text-color); }
+        .kpi-small-text { font-size: 0.9em; color: #555;}
+		
+		        /* Estilos para el Índice */
+        .index-list {
+            list-style-type: none;
+            padding-left: 0;
+            max-width: 700px; /* Ajustado para el contenedor de 900px */
+            margin: 30px auto;
+        }
+        .index-list li {
+            margin-bottom: 15px;
+        }
+        .index-list li a {
+            display: flex; /* Para alinear número y texto */
+            align-items: center; /* Centrar verticalmente */
+            padding: 12px 18px;
+            background-color: #f8f9fa;
+            color: var(--localiza-text-color);
+            text-decoration: none;
+            border-radius: 5px;
+            border: 1px solid #dee2e6;
+            font-weight: 500;
+            font-size: 1.05em; /* Un poco más grande el texto del índice */
+            transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .index-list li a:hover {
+            background-color: var(--localiza-bg);
+            color: var(--localiza-on-bg-text);
+            transform: translateY(-2px); /* Efecto sutil de elevación */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .index-list li a .slide-number {
+            display: inline-flex; /* Para centrar el número dentro del badge */
+            align-items: center;
+            justify-content: center;
+            background-color: var(--localiza-text-color);
+            color: var(--localiza-on-bg-text);
+            min-width: 28px; /* Ancho mínimo para números de 1 o 2 dígitos */
+            height: 28px; /* Altura para hacerlo circular/cuadrado redondeado */
+            padding: 0 8px; /* Padding horizontal */
+            border-radius: 4px; /* Un poco menos redondeado que un círculo completo */
+            margin-right: 15px; /* Más espacio */
+            font-size: 0.9em;
+            font-weight: bold;
+            line-height: 28px; /* Alinear texto verticalmente */
+            text-align: center;
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        }
+         .index-list li a:hover .slide-number {
+            background-color: var(--localiza-on-bg-text);
+            color: var(--localiza-text-color);
+         }
+    </style>
+</head>
+<body>
+
+<!-- NAVEGACIÓN FLOTANTE -->
+    <div class="floating-nav">
+        <button id="floatPrevBtn" class="nav-arrow" title="Anterior">❮</button>
+        <span id="slideCounter" class="slide-counter-display">1/15</span>
+        <button id="floatNextBtn" class="nav-arrow" title="Siguiente">❯</button>
+    </div>
+<!-- NAVEGACIÓN FLOTANTE -->
+
+  <div class="presentation-container">
+        <!-- Slide 1: Título y Propósito del Análisis (ID: slide-0) -->
+        <div class="slide active" id="slide-0">
+            <div class="slide-header">
+                <h1>Análisis Competitivo: Rent a Car Argentina 🚗</h1>
+            </div>
+            <h2 class="main-title">Escenario Competitivo 2025</h2>
+            <h3 class="subtitle">Posicionamiento Estratégico y Oportunidades para <span class="localiza-text-highlight">Localiza</span></h3>
+            <div style="text-align: center; margin-top: 40px;">
+                <p style="font-size: 1.15em; line-height: 1.6; max-width: 750px; margin-left: auto; margin-right: auto; margin-bottom: 25px;">
+                    📊 Este informe detalla el panorama actual del mercado de alquiler de vehículos en Argentina para el año 2025.
+                    Analizaremos la posición de <span class="localiza-text-highlight">Localiza</span> frente a sus principales competidores,
+                    considerando métricas clave de mercado, eficiencia operativa y un <strong>análisis observacional de la afluencia de clientes</strong> 🚶‍♀️ en puntos estratégicos como aeropuertos.
+                </p>
+                <p style="font-size: 1.15em; line-height: 1.6; max-width: 750px; margin-left: auto; margin-right: auto; margin-bottom: 40px;">
+                    El objetivo es identificar fortalezas, desafíos y oportunidades para consolidar y expandir nuestra presencia! 🎯
+                </p>
+                <img src="https://companieslogo.com/img/orig/RENT3.SA_BIG-0af81759.png?t=1720244493" alt="Localiza Logo" style="max-width: 220px; height: auto; display: block; margin-left: auto; margin-right: auto; margin-bottom: 20px;">
+                <div style="max-width: 700px; margin: 0 auto; padding: 15px; border: 1px solid #ffc107; background-color: #fff9e6; border-radius: 8px; text-align: left; font-size: 0.85em; line-height: 1.5;">
+                    <p style="margin-top: 0; margin-bottom: 8px; font-weight: bold; color: #856404;">⚠️ Nota Metodológica Importante:</p>
+                    La información presentada se basa en una combinación de fuentes:
+                    <ul style="margin-top: 5px; margin-bottom: 5px; padding-left: 20px;">
+                        <li>Datos públicos disponibles en sitios web de competidores.</li>
+                        <li>Inteligencia de campo recopilada por nuestro personal en puntos de operación compartidos.</li>
+                        <li>Análisis observacional directo de afluencia de clientes en aeropuertos.</li>
+                    </ul>
+                    En los casos donde no se dispuso de datos directos para ciertas regiones o métricas específicas, se realizaron estimaciones internas. Estas se fundamentan en nuestro conocimiento del sector, análisis de la participación poblacional y tendencias de mercado observadas.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Índice de la Presentación (ID: slide-1) -->
+        <div class="slide" id="slide-1">
+            <div class="slide-header">
+                <h2>📜 Índice de Contenidos</h2>
+            </div>
+            <div style="max-width: 900px; margin: 20px auto 0 auto; padding: 0 15px;">
+                <p style="text-align: center; font-size: 1.1em; margin-bottom: 25px;">Navegue directamente a la sección de su interés utilizando los siguientes enlaces:</p>
+                <ul class="index-list">
+                    <li><a href="#" data-slideindex="0"><span class="slide-number">1</span> Introducción y Metodología</a></li>
+                    <li><a href="#" data-slideindex="2"><span class="slide-number">3</span> Panorama General del Mercado</a></li>
+                    <li><a href="#" data-slideindex="3"><span class="slide-number">4</span> Análisis de Red de Agencias</a></li>
+                    <li><a href="#" data-slideindex="4"><span class="slide-number">5</span> Crecimiento de Agencias (% Incremental)</a></li>
+                    <li><a href="#" data-slideindex="5"><span class="slide-number">6</span> Análisis de Flota</a></li>
+                    <li><a href="#" data-slideindex="6"><span class="slide-number">7</span> Crecimiento de Flota (% Incremental)</a></li>
+                    <li><a href="#" data-slideindex="7"><span class="slide-number">8</span> Eficiencia: Autos por Agencia</a></li>
+                    <li><a href="#" data-slideindex="8"><span class="slide-number">9</span> GAP de Liderazgo por Ciudad</a></li>
+                    <li><a href="#" data-slideindex="9"><span class="slide-number">10</span> Penetración y Share de Autos (Argentina)</a></li>
+                    <li><a href="#" data-slideindex="10"><span class="slide-number">11</span> Análisis Cualitativo de Flota (Antigüedad)</a></li>
+                    <li><a href="#" data-slideindex="11"><span class="slide-number">12</span> Resumen de Datos Competitivos (Tabla General)</a></li>
+                    <li><a href="#" data-slideindex="12"><span class="slide-number">13</span> Posicionamiento Estratégico de Localiza</a></li>
+                    <li><a href="#" data-slideindex="13"><span class="slide-number">14</span> Conclusiones y Recomendaciones</a></li>
+                    <li><a href="#" data-slideindex="14"><span class="slide-number">15</span> Aclaración sobre "Otros"</a></li>
+                </ul>
+            </div>
+        </div>
+		        <!-- Slide 3: Panorama General del Mercado 2025 (ID: slide-2) -->
+        <div class="slide" id="slide-2">
+            <div class="slide-header">
+                <h2>📈 Panorama General del Mercado 2025</h2>
+            </div>
+            <div style="max-width: 900px; margin: 20px auto 0 auto; padding: 0 15px;">
+                <p style="text-align: center; margin-bottom: 30px; font-size: 1.1em;">
+                    El sector de alquiler de vehículos en <strong>Argentina</strong> evidencia una tendencia de crecimiento,
+                    con un incremento tanto en la red de agencias como en el volumen total de flota operativa entre los principales actores:
+                </p>
+                <div class="kpi-grid" style="margin-bottom: 40px;">
+                    <div class="kpi-card">
+                        <div class="kpi-title" style="font-size: 1.2em; color: #555; margin-bottom: 8px; font-weight: 600;">Total Agencias</div>
+                        <div class="value" id="totalAgencias2025_slide2">203</div>
+                        <div class="label">Principales Jugadores 2025 <span style="color: green;">(+6.28% vs 2024)</span></div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-title" style="font-size: 1.2em; color: #555; margin-bottom: 8px; font-weight: 600;">Total Flota</div>
+                        <div class="value" id="totalFlota2025_slide2">13,671</div>
+                        <div class="label">Principales Jugadores 2025 <span style="color: green;">(+8.07% vs 2024)</span></div>
+                    </div>
+                </div>
+                <h3 style="text-align: center; border-bottom: 2px solid var(--localiza-text-color); padding-bottom: 10px; margin-bottom: 25px;">Aspectos Destacados del Mercado 🔍</h3>
+                <ul class="summary-points" style="font-size: 1.05em;">
+                    <li>✅ Se observa una <strong>expansión general en la capacidad instalada</strong> del sector, reflejando una potencial mayor demanda o una apuesta por la recuperación y crecimiento del mercado.</li>
+                    <li>📊 Si bien el mercado en su conjunto crece, es crucial analizar <strong>cómo se distribuye este crecimiento</strong>. La dinámica y estrategia de cada competidor determinará los verdaderos ganadores en cuota de mercado y la posición final de <span class="localiza-text-highlight">Localiza</span>.</li>
+                </ul>
+            </div>
+        </div>
+       <!-- Slide 4: Análisis de Red de Agencias 2025 (ID: slide-3) -->
+        <div class="slide" id="slide-3">
+            <div class="slide-header">
+                <h2>📍 Análisis de Red de Agencias 2025</h2>
+            </div>
+            <div style="max-width: 900px; margin: 20px auto 0 auto; padding: 0 15px;">
+                <p style="text-align: center; margin-bottom: 25px; font-size: 1.05em;">
+                    La capilaridad de la red de sucursales es un factor determinante para la accesibilidad y cuota de mercado.
+                    A continuación, se presenta la distribución de agencias de los principales competidores.
+                </p>
+                <div class="chart-container" style="margin-bottom: 30px;">
+                    <canvas id="agenciasChart"></canvas>
+                </div>
+                <h3 style="text-align: center; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 20px;">
+                    Análisis de Posicionamiento por Número de Agencias
+                </h3>
+                <ul class="summary-points" style="font-size: 1.05em;">
+                    <li>
+                        <strong>🥇 Líderes en Cobertura:</strong>
+                        <span class="company-badge company-hertz-badge">Hertz</span> se consolida como el actor con mayor presencia física, contando con <strong>43 agencias</strong> a nivel país. Le sigue de cerca <span class="company-badge company-avis-badge">Avis</span> con <strong>41 agencias</strong>.
+                    </li>
+                    <li>
+                        <strong>🥈 Tercer Puesto:</strong> <span class="company-badge company-alamo-badge">Alamo</span> ocupa la tercera posición con una red de <strong>33 sucursales</strong>.
+                    </li>
+                    <li>
+                        <strong class="localiza-text-highlight">🥉 Posición de <span class="localiza-text-highlight-underline">Localiza</span>:</strong>
+                        Nos situamos en el <strong>4º lugar</strong> con un total de <strong class="localiza-highlight-indicator">21 agencias</strong>.
+                        <ul style="margin-top: 8px; padding-left: 25px;">
+                            <li>Esta posición nos coloca por delante de competidores directos como <span class="company-badge company-europcar-badge">Europcar</span> (15), <span class="company-badge company-sixt-badge">SIXT</span> (15), y <span class="company-badge company-fit-badge">Fit</span> (15).</li>
+                            <li>También superamos a <span class="company-badge company-cactus-badge">Cactus</span> (13) y <span class="company-badge company-taraborelli-badge">Taraborelli</span> (7).</li>
+                            <li>La brecha con los líderes (<span class="company-badge company-hertz-badge">Hertz</span> y <span class="company-badge company-avis-badge">Avis</span>) representa un área de oportunidad para una expansión estratégica selectiva.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>📉 Otros Jugadores:</strong> Los competidores restantes operan con redes más acotadas, lo que podría indicar un enfoque en nichos específicos o regiones particulares.
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 5: Crecimiento de Agencias 2024-2025 (ID: slide-4) -->
+        <div class="slide" id="slide-4">
+            <div class="slide-header">
+                <h2>🗺️ Crecimiento de Agencias (2024 vs 2025) - % Incremental</h2>
+            </div>
+            <div style="max-width: 900px; margin: 20px auto 0 auto; padding: 0 15px;">
+                <p style="text-align: center; margin-bottom: 25px; font-size: 1.05em;">
+                    La expansión de la red de sucursales refleja la estrategia de crecimiento y cobertura geográfica de cada empresa.
+                    A continuación, el análisis del incremento porcentual y absoluto de agencias.
+                </p>
+                <div class="chart-container" style="margin-bottom: 30px;">
+                    <canvas id="crecimientoAgenciasChart"></canvas>
+                </div>
+                <h3 style="text-align: center; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 20px;">
+                    Análisis de la Expansión de Redes
+                </h3>
+                <ul class="summary-points" style="font-size: 1.05em;">
+                    <li>
+                        🚀 <strong>Expansión Agresiva de <span class="company-badge company-hertz-badge">Hertz</span>:</strong> Lidera el crecimiento con un <strong>+19.44%</strong>, sumando un total de <strong>7 nuevas agencias</strong>. Su expansión se concentró en puntos clave:
+                        <ul style="margin-top: 8px; padding-left: 25px; font-size: 0.95em;">
+                            <li>Bariloche (2 nuevas)</li>
+                            <li>Mendoza (1 nueva)</li>
+                            <li>Rosario (1 nueva)</li>
+                            <li>San Martín de los Andes (1 nueva)</li>
+                            <li>Chubut (1 nueva, especificar ciudad si es posible, ej. Comodoro Rivadavia)</li>
+                            <li>Trelew (1 nueva)</li>
+                        </ul>
+                    </li>
+                    <li>
+                        📈 <strong>Crecimientos Significativos:</strong>
+                        <span class="company-badge company-taraborelli-badge">Taraborelli</span> (+16.67%) y
+                        <span class="company-badge company-alamo-badge">Alamo</span> (+10.00%) también muestran una clara intención de expandir su presencia.
+                    </li>
+                    <li>
+                        <strong class="localiza-text-highlight">🎯 Crecimiento de <span class="localiza-text-highlight-underline">Localiza</span>:</strong> Incrementamos nuestra red en un <strong>+5.00%</strong>, con la apertura de <strong>1 nueva agencia en Trelew</strong>. Por su parte, <span class="company-badge company-sixt-badge">SIXT</span> también sumó una agencia (+7.14% en Iguazú).
+                    </li>
+                    <li>
+                        స్త <strong>Redes Estables:</strong> <span class="company-badge company-avis-badge">Avis</span>, <span class="company-badge company-europcar-badge">Europcar</span>, y <span class="company-badge company-fit-badge">Fit</span> mantuvieron su número de agencias sin expansión durante este período.
+                    </li>
+                    <li>
+                        📉 <strong>Reducción de Red:</strong> <span class="company-badge company-cactus-badge">Cactus</span> fue el único competidor que disminuyó su presencia, cerrando una agencia (-7.14%).
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 6: Análisis de Flota 2025 (ID: slide-5) -->
+        <div class="slide" id="slide-5">
+            <div class="slide-header"><h2>📊 Análisis de Flota 2025</h2></div>
+            <div style="max-width: 900px; margin: 20px auto 0 auto; padding: 0 15px;">
+                <p style="text-align: center; margin-bottom: 25px; font-size: 1.05em;">
+                    El tamaño de la flota es un indicador directo de la capacidad de una empresa para atender la demanda y su participación en el mercado.
+                </p>
+                <div class="chart-container" style="margin-bottom: 30px;">
+                    <canvas id="flotaChart"></canvas>
+                </div>
+                <h3 style="text-align: center; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 20px;">
+                    Posicionamiento por Tamaño de Flota (Competidores Directos)
+                </h3>
+                <ul class="summary-points" style="font-size: 1.05em;">
+                    <li><strong>🚚 Líder Indiscutido:</strong> <span class="company-badge company-hertz-badge">Hertz</span> mantiene una amplia ventaja con <strong>3,361 vehículos</strong>.</li>
+                    <li><strong>🥈 Segundo Lugar:</strong> <span class="company-badge company-avis-badge">Avis</span> se ubica en la segunda posición con <strong>1,302 vehículos</strong>, a pesar de una reducción en su flota.</li>
+                    <li>
+                        <strong class="localiza-text-highlight">🥉 Posición de <span class="localiza-text-highlight-underline">Localiza</span>:</strong> Nos consolidamos en el <strong>tercer lugar del podio</strong> con <strong>1,125 vehículos</strong>.
+                        <ul style="margin-top: 8px; padding-left: 25px;">
+                            <li>Superamos directamente a <span class="company-badge company-europcar-badge">Europcar</span> (1,069) y <span class="company-badge company-alamo-badge">Alamo</span> (1,016).</li>
+                            <li>La distancia con el segundo lugar (<span class="company-badge company-avis-badge">Avis</span>) es ahora de 177 vehículos.</li>
+                        </ul>
+                    </li>
+                   <li>(El grupo <span class="company-badge company-otros-badge">"Otros"</span>, no visualizado en el gráfico de competidores directos, posee una flota combinada estimada de 3,710 vehículos, superando a todos los jugadores individuales).</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 7: Crecimiento de Flota 2024-2025 (ID: slide-6) -->
+        <div class="slide" id="slide-6">
+            <div class="slide-header">
+                <h2>🚀 Crecimiento de Flota (2024 vs 2025) - % Incremental</h2>
+            </div>
+            <div style="max-width: 900px; margin: 20px auto 0 auto; padding: 0 15px;">
+                <p style="text-align: center; margin-bottom: 25px; font-size: 1.05em;">
+                    El incremento porcentual de la flota vehicular indica la agresividad y la inversión de cada empresa
+                    para expandir su capacidad operativa y capturar mayor demanda.
+                </p>
+                <div class="chart-container" style="margin-bottom: 30px;">
+                    <canvas id="crecimientoFlotaChart"></canvas>
+                </div>
+                <h3 style="text-align: center; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 20px;">
+                    Análisis del Crecimiento Porcentual de Flotas
+                </h3>
+                <ul class="summary-points" style="font-size: 1.05em;">
+                    <li>
+                        🥇 <strong>Mayor Impulso:</strong> <span class="company-badge company-alamo-badge">Alamo</span> lidera la expansión con un notable <strong>+29.26%</strong> en su flota.
+                    </li>
+                    <li>
+                        🥈 <strong>Crecimiento Destacado:</strong> <span class="company-badge company-taraborelli-badge">Taraborelli</span> también muestra una fuerte inversión, incrementando su flota en un <strong>+17.99%</strong>.
+                    </li>
+                    <li>
+                        <strong class="localiza-text-highlight">🥉 Posición de <span class="localiza-text-highlight-underline">Localiza</span>:</strong> Registramos  un crecimiento del <strong>+15.62%</strong>, uno de los más altos entre los competidores.
+                    </li>
+                    <li>
+                        📈 <strong>Otros Crecimientos Relevantes:</strong> Le siguen en la tabla <span class="company-badge company-europcar-badge">Europcar</span> (+8.97%) y <span class="company-badge company-hertz-badge">Hertz</span> (+7.97%).
+                    </li>
+                    <li>
+                        🔻 <strong>Decrecimiento en Flota:</strong> <span class="company-badge company-avis-badge">Avis</span> es el único de los grandes jugadores que presenta una <strong>reducción en su flota (-10.45%)</strong>.
+                    </li>
+                    <li>
+                        🛑 <strong>Sin Crecimiento / Estancamiento:</strong> <span class="company-badge company-sixt-badge">SIXT</span>, <span class="company-badge company-cactus-badge">Cactus</span>, y <span class="company-badge company-fit-badge">Fit</span> no presentaron incrementos en su flota durante este período.
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 8: Eficiencia: Autos por Agencia 2025 (ID: slide-7) -->
+        <div class="slide" id="slide-7">
+            <div class="slide-header">
+                <h2>⚙️ Eficiencia: Autos por Agencia 2025</h2>
+            </div>
+            <div style="max-width: 900px; margin: 20px auto 0 auto; padding: 0 15px;">
+                <p style="text-align: center; margin-bottom: 25px; font-size: 1.05em;">
+                    La métrica de "Autos por Agencia" refleja la eficiencia en la utilización de la red de sucursales
+                    y la capacidad de cada punto de venta para gestionar un mayor volumen de flota.
+                </p>
+                <div class="chart-container" style="margin-bottom: 30px;">
+                    <canvas id="eficienciaChart"></canvas>
+                </div>
+                                <h3 style="text-align: center; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 20px;">
+                    Análisis de Eficiencia Operativa por Agencia
+                </h3>
+                <ul class="summary-points" style="font-size: 1.05em;">
+                    <li>
+                        🏆 <strong>Líderes en Eficiencia:</strong> <span class="company-badge company-hertz-badge">Hertz</span> (78.16 autos/agencia) y <span class="company-badge company-europcar-badge">Europcar</span> (71.27 autos/agencia) marcan la pauta en la optimización de flota por punto de venta.
+                    </li>
+                    <li>
+                        <strong class="localiza-text-highlight">📊 Posición de <span class="localiza-text-highlight-underline">Localiza</span>:</strong> Con <strong>53.57 autos/agencia</strong>, nos ubicamos en una sólida tercera posición, superando a la mayoría de los competidores (<span class="company-badge company-taraborelli-badge">Taraborelli</span>, <span class="company-badge company-cactus-badge">Cactus</span>, <span class="company-badge company-sixt-badge">SIXT</span>, <span class="company-badge company-fit-badge">Fit</span>, <span class="company-badge company-avis-badge">Avis</span> y <span class="company-badge company-alamo-badge">Alamo</span>).
+                        <ul style="margin-top: 8px; padding-left: 25px;">
+                            <li>Si bien este es un buen indicador, existe una brecha de eficiencia del ~31% respecto a <span class="company-badge company-hertz-badge">Hertz</span> y ~25% respecto a <span class="company-badge company-europcar-badge">Europcar</span>, señalando un área de oportunidad para mejorar la rentabilidad por agencia.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <em><strong>Interpretación:</strong> Nuestra eficiencia actual es competitiva y superior a muchos actores del mercado. No obstante, alcanzar los niveles de los líderes representa una oportunidad para optimizar aún más nuestros activos y potenciar la rentabilidad de nuestra red.</em>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 9: GAP de Liderazgo por Ciudad (ID: slide-8) -->
+        <div class="slide" id="slide-8">
+            <div class="slide-header">
+                <h2>🎯 Análisis de Brecha (GAP) de Liderazgo por Ciudad</h2>
+            </div>
+            <div style="max-width: 900px; margin: 20px auto 0 auto; padding: 0 15px;">
+                <div style="background-color: #f8f9fa; border-left: 5px solid var(--localiza-text-color); padding: 15px; margin-bottom: 25px; font-size: 0.95em; border-radius: 0 5px 5px 0;">
+                    <p style="margin: 0;">El <strong>GAP de Liderazgo</strong> mide la diferencia en el tamaño de flota entre <span class="localiza-text-highlight">Localiza</span> y el principal competidor en cada ciudad clave.
+                    Un GAP <strong style="color: var(--localiza-text-color);">negativo</strong> (ej. -50) indica que <span class="localiza-text-highlight">Localiza</span> lidera por esa cantidad de vehículos.
+                    Un GAP <strong style="color: red;">positivo</strong> (ej. +30) significa que estamos por debajo del líder por esa cantidad.
+                    La "Variación del GAP" (2025 vs 2024) muestra nuestra evolución: <strong style="color: green;">negativa es mejora</strong>, <strong style="color: red;">positiva es retroceso</strong>.</p>
+                </div>
+                <div class="table-container" style="margin-bottom: 30px;">
+                    <table id="gapLiderazgoTable">
+<thead>
+                        <tr>
+                            <th>Ciudad</th>
+                            <th>GAP Flota 2024</th>
+                            <th>GAP Flota 2025</th>
+                            <th>Variación del GAP</th>
+                            <th>Líder Plaza 2025</th> <!-- NUEVA COLUMNA -->
+                            <th>Observación del Desempeño</th>
+                        </tr>
+                    </thead>
+                        <tbody>
+                            <!-- Los datos se insertarán aquí mediante JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                                <h3 style="text-align: center; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 20px;">
+                    Análisis Detallado del GAP de Liderazgo por Plaza
+                </h3>
+                <ul class="summary-points" style="font-size: 1.05em;">
+                    <li>
+                        📈 <strong>Desempeño Mixto en Plazas Clave:</strong>
+                        <ul style="margin-top: 8px; padding-left: 20px;">
+                            <li><strong>Buenos Aires:</strong> El GAP con el líder (<span class="company-badge company-hertz-badge">Hertz</span>) aumentó ligeramente, indicando una mayor presión competitiva.</li>
+                            <li><strong>Rosario y Córdoba:</strong> Hemos mejorado nuestra posición, acortando la brecha con los líderes de estas plazas.</li>
+                        </ul>
+                        Estas ciudades requieren un análisis continuo y estrategias adaptadas.
+                    </li>
+                    <li>
+                        ⚠️ <strong>Debilidades Significativas / Plazas Relegadas:</strong> En mercados de alto volumen o turísticos clave como <strong>Salta</strong>, <strong>Bariloche</strong>, y <strong>Mendoza</strong>, la diferencia de flota con el líder (<span class="company-badge company-hertz-badge">Hertz</span>) es considerable y, en algunos casos, se ha ampliado. Esto representa una debilidad importante y un desafío prioritario para nuestra estrategia de crecimiento.
+                    </li>
+                    <li>
+                        ♟️ <strong>Dinámica del Liderazgo:</strong> Es crucial continuar el monitoreo del competidor líder en cada plaza. Identificar si este rol cambia entre competidores puede revelar vulnerabilidades ajenas u oportunidades para nuestra expansión.
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 10: Penetración de Mercado y Share de Autos 2025 (ID: slide-9) -->
+        <div class="slide" id="slide-9">
+            <div class="slide-header">
+                <h2>📊 Penetración de Mercado y Share de Autos 2025 (Argentina)</h2>
+            </div>
+            <div style="max-width: 900px; margin: 20px auto 0 auto; padding: 0 15px;">
+                <p style="text-align: center; margin-bottom: 20px; font-size: 1.05em;">
+                    La penetración se calcula como el número de autos por cada 1000 habitantes en la población cubierta por las operaciones de cada empresa.
+                    El Share de Autos refleja la cuota de mercado basada en el tamaño de flota de los principales jugadores.
+                </p>
+                <div class="table-container" style="max-height: 300px; margin-bottom: 25px;">
+                     <table id="penetracionTable">
+                        <thead>
+                            <tr>
+                                <th>Empresa</th>
+                                <th>Penetración (Autos/1000 Hab. Op.)</th>
+                                <th>Comparativo vs Localiza (Arg)</th>
+                                <th>Share Autos (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se insertarán aquí mediante JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; justify-content: space-around; margin-bottom: 30px;">
+                    <div style="width: 100%; max-width: 48%; margin-bottom:20px; min-width: 300px;">
+                        <h3 style="text-align:center; margin-bottom:10px;">Penetración (Autos/1000 Hab. Op.)</h3>
+                        <div class="chart-container small">
+                            <canvas id="penetracionChart"></canvas>
+                        </div>
+                    </div>
+                    <div style="width: 100%; max-width: 48%; margin-bottom:20px; min-width: 300px;">
+                        <h3 style="text-align:center; margin-bottom:10px;">Share de Autos (%)</h3>
+                        <div class="chart-container small">
+                            <canvas id="shareAutosChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 30px; padding: 15px; background-color:#f0f0f0; border-radius:8px;">
+                    <p class="kpi-small-title" style="text-align:center;">Penetración del Mercado Argentino (Total País):</p>
+                    <p style="text-align:center;">
+                        <span class="kpi-small-value" id="totalPaisPenetracionArg">0.2776</span>
+                        <span class="kpi-small-text">autos por cada 1000 habitantes en Argentina
+                            <br>(Considerando ~13,049 autos de principales jugadores / 47M de población total Arg.).
+                        </span>
+                    </p>
+                </div>
+                <div style="padding: 15px; background-color: #e8f5e9; border-left: 4px solid #388e3c; border-radius: 0 6px 6px 0; margin-top: 30px; margin-bottom: 20px; font-size: 0.9em;">
+                    <h4 style="margin-top: 0; margin-bottom: 10px; color: #2e7d32; text-align:center; font-size: 1.15em;">🌐 Perspectiva de Crecimiento: El Mercado Brasileño (Ref. 2024)</h4>
+                    <p style="line-height: 1.5; text-align: left; margin-bottom: 8px;">
+                        Para dimensionar el potencial, observemos Brasil (población ~211.7M en 2024):
+                    </p>
+                    <ul style="margin-top: 0; margin-bottom: 10px; padding-left: 20px; line-height:1.5;">
+                        <li><strong>Mercado Total Brasil:</strong> Flota estimada de 1.0-1.1M de vehículos, con una penetración de ~<strong>4.7 a 5.2 autos/1000 hab</strong>.</li>
+                        <li><strong style="color: var(--localiza-text-color);">Localiza Brasil:</strong> Gestionaba ~<strong>627,997 vehículos</strong>, alcanzando una penetración propia de ~<strong>2.97 autos/1000 hab</strong>.</li>
+                    </ul>
+                    <p style="line-height: 1.5; text-align: left; margin-bottom: 0;">
+                        Ambas cifras superan ampliamente la penetración actual en Argentina (Total País: ~0.28; <span class="localiza-text-highlight">Localiza Arg:</span> ~1.11 en su zona op.),
+                        subrayando un <strong>significativo margen de expansión</strong> para el sector y para <span class="localiza-text-highlight">Localiza</span> en nuestro mercado.
+                    </p>
+                </div>
+            </div>
+        </div>
+		        <!-- Slide 11: Análisis Cualitativo de Flota (Antigüedad) (ID: slide-10) -->
+        <div class="slide" id="slide-10">
+            <div class="slide-header">
+                <h2>👴 Análisis Cualitativo de Flota: Unidades Antiguas</h2>
+            </div>
+            <div style="max-width: 900px; margin: 20px auto 0 auto; padding: 0 15px;">
+                <p style="text-align: center; margin-bottom: 25px; font-size: 1.05em;">Un factor a considerar es la antigüedad de la flota de algunos competidores, lo que puede impactar la experiencia del cliente y los costos operativos. Se estima que:</p>
+                <ul class="summary-points" style="font-size: 1.05em;">
+                    <li><span class="company-badge company-hertz-badge">Hertz</span>: Se estima que un <strong>28%</strong> de su flota (aproximadamente <strong>972 autos</strong>) presenta mayor antigüedad o dificultades de rotación.</li>
+                    <li><span class="company-badge company-avis-badge">Avis</span>: Alrededor del <strong>28.5%</strong> de su flota (unos <strong>290 autos</strong>) se encontraría en una situación similar.</li>
+                    <li><span class="company-badge company-europcar-badge">Europcar</span>: Contaría con aproximadamente <strong>200 autos</strong> considerados de mayor antigüedad.</li>
+                </ul>
+                <p style="font-size: 1.05em; margin-top:15px;">Esta situación contrasta con la estrategia de <span class="localiza-text-highlight">Localiza</span>, que mantiene una flota predominantemente joven, con solo <strong>225 autos</strong> estimados en esta categoría de mayor antigüedad o kilometraje.</p>
+                <div class="chart-container small" style="margin-top: 20px;">
+                    <canvas id="flotaComposicionChart"></canvas>
+                </div>
+                <p style="font-size:0.9em; text-align:center; margin-top: 5px;"><em>Gráfico ilustrativo de composición estimada de flota para competidores seleccionados (autos > 45,000 km / rotación lenta).</em></p>
+            </div>
+        </div>
+        
+        <!-- Slide 12: Resumen de Datos Competitivos (Tabla General) (ID: slide-11) -->
+        <div class="slide" id="slide-11">
+            <div class="slide-header">
+                <h2>📋 Resumen de Datos Competitivos 2025 (Generales)</h2>
+            </div>
+            <div style="max-width: 900px; margin: 20px auto 0 auto; padding: 0 15px;">
+                <p style="text-align: center; margin-bottom: 20px; font-size: 1.05em;">La siguiente tabla consolida los principales indicadores para cada competidor en 2025, según datos generales de la empresa.</p>
+                <div class="table-container">
+                    <table>
+<thead>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>Agencias 2025</th>
+                            <th>Flota 2025</th>
+                            <th>Autos/Agencia</th>
+                            <th>% Inc. Flota</th>
+                            <th>% Inc. Agencia</th>
+                            <th>% Inc. Ciudades</th> <!-- NUEVA COLUMNA -->
+                        </tr>
+                    </thead>
+                        <tbody>
+                        <tr class="highlight-localiza-row">
+                            <td><strong class="localiza-text-highlight">Localiza</strong></td><td><strong>21</strong></td><td><strong>1125</strong></td><td><strong>53.57</strong></td><td><strong>15.62%</strong></td><td><strong>5.00%</strong></td><td><strong>9.09%</strong></td>
+                        </tr>
+                        <tr><td>Hertz</td><td>43</td><td>3361</td><td>78.16</td><td>7.97%</td><td>19.44%</td><td>5.26%</td></tr>
+                        <tr><td>Alamo</td><td>33</td><td>1016</td><td>30.79</td><td>29.26%</td><td>10.00%</td><td>0.00%</td></tr>
+                        <tr><td>Avis</td><td>41</td><td>1302</td><td>31.76</td><td>-10.45%</td><td>0.00%</td><td>0.00%</td></tr>
+                        <tr><td>Europcar</td><td>15</td><td>1069</td><td>71.27</td><td>8.97%</td><td>0.00%</td><td>0.00%</td></tr>
+                        <tr><td>SIXT</td><td>15</td><td>542</td><td>36.13</td><td>0.00%</td><td>7.14%</td><td>0.00%</td></tr>
+                        <tr><td>Cactus</td><td>13</td><td>482</td><td>37.08</td><td>0.00%</td><td>-7.14%</td><td>0.00%</td></tr>
+                        <tr><td>Fit</td><td>15</td><td>495</td><td>33.00</td><td>0.00%</td><td>0.00%</td><td>0.00%</td></tr>
+                        <tr><td>Taraborelli</td><td>7</td><td>328</td><td>46.86</td><td>17.99%</td><td>16.67%</td><td>0.00%</td></tr>
+                        <tr>
+                            <td>Otros</td>
+                            <td>20 (N/A para total)</td>
+                            <td>3710</td>
+                            <td>N/A</td>
+                            <td>6.00%</td>
+                            <td>6.25% (N/A para total)</td>
+                            <td>N/A</td> <!-- O el valor que tengas para Otros -->
+                        </tr>
+                        <tr>
+                            <td><strong>Total Principales</strong></td>
+                            <td><strong>203</strong></td>
+                            <td><strong>13671</strong></td>
+                            <td><strong>67.34</strong></td>
+                            <td><strong>8.07%</strong></td>
+                            <td><strong>6.28%</strong></td>
+                            <td><!-- Aquí iría el % Inc. Ciudades para el Total si lo tienes/calculas -->N/A</td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+                <p style="font-size: 0.9em; margin-top: 15px; text-align:center;"><em>Nota: Autos/Agencia para Total Principales = Flota Total / Agencias Totales. "Otros" representa la sumatoria de flotas de rentadoras locales.</em></p>
+            </div>
+        </div>
+
+        <!-- Slide 13: Posicionamiento Estratégico de Localiza (ID: slide-12) -->
+        <div class="slide" id="slide-12">
+            <div class="slide-header">
+                <h1>🧭 Posicionamiento Estratégico de <span class="company-localiza-badge company-badge">Localiza</span></h1>
+            </div>
+            <div style="max-width: 900px; margin: 20px auto 0 auto; padding: 0 15px;">
+                <h3 style="font-size: 1.4em; margin-bottom: 10px;">Análisis FODA de <span class="localiza-text-highlight">Localiza</span></h3>
+
+                <h4 style="color: var(--localiza-text-color); margin-top: 20px;">🟢 Fortalezas:</h4>
+                <ul class="summary-points">
+                    <li><strong>Calidad de Flota:</strong> Contar con un 80% de la flota con menos de 45,000 km es un diferencial clave en calidad, confiabilidad y experiencia del cliente.</li>
+                                    </ul>
+
+                <h4 style="color: #c0392b; margin-top: 20px;">🔴 Debilidades / Desafíos:</h4>
+                <ul class="summary-points">
+                    <li><strong>Volumen de Flota y Red de Agencias:</strong> A pesar del crecimiento, existe una brecha considerable con el líder (<span class="company-badge company-hertz-badge">Hertz</span>) y otros competidores (<span class="company-badge company-avis-badge">Avis</span>, <span class="company-badge company-alamo-badge">Alamo</span>) en número total de vehículos y sucursales.</li>
+                    <li><strong>Participación de Mercado (Share Autos):</strong> Nuestro share actual (8.62%) es significativamente menor al del líder (25.76% <span class="company-badge company-hertz-badge">Hertz</span>), indicando un amplio terreno por conquistar.</li>
+                    <li><strong>Penetración de Mercado Limitada:</strong> Nuestra penetración actual (1.11 autos/1000 hab. en zona op.) es inferior a la de competidores clave como <span class="company-badge company-hertz-badge">Hertz</span> (2.48) y el segmento <span class="company-badge company-otros-badge">"Otros"</span> (2.11).</li>
+                    <li><strong>Posicionamiento en Plazas Clave:</strong> En mercados de alto volumen como Salta, Mendoza y Bariloche, nuestra presencia de flota es considerablemente menor a la de los líderes.</li>
+                    <li><strong>Ritmo de Crecimiento Conservador (Histórico):</strong> Si bien hubo crecimiento, una estrategia históricamente más cauta en expansión de agencias y flota nos ha dejado por detrás de la agresividad de otros jugadores.</li>
+                </ul>
+
+                <h4 style="color: #27ae60; margin-top: 20px;">✨ Oportunidades:</h4>
+                <ul class="summary-points">
+                    <li><strong>Crecimiento de Flota y Agencias:</strong> El mercado muestra expansión. Existe una clara oportunidad para un crecimiento más acelerado en flota y red de agencias para reducir la brecha con los líderes y capturar mayor cuota.</li>
+                    <li><strong>Mejora de Eficiencia (Autos/Agencia):</strong> Aunque somos el 3ro, optimizar este ratio hasta niveles de <span class="company-badge company-hertz-badge">Hertz</span>/ <span class="company-badge company-europcar-badge">Europcar</span> puede incrementar significativamente la rentabilidad.</li>
+                    <li><strong>Capitalizar Dinámica de Competidores:</strong>
+                        <ul style="margin-top:5px; padding-left:20px;">
+                            <li>El líder (<span class="company-badge company-hertz-badge">Hertz</span>) creció en flota a un ritmo porcentual menor que nosotros.</li>
+                            <li>El segundo (<span class="company-badge company-avis-badge">Avis</span>) está reduciendo su flota y no expandió red.</li>
+                            <li><span class="company-badge company-europcar-badge">Europcar</span> no expandió red.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Mercado Argentino con Potencial de Penetración:</strong> La comparativa con mercados más maduros como Brasil (4.7-5.2 autos/1000 hab.) sugiere un gran potencial de crecimiento a largo plazo para todo el sector en Argentina (~0.28 autos/1000 hab.).</li>
+                    <li><strong>Diferencial de Flota Joven:</strong> Explotar y comunicar activamente la ventaja de nuestra flota moderna como argumento de venta y satisfacción del cliente.</li>
+                </ul>
+
+                <h4 style="color: #7f8c8d; margin-top: 20px;">⚠️ Amenazas:</h4>
+                <ul class="summary-points">
+                    <li><strong>Expansión Continua de <span class="company-badge company-hertz-badge">Hertz</span>:</strong> Su posición de liderazgo y continua inversión en red y flota.</li>
+                    <li><strong>Dinamismo de Otros Competidores:</strong> Crecimiento agresivo en flota de actores como <span class="company-badge company-alamo-badge">Alamo</span> y <span class="company-badge company-taraborelli-badge">Taraborelli</span>.</li>
+                    <li><strong>Competencia Fragmentada (<span class="company-badge company-otros-badge">"Otros"</span>):</strong> La alta participación y penetración del segmento "Otros" indica una fuerte competencia local y regional.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Slide 14: Conclusiones y Recomendaciones (ID: slide-13) -->
+        <div class="slide" id="slide-13">
+             <div class="slide-header">
+                <h1>💡 Conclusiones y Recomendaciones para <span class="company-localiza-badge company-badge">Localiza</span></h1>
+            </div>
+            <div style="max-width: 900px; margin: 20px auto 0 auto; padding: 0 15px;">
+                <ol class="summary-points" style="font-size:1.1em; list-style-position: inside;">
+                    <li><strong>Fortalecer Comunicación de Flota Joven:</strong> Hacer de la calidad y modernidad de la flota un pilar central de la propuesta de valor.</li>
+                    <li><strong>Estrategia de Crecimiento Balanceada:</strong> Continuar el incremento de flota manteniendo la eficiencia, y evaluar una expansión de red más selectiva y agresiva en mercados clave para reducir GAPs y aumentar share.</li>
+                    <li><strong>Optimizar Presencia en Ciudades Estratégicas:</strong> Desarrollar planes específicos para ciudades con GAPs significativos o donde se pueda disputar el liderazgo.</li>
+                    <li><strong>Monitoreo Continuo:</strong> Vigilar las estrategias de <span class="company-badge company-hertz-badge">Hertz</span> (volumen y red), <span class="company-badge company-alamo-badge">Alamo</span> (crecimiento de flota) y la dinámica de <span class="company-badge company-otros-badge">"Otros"</span>.</li>
+                    <li><strong>Foco en la Experiencia del Cliente:</strong> Una flota nueva, combinada con buen servicio, puede ser un factor decisivo de elección.</li>
+                </ol>
+                <p style="margin-top: 30px; font-size: 1.1em; text-align:center;"><strong>En resumen:</strong> <span class="localiza-text-highlight">Localiza</span> está bien posicionada con una flota de calidad y eficiencia operativa. La clave será una expansión estratégica y comunicar sus ventajas competitivas, especialmente la juventud de su flota, para ganar cuota de mercado. </p>
+        </div>
+            </div>
+
+        <!-- Slide 15: Aclaración sobre "Otros" (ID: slide-14) ESTE ES EL ÚLTIMO SLIDE -->
+        <div class="slide" id="slide-14">
+            <div class="slide-header">
+                <h2>ℹ️ Aclaración Importante: Categoría "Otros"</h2>
+            </div>
+            <div style="max-width: 900px; margin: 20px auto 0 auto; padding: 0 15px; text-align: center;">
+                <img src="https://cdn-icons-png.flaticon.com/512/190/190720.png" alt="Info Icon" style="width: 80px; height: auto; margin-bottom: 20px; margin-top:30px;">
+                <h3>¿Quiénes componen la categoría "Otros"?</h3>
+                <p style="font-size: 1.1em; line-height: 1.6; max-width: 700px; margin: 0 auto;">
+                    La categoría <span class="company-badge company-otros-badge">"Otros"</span> en este análisis representa la <strong>sumatoria de todas las rentadoras de autos locales y más pequeñas</strong> que operan en Argentina.
+                </p>
+                <p style="font-size: 1.05em; line-height: 1.6; max-width: 700px; margin: 20px auto 0 auto;">
+                    Individualmente pueden tener una participación menor, pero en conjunto constituyen una parte significativa del mercado. Su flota total estimada para 2025 (según tabla de penetración) es de <strong>3,500 vehículos</strong> y su share de autos es del <strong>26.82%</strong>.
+                </p>
+                 <p style="font-size: 1.05em; line-height: 1.6; max-width: 700px; margin: 20px auto 0 auto;">
+                    Comprender el peso de este grupo es crucial, ya que pueden presentar una competencia fuerte a nivel local.
+                </p>
+            </div>
+        </div>
+
+    </div> <!-- Fin de presentation-container -->
+
+    <div class="navigation"> <!-- Navegación inferior original, la mantenemos como fallback o por si se prefiere -->
+        <button id="prevBtn">Anterior</button>
+        <button id="nextBtn">Siguiente</button>
+    </div>
+
+    <script>
+// --- Helper para CSS Vars (CORREGIDO EL SUBSTRING) ---
+        function getCssVariable(variableName) {
+            let colorValue = '#FF00FF'; // Fallback MUY obvio (magenta) si todo falla
+            let computedValueAttempt = "NO OBTENIDO"; // Inicializar para claridad
+
+            if (document.documentElement && typeof getComputedStyle === 'function') {
+                try {
+                    // CORRECCIÓN CRÍTICA: Usar variableName directamente, sin substring.
+                    computedValueAttempt = getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
+
+                    if (computedValueAttempt && /^#([0-9A-Fa-f]{3}){1,2}$/.test(computedValueAttempt)) { // Es un HEX válido?
+                        colorValue = computedValueAttempt;
+                    } else if (computedValueAttempt) { // Se obtuvo algo, pero no es HEX
+                        // console.warn(`getCssVariable: Valor para '${variableName}' (obtuvo: '${computedValueAttempt}') NO ES UN COLOR HEX VÁLIDO. Usando fallback.`); // Comentado para reducir ruido
+                    } else { // Se obtuvo una cadena vacía o null
+                        // console.warn(`getCssVariable: No se obtuvo valor (string vacía/null) para '${variableName}'. Usando fallback.`); // Comentado para reducir ruido
+                    }
+                } catch (e) {
+                    console.error(`getCssVariable: EXCEPCIÓN obteniendo valor para '${variableName}':`, e);
+                }
+            } else {
+                console.warn(`getCssVariable: document.documentElement o getComputedStyle no disponible. Fallback para '${variableName}'.`);
+            }
+            // console.log(`DEBUG getCssVariable: Intentando '${variableName}', Obtuvo crudo='${computedValueAttempt}', Retornando final='${colorValue}'`); // Comentado para reducir ruido
+            return colorValue;
+        }
+
+        // Plugin global para subrayar “Localiza” y aplicar estilos a sus ticks
+        const localizaTickStylingPlugin = {
+            id: 'localizaTickStyling',
+            afterDraw(chart) {
+                const { ctx, scales } = chart;
+                if (!scales.y || !scales.y.ticks) return; // Asegurarse que la escala Y y sus ticks existan
+
+                scales.y.ticks.forEach((tick, index) => {
+                    if (tick.label === 'Localiza' && chart.options.indexAxis === 'y') { // Asegurarse que sea para gráficos de barra horizontal
+                        const yPos = scales.y.getPixelForTick(index);
+                        const xPos = scales.y.left; // Usar el borde izquierdo de la escala Y
+                        const labelWidth = ctx.measureText(tick.label).width;
+
+                        // Subrayado
+                        ctx.save();
+                        ctx.beginPath();
+                        ctx.strokeStyle = getCssVariable('--localiza-bg'); // Usa el color de Localiza
+                        ctx.lineWidth = 2; // Un poco más grueso para destacar
+                        // Ajustar X para que el subrayado comience un poco antes del texto
+                        // y la longitud coincida con el texto. El label se dibuja a la izquierda de la barra.
+                        const textXPosition = xPos - labelWidth - (chart.options.scales.y.ticks.padding || 8); // Ajusta según el padding
+                        ctx.moveTo(textXPosition, yPos + (tick.major ? 6 : 5)); // Ajusta la posición Y del subrayado
+                        ctx.lineTo(textXPosition + labelWidth, yPos + (tick.major ? 6 : 5));
+                        ctx.stroke();
+                        ctx.restore();
+                    }
+                });
+            }
+        };
+        Chart.register(localizaTickStylingPlugin);
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOMContentLoaded disparado. Inicializando datos y gráficos...");
+
+// --- DATOS GENERALES EMPRESAS 2025 ---
+            const empresasData = [
+                { nombre: 'Localiza',   ag25: 21, fl25: 1125, incFlota: 15.62, incAgencia: 5.00,  incCiudades: 9.09,  colorBgVariable: '--localiza-bg'},
+                { nombre: 'Hertz',      ag25: 43, fl25: 3361, incFlota: 7.97,  incAgencia: 19.44, incCiudades: 5.26,  colorBgVariable: '--hertz-bg'},
+                { nombre: 'Alamo',      ag25: 33, fl25: 1016, incFlota: 29.26, incAgencia: 10.00, incCiudades: 0.00,  colorBgVariable: '--alamo-bg'},
+                // ***** INICIO DE MODIFICACIÓN PARA AVIS *****
+                { nombre: 'Avis',       ag25: 41, fl25: 1302, incFlota: -10.45, incAgencia: 0.00,  incCiudades: 0.00,  colorBgVariable: '--avis-bg'},
+                // ***** FIN DE MODIFICACIÓN PARA AVIS *****
+                { nombre: 'Europcar',   ag25: 15, fl25: 1069, incFlota: 8.97,  incAgencia: 0.00,  incCiudades: 0.00,  colorBgVariable: '--europcar-bg'},
+                { nombre: 'SIXT',       ag25: 15, fl25: 542,  incFlota: 0.00,  incAgencia: 7.14,  incCiudades: 0.00,  colorBgVariable: '--sixt-bg'},
+                { nombre: 'Cactus',     ag25: 13, fl25: 482,  incFlota: 0.00,  incAgencia: -7.14, incCiudades: 0.00,  colorBgVariable: '--cactus-bg'},
+                { nombre: 'Fit',        ag25: 15, fl25: 495,  incFlota: 0.00,  incAgencia: 0.00,  incCiudades: 0.00,  colorBgVariable: '--fit-bg'},
+                { nombre: 'Taraborelli',ag25: 7,  fl25: 328,  incFlota: 17.99, incAgencia: 16.67, incCiudades: 0.00,  colorBgVariable: '--taraborelli-bg'}
+            ];
+            empresasData.forEach(emp => emp.colorBg = getCssVariable(emp.colorBgVariable));
+            
+            const otrosDataGeneral = { nombre: 'Otros', fl25: 3710, incFlota: 6.00, incAgencia: 6.25, incCiudades: null, colorBgVariable: '--otros-bg'}; // Asumiendo incCiudades no aplica o es desconocido
+            otrosDataGeneral.colorBg = getCssVariable(otrosDataGeneral.colorBgVariable);
+            
+            // Recalcular Autos/Agencia para todos, incluyendo el nuevo valor de Avis
+            empresasData.forEach(emp => emp.autosPorAgencia = emp.ag25 > 0 ? parseFloat((emp.fl25 / emp.ag25).toFixed(2)) : 0);
+            // El valor de autosPorAgencia para Avis será ahora: 1302 / 41 = 31.76
+
+
+            // --- DATOS PARA PENETRACIÓN Y SHARE 2025 ---
+            const penetracionData2025 = [
+                { empresa: 'Localiza', penetracion: 1.108, vsLocaliza: '-',    shareAutos: 8.62,  colorBgVariable: '--localiza-bg' },
+                { empresa: 'Hertz',    penetracion: 2.484, vsLocaliza: 2.24,   shareAutos: 25.76, colorBgVariable: '--hertz-bg' },
+                { empresa: 'Alamo',    penetracion: 0.805, vsLocaliza: 0.73,   shareAutos: 7.79,  colorBgVariable: '--alamo-bg' },
+                { empresa: 'Avis',     penetracion: 0.929, vsLocaliza: 0.84,   shareAutos: 11.82, colorBgVariable: '--avis-bg' },
+                { empresa: 'Europcar', penetracion: 0.732, vsLocaliza: 0.66,   shareAutos: 5.95,  colorBgVariable: '--europcar-bg' },
+                { empresa: 'SIXT',     penetracion: 0.564, vsLocaliza: 0.51,   shareAutos: 4.15,  colorBgVariable: '--sixt-bg' },
+                { empresa: 'Cactus',   penetracion: 0.483, vsLocaliza: 0.44,   shareAutos: 2.78,  colorBgVariable: '--cactus-bg' },
+                { empresa: 'Fit',      penetracion: 0.520, vsLocaliza: 0.47,   shareAutos: 3.79,  colorBgVariable: '--fit-bg' },
+                { empresa: 'Taraborelli',penetracion:0.682,vsLocaliza: 0.62,   shareAutos: 2.51,  colorBgVariable: '--taraborelli-bg' },
+               /* { empresa: 'Otros',    penetracion: 2.107, vsLocaliza: 1.90,   shareAutos: 26.82, colorBgVariable: '--otros-bg' }*/
+            ];
+            penetracionData2025.forEach(item => item.colorBg = getCssVariable(item.colorBgVariable));
+            // console.log("Colores ASIGNADOS a penetracionData2025:", penetracionData2025.map(e => ({ empresa: e.empresa, colorResuelto: e.colorBg })));
+
+            const totalPaisPenetracionArgVal = 0.2776;
+            const totalPaisPenetracionArgElement = document.getElementById('totalPaisPenetracionArg');
+            if(totalPaisPenetracionArgElement) {
+                totalPaisPenetracionArgElement.innerText = totalPaisPenetracionArgVal.toFixed(4);
+            }
+
+            // --- DATOS PARA GAP DE LIDERAZGO ---
+            const gapLiderazgoRaw = [
+                // Ciudad, GAP24, GAP25, Lider25 (Nombre del competidor líder en 2025)
+                { ciudad: 'Buenos Aires', gap24: 36,  gap25: 42,  lider25: 'Hertz' },
+                { ciudad: 'Córdoba',      gap24: 82,  gap25: 73,  lider25: 'Hertz' },
+                { ciudad: 'Salta',        gap24: 308, gap25: 340, lider25: 'Hertz' },
+                { ciudad: 'Jujuy',        gap24: 83,  gap25: 48,  lider25: 'Hertz' },
+                { ciudad: 'Bariloche',    gap24: 645, gap25: 686, lider25: 'Hertz' },
+                { ciudad: 'Rosario',      gap24: 28,  gap25: 5,   lider25: 'Alamo' }, // Alamo 100, Hertz 59, Localiza 54
+                { ciudad: 'Mendoza',      gap24: 138, gap25: 229, lider25: 'Hertz' },
+                { ciudad: 'El Calafate',  gap24: 249, gap25: 237, lider25: 'Hertz' },
+                { ciudad: 'Río Gallegos', gap24: 28,  gap25: 28,  lider25: 'Avis' },
+                { ciudad: 'Bahía Blanca', gap24: 80,  gap25: 16,  lider25: 'Avis' },
+                { ciudad: 'Ushuaia',      gap24: -29, gap25: -54, lider25: 'Localiza' } // Localiza lidera, GAP es negativo (Localiza - competidor más cercano)
+               
+            ];
+            // La corrección de GAP para Ushuaia ya no es necesaria si el dato original es negativo.
+            // Si el GAP original para Ushuaia es la diferencia de Hertz vs Localiza (35-89 = -54), ya es correcto.
+            // Si el GAP original de Ushuaia era +69 y Localiza es líder, entonces el GAP debería ser (89 - Max(Otros))
+            // Tu tabla de GAP ya tiene Ushuaia 2025 como 54, pero tu tabla de flotas dice que Localiza tiene 89 y el GAP -69
+            // Voy a usar los GAPs que proporcionaste en la primera tabla para este slide:
+            gapLiderazgoRaw.find(c => c.ciudad === 'Ushuaia').gap24 = 29;  // Originalmente era -29 pero tu tabla de gap dice 29
+            gapLiderazgoRaw.find(c => c.ciudad === 'Ushuaia').gap25 = 54;  // Tu tabla de gap dice 54, tu tabla de flota indica que Localiza lidera con GAP -69
+                                                                        // Esto es confuso. Por ahora, asumiré que un GAP positivo es "Localiza está X autos detrás"
+                                                                        // y si Localiza lidera, el GAP es negativo por la diferencia.
+                                                                        // Si Localiza tiene 89 y el siguiente es Avis con 45, el GAP para Localiza es -(89-45) = -44.
+                                                                        // Tu tabla de GAP Liderazgo dice para Ushuaia GAP25 = 54.
+                                                                        // Tu tabla de flotas dice para Ushuaia Localiza=89, Hertz=35, Alamo=23, Avis=45. Lidera Localiza. El GAP vs Avis (el 2do) es 89-45 = 44.
+                                                                        // Para que la tabla sea consistente con la idea "GAP negativo indica liderazgo de Localiza"
+            gapLiderazgoRaw.find(c => c.ciudad === 'Ushuaia').gap25 = -44; // (89 Localiza - 45 Avis) -> Localiza lidera por 44.
+            // Para Neuquén, el GAP de Localiza (asumiendo S/A como 0) vs Hertz (121) es 121.
+            //gapLiderazgoRaw.find(c => c.ciudad === 'Neuquén').gap25 = 121;
+
+            function createSortedChart(canvasId, dataArray, dataKey, labelKey, chartLabel, axisTitle, chartType = 'bar', indexAxis = 'y') {
+                const canvasElement = document.getElementById(canvasId);
+                if (!canvasElement) {
+                    console.warn(`Canvas con ID '${canvasId}' no encontrado.`);
+                    return;
+                }
+                const existingChart = Chart.getChart(canvasElement);
+                if (existingChart) {
+                    existingChart.destroy();
+                }
+
+                const sortedData = [...dataArray].sort((a, b) => b[dataKey] - a[dataKey]);
+                const backgroundColorsForChart = sortedData.map(item => item.colorBg || '#C0C0C0'); // Fallback
+                // console.log(`Colores para '${canvasId}':`, backgroundColorsForChart);
+
+                const chartOptions = {
+                    responsive: true, maintainAspectRatio: false, indexAxis: indexAxis,
+                    plugins: { legend: { display: false }, tooltip: { callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) label += ': ';
+                            let value = (indexAxis === 'y') ? context.parsed.x : context.parsed.y;
+                            if (value !== null && value !== undefined) {
+                               label += parseFloat(value).toFixed(2);
+                            } else {
+                               label += 'N/A';
+                            }
+                            if (dataKey.includes("inc") || dataKey.includes("Share") || dataKey.includes("share")) label += '%';
+                            return label;
+                        }
+                    }}},
+                    scales: {
+                        x: { beginAtZero: true, title: { display: true, text: axisTitle } },
+                        y: { // Configuraciones base para el eje Y
+                            ticks: {
+                                color: '#333', // Color por defecto para ticks Y
+                                font: { weight: 'normal', size: 12 } // Fuente por defecto para ticks Y
+                            }
+                        }
+                    }
+                };
+
+                // Aplicar estilos especiales a los ticks de 'Localiza' para el eje Y
+                if (indexAxis === 'y' && (labelKey === 'nombre' || labelKey === 'empresa')) {
+                    chartOptions.scales.y.ticks.color = function(context) {
+                        return context.tick.label === 'Localiza' ? getCssVariable('--localiza-bg') : '#666'; // Usar un gris un poco más claro para otros
+                    };
+                    chartOptions.scales.y.ticks.font = function(context) {
+                        return context.tick.label === 'Localiza' ? { weight: 'bold', size: 13 } : { weight: 'normal', size: 12 }; // Tamaño un poco mayor y negrita
+                    };
+                }
+
+
+                new Chart(canvasElement, {
+                    type: chartType,
+                    data: {
+                        labels: sortedData.map(item => item[labelKey]),
+                        datasets: [{
+                            label: chartLabel,
+                            data: sortedData.map(item => item[dataKey]),
+                            backgroundColor: backgroundColorsForChart,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: chartOptions
+                });
+            }
+            
+            createSortedChart('agenciasChart', empresasData, 'ag25', 'nombre', 'Número de Agencias 2025', 'Cantidad de Agencias');
+            createSortedChart('crecimientoAgenciasChart', empresasData, 'incAgencia', 'nombre', '% Incremento Agencias (2024-2025)', '% Incremento Agencias');
+            
+            const empresasConOtrosFlotaGeneral = [...empresasData];
+            createSortedChart('flotaChart', empresasConOtrosFlotaGeneral, 'fl25', 'nombre', 'Tamaño de Flota 2025', 'Cantidad de Vehículos');
+            createSortedChart('crecimientoFlotaChart', empresasConOtrosFlotaGeneral.filter(e => typeof e.incFlota === 'number'), 'incFlota', 'nombre', '% Incremento Flota (2024-2025)', '% Incremento Flota');
+            
+            createSortedChart('eficienciaChart', empresasData, 'autosPorAgencia', 'nombre', 'Autos por Agencia 2025', 'Promedio Autos / Agencia');
+
+            createSortedChart('penetracionChart', penetracionData2025, 'penetracion', 'empresa', 'Penetración (Autos/1000 Hab. Op.)', 'Autos / 1000 Hab. Op.');
+            createSortedChart('shareAutosChart', penetracionData2025, 'shareAutos', 'empresa', 'Share de Autos (%)', 'Share de Autos (%)');
+
+                        // --- Llenar Tabla GAP Liderazgo (Slide 8) ---
+            const gapTableBody = document.getElementById('gapLiderazgoTable')?.getElementsByTagName('tbody')[0];
+            if (gapTableBody) {
+                gapTableBody.innerHTML = ''; // Limpiar contenido previo si se recarga
+                gapLiderazgoRaw.forEach(item => {
+                    let row = gapTableBody.insertRow();
+                    let variacion = null;
+                    if (item.gap25 !== null && item.gap24 !== null) {
+                        variacion = item.gap25 - item.gap24;
+                    }
+                    
+                    let variacionClass = '';
+                    let variacionText = 'N/A';
+                    if (variacion !== null) {
+                        variacionClass = variacion < 0 ? 'gap-positive' : (variacion > 0 ? 'gap-negative' : 'gap-neutral');
+                        variacionText = `${variacion > 0 ? '+' : ''}${variacion}`;
+                    }
+
+                    let observacion = "";
+                    if (item.gap25 !== null) {
+                        if (item.gap25 < 0) observacion = `<span class="localiza-text-highlight">Localiza Lidera</span>`;
+                        else if (variacion !== null && variacion < 0 && (item.gap24 === null || item.gap24 > 0)) observacion = "Mejora GAP";
+                        else if (variacion !== null && variacion > 0) observacion = "Aumenta GAP";
+                        else if (variacion === 0 && item.gap25 >= 0) observacion = "GAP Estable";
+                        else if (item.gap25 >= 0) observacion = "Detrás del Líder"; // Caso general si no hay mejora/empeora notable
+                    } else {
+                        observacion = "Datos GAP 2025 N/A";
+                    }
+
+
+                    row.insertCell().textContent = item.ciudad;
+                    row.insertCell().textContent = item.gap24 !== null ? item.gap24 : 'N/A';
+                    row.insertCell().textContent = item.gap25 !== null ? item.gap25 : 'N/A';
+                    
+                    let cellVariacion = row.insertCell();
+                    cellVariacion.innerHTML = `<span class="${variacionClass}">${variacionText}</span>`;
+                    
+                    // Celda para el Líder
+                    let cellLider = row.insertCell();
+                    let liderBadgeClass = '';
+                    if (item.lider25) {
+                        switch (item.lider25.toLowerCase()) {
+                            case 'localiza': liderBadgeClass = 'company-localiza-badge'; break;
+                            case 'hertz': liderBadgeClass = 'company-hertz-badge'; break;
+                            case 'alamo': liderBadgeClass = 'company-alamo-badge'; break;
+                            case 'avis': liderBadgeClass = 'company-avis-badge'; break;
+                            case 'europcar': liderBadgeClass = 'company-europcar-badge'; break;
+                            // Añadir más casos si es necesario
+                            default: liderBadgeClass = 'company-otros-badge'; // Un fallback
+                        }
+                        cellLider.innerHTML = `<span class="company-badge ${liderBadgeClass}">${item.lider25}</span>`;
+                    } else {
+                        cellLider.textContent = 'N/A';
+                    }
+
+                    row.insertCell().innerHTML = observacion;
+                });
+            }
+
+            const penetracionTableBody = document.getElementById('penetracionTable')?.getElementsByTagName('tbody')[0];
+            if (penetracionTableBody) {
+                penetracionData2025.forEach(item => {
+                    let row = penetracionTableBody.insertRow();
+                    if (item.empresa === 'Localiza') row.classList.add('highlight-localiza-row');
+                    
+                    row.insertCell().innerHTML = item.empresa === 'Localiza' ? `<strong class="localiza-text-highlight">${item.empresa}</strong>` : item.empresa;
+                    row.insertCell().textContent = item.penetracion.toFixed(3);
+                    row.insertCell().textContent = item.vsLocaliza;
+                    row.insertCell().textContent = item.shareAutos.toFixed(2) + '%';
+                });
+            }
+            
+                       // --- Gráfico de Composición de Flota (Slide 10) ---
+                        // --- Gráfico de Composición de Flota (Slide 10) ---
+            const flotaComposicionCanvas = document.getElementById('flotaComposicionChart');
+            if (flotaComposicionCanvas) {
+                const existingFlotaCompChart = Chart.getChart(flotaComposicionCanvas);
+                if (existingFlotaCompChart) { 
+                    existingFlotaCompChart.destroy(); 
+                }
+
+                const flotaComposicionLabels = ['Localiza', 'Hertz', 'Avis', 'Europcar'];
+
+                // Datos de Localiza
+                const flotaTotalLocaliza = 1125; // Tomado de empresasData
+                const flotaAntiguaLocaliza = 225; // Tu dato
+                const flotaNuevaLocaliza = flotaTotalLocaliza - flotaAntiguaLocaliza;
+
+                // Datos de Hertz
+                const flotaTotalHertz = 3361; // Tomado de empresasData
+                const flotaAntiguaHertz = 972; // Tu dato
+                const flotaNuevaHertz = flotaTotalHertz - flotaAntiguaHertz;
+
+                // Datos de Avis (usando su nueva flota total de 1302)
+                const flotaTotalAvis = 1302; // Tomado de empresasData (actualizado)
+                const flotaAntiguaAvis = 290; // Tu dato
+                const flotaNuevaAvis = flotaTotalAvis - flotaAntiguaAvis;
+
+                // Datos de Europcar
+                const flotaTotalEuropcar = 1069; // Tomado de empresasData
+                const flotaAntiguaEuropcar = 200; // Tu dato
+                const flotaNuevaEuropcar = flotaTotalEuropcar - flotaAntiguaEuropcar;
+
+                const flotaNuevaData = [
+                    flotaNuevaLocaliza,
+                    flotaNuevaHertz,
+                    flotaNuevaAvis,
+                    flotaNuevaEuropcar
+                ];
+                const flotaViejaData = [
+                    flotaAntiguaLocaliza,
+                    flotaAntiguaHertz,
+                    flotaAntiguaAvis,
+                    flotaAntiguaEuropcar
+                ];
+                
+                const coloresFlotaNueva = [
+                    getCssVariable('--localiza-bg'), 
+                    getCssVariable('--hertz-bg'), 
+                    getCssVariable('--avis-bg'), 
+                    getCssVariable('--europcar-bg')
+                ];
+
+                new Chart(flotaComposicionCanvas, { 
+                    type: 'bar', 
+                    data: { 
+                        labels: flotaComposicionLabels, 
+                        datasets: [
+                            { 
+                                label: 'Flota Estimada "Nueva/Joven"', 
+                                data: flotaNuevaData, 
+                                backgroundColor: coloresFlotaNueva 
+                            },
+                            { 
+                                label: 'Flota Estimada "Antigua/Rotación Lenta"', 
+                                data: flotaViejaData, 
+                                backgroundColor: getCssVariable('--flota-antigua-color') 
+                            }
+                        ]
+                    }, 
+                    options: { 
+                        responsive: true, maintainAspectRatio: false,
+                        indexAxis: 'x', // Cambiado a 'x' para barras verticales si lo prefieres para apiladas
+                        plugins: { 
+                            title: { display: true, text: 'Estimación Composición de Flota (Nueva/Joven vs. Antigua)' }, 
+                            legend: { position: 'top' } 
+                        },
+                        scales: { 
+                            x: { 
+                                stacked: true, 
+                                title: { display: true, text: 'Empresa'} 
+                            }, 
+                            y: { 
+                                stacked: true, 
+                                beginAtZero: true, 
+                                title: { display: true, text: 'Cantidad de Vehículos' } 
+                            } 
+                        }
+                    } 
+                });
+            }
+
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.slide');
+            
+            // Botones de navegación inferiores (originales)
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            // Nuevos botones de navegación flotantes y contador
+            const floatPrevBtn = document.getElementById('floatPrevBtn');
+            const floatNextBtn = document.getElementById('floatNextBtn');
+            const slideCounterDisplay = document.getElementById('slideCounter');
+
+            const indexLinks = document.querySelectorAll('.index-list a');
+            const totalSlides = slides.length; // Guardar el total de slides
+
+            function updateNavigationControls() {
+                // Actualizar contador
+                if (slideCounterDisplay) {
+                    slideCounterDisplay.textContent = `${currentSlide + 1}/${totalSlides}`;
+                }
+
+                // Actualizar botones inferiores
+                if (prevBtn) {
+                    prevBtn.style.display = (currentSlide === 0) ? 'none' : 'inline-block';
+                }
+                if (nextBtn) {
+                    nextBtn.style.display = (currentSlide === totalSlides - 1) ? 'none' : 'inline-block';
+                }
+
+                // Actualizar botones flotantes
+                if (floatPrevBtn) {
+                    // floatPrevBtn.style.display = (currentSlide === 0) ? 'none' : 'inline-block'; // Opción de ocultar
+                    floatPrevBtn.disabled = (currentSlide === 0); // Opción de deshabilitar
+                }
+                if (floatNextBtn) {
+                    // floatNextBtn.style.display = (currentSlide === totalSlides - 1) ? 'none' : 'inline-block'; // Opción de ocultar
+                    floatNextBtn.disabled = (currentSlide === totalSlides - 1); // Opción de deshabilitar
+                }
+            }
+
+            function showSlide(index) {
+                let targetIndex = index;
+                if (typeof index === 'string' && index.startsWith('slide-')) { 
+                    slides.forEach((s, i) => { if (s.id === index) targetIndex = i; });
+                } else if (typeof index !== 'number') { 
+                    targetIndex = parseInt(index);
+                }
+
+                if (isNaN(targetIndex) || targetIndex < 0 || targetIndex >= totalSlides) { 
+                    console.error("Índice de slide inválido:", index, "Convertido a:", targetIndex);
+                    return; 
+                }
+                
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === targetIndex);
+                });
+                currentSlide = targetIndex;
+                updateNavigationControls(); // Llamar para actualizar contador y botones
+                window.scrollTo(0, 0);
+            }
+
+            function changeSlide(n) {
+                let newIndex = currentSlide + n;
+                newIndex = Math.max(0, Math.min(totalSlides - 1, newIndex));
+                showSlide(newIndex);
+            }
+
+            // Listeners para botones de navegación
+            if (prevBtn) { prevBtn.addEventListener('click', function() { changeSlide(-1); }); }
+            if (nextBtn) { nextBtn.addEventListener('click', function() { changeSlide(1); }); }
+            if (floatPrevBtn) { floatPrevBtn.addEventListener('click', function() { changeSlide(-1); }); }
+            if (floatNextBtn) { floatNextBtn.addEventListener('click', function() { changeSlide(1); }); }
+
+            // Listeners para enlaces del índice
+            indexLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const slideIndexToGo = parseInt(this.dataset.slideindex);
+                    if (!isNaN(slideIndexToGo)) { showSlide(slideIndexToGo); }
+                });
+            });
+
+            // ***** INICIO: NUEVO CÓDIGO PARA NAVEGACIÓN CON TECLADO *****
+            document.addEventListener('keydown', function(event) {
+                // Evitar que la navegación por teclado interfiera si el usuario está escribiendo en un input o textarea
+                const activeElement = document.activeElement;
+                if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable)) {
+                    return;
+                }
+
+                switch (event.key) { // Usar event.key es más moderno que event.keyCode
+                    case 'ArrowLeft':
+                        // Solo ir al slide anterior si no estamos en el primero
+                        if (currentSlide > 0) {
+                            changeSlide(-1);
+                        }
+                        event.preventDefault(); // Evitar que la flecha también haga scroll en la página
+                        break;
+                    case 'ArrowRight':
+                        // Solo ir al slide siguiente si no estamos en el último
+                        if (currentSlide < totalSlides - 1) {
+                            changeSlide(1);
+                        }
+                        event.preventDefault(); // Evitar que la flecha también haga scroll en la página
+                        break;
+                    // Podrías añadir más casos, como 'PageUp', 'PageDown', 'Home', 'End' si quisieras
+                }
+            });
+            // ***** FIN: NUEVO CÓDIGO PARA NAVEGACIÓN CON TECLADO *****
+            
+            showSlide(currentSlide); // Mostrar el primer slide al cargar y configurar controles
+        });
+    </script>
+</body>
+</html>
+
