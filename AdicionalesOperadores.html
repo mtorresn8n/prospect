@@ -16,15 +16,71 @@
   }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Poppins', sans-serif; font-size: 14px; line-height: 1.6; background-color: var(--body-bg-dynamic); color: var(--text-dark); margin: 0; padding: 0; }
-    .page-top-bar { background-color: var(--brand-green-dark); color: var(--text-light); padding: 8px 20px; display: flex; flex-direction: column; align-items: flex-start; position: sticky; top: 0; z-index: 1000; box-shadow: var(--shadow-sm); }
-    .top-bar-main-line { display: flex; align-items: center; width: 100%; margin-bottom: 4px; }
-    .back-button-bar { color: var(--text-light); text-decoration: none; font-size: 1.6rem; margin-right: 15px; line-height: 1; flex-shrink: 0;transition: opacity 0.2s ease; }
-    .back-button-bar:hover { opacity: 0.8; }
-    .page-top-bar .title-date-wrapper { display: flex; flex-direction: column; align-items: flex-start; flex-grow: 1; }
-    .page-top-bar .title-date-wrapper h1 { font-size: 1.1rem; font-weight: 500; margin: 0 0 2px 0; line-height: 1.2; }
-    .update-timestamp-bar { font-size: 0.75em; opacity: 0.9; line-height: 1.3; }
-    .data-period-bar { font-size: 0.75em; color: var(--date-info-color); width: 100%; text-align: left; line-height: 1.3; }
-    .data-period-bar strong { font-weight: 500;}
+    
+    .page-top-bar { 
+      background-color: var(--brand-green-dark); 
+      color: var(--text-light); 
+      padding: 10px 20px;
+      display: flex; 
+      align-items: center; /* Alinear verticalmente todos los items de la barra */
+      justify-content: space-between; /* Distribuir espacio: [Botón+Título] y [BloqueFechas] */
+      position: sticky; 
+      top: 0; 
+      z-index: 1000; 
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-left-block { /* Nuevo contenedor para Botón Volver y Título */
+        display: flex;
+        align-items: center;
+    }
+
+    .back-button-bar { 
+      color: var(--text-light); 
+      text-decoration: none; 
+      font-size: 1.6rem; 
+      margin-right: 15px; 
+      line-height: 1; 
+      flex-shrink: 0;
+      transition: opacity 0.2s ease; 
+    }
+    .back-button-bar:hover { 
+      opacity: 0.8; 
+    }
+    
+    .page-top-bar .header-left-block h1 { /* Título dentro del bloque izquierdo */
+      font-size: 1.1rem; 
+      font-weight: 500; 
+      margin: 0; 
+      line-height: 1.2;
+    }
+    
+    /* Contenedor para las dos líneas de fecha, alineado a la derecha */
+    .page-top-bar .date-info-block {
+        display: flex;
+        flex-direction: column; /* Apila las dos fechas */
+        align-items: flex-end;  /* Alinea el texto de las fechas a la derecha */
+        text-align: right; /* Para los spans internos */
+        margin-left: 20px; /* Espacio por si el título es muy largo */
+    }
+
+    .update-timestamp-bar { 
+      font-size: 0.75em; 
+      opacity: 0.9;
+      line-height: 1.3;
+    }
+
+    .data-period-bar { 
+      font-size: 0.75em; 
+      color: var(--date-info-color); 
+      line-height: 1.3;
+    }
+    .data-period-bar strong { 
+      font-weight: 500;
+    }
+
+
+    
     .report-container { max-width: 95%; margin: 20px auto; background-color: var(--bg-section); padding: 25px; border-radius: var(--border-radius-md); box-shadow: var(--shadow-md); }
     .filters-and-actions-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 15px; margin-bottom: 25px; padding: 15px; background-color: #f8f9fa; border: 1px solid var(--border-color); border-radius: var(--border-radius-sm); }
     .advanced-filters-container { display: flex; flex-wrap: wrap; gap: 20px; flex-grow:1; }
@@ -67,18 +123,19 @@
     .glossary-siglas h4 { margin-top: 0; margin-bottom: 8px; font-weight: 600; color: var(--brand-green-dark); }
     .glossary-siglas p { margin: 0; line-height: 1.5; } .glossary-siglas strong { color: var(--text-dark); }
   </style></head><body>
+  
   <div class="page-top-bar">
-    <div class="top-bar-main-line">
+    <div class="header-left-block">
         <a href="submenu_adicionales.html" class="back-button-bar" title="Volver al Submenú"><i data-feather="arrow-left"></i></a>
-        <div class="title-date-wrapper">
-            <h1>Detalle de Venta de Adicionales</h1>
-            <span class="update-timestamp-bar">Actualizado: 02/06/2025 22:44</span>
-        </div>
+        <h1>Detalle de Venta de Adicionales</h1>
     </div>
-    <div class="data-period-bar">
-        <strong>Período del Reporte:</strong> 01/05/2025 - 31/05/2025
+    <div class="date-info-block">
+        <span class="update-timestamp-bar">Actualizado: 02/06/2025 22:48</span>
+        <span class="data-period-bar"><strong>Período del Reporte:</strong> 01/05/2025 - 31/05/2025</span>
     </div>
   </div>
+
+  
   <div class="report-container">
     <div class="filters-and-actions-bar">
         <div class="advanced-filters-container">
