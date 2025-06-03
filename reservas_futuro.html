@@ -314,7 +314,28 @@ td.is-last-in-group {
   margin: 0;
   vertical-align: middle;
 }
+/* NUEVA REGLA CSS PARA LA FECHA DE ACTUALIZACIÓN */
 
+  /* Ajuste si el título y el botón de atrás están en la misma línea y quieres esto debajo */
+  .page-header {
+    /* ... (tus estilos existentes) ... */
+    padding-bottom: 15px; /* Un poco más de padding abajo en el header para acomodar la fecha */
+  }
+  .page-header .header-content-wrapper { /* Nuevo div para agrupar título y timestamp */
+    display: flex;
+    align-items: center; /* Alinear botón y título */
+  }
+   .page-header .title-and-timestamp {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Título y timestamp alineados a la izquierda */
+    margin-left: 10px; /* Espacio si el botón de atrás está muy pegado */
+  }
+  .page-header h1 {
+    display: inline-block; /* O block si quieres que la fecha esté estrictamente debajo */
+    margin: 0;
+    vertical-align: middle; /* Ya lo tenías, es bueno */
+  }
 
     
 </style>
@@ -324,11 +345,15 @@ td.is-last-in-group {
 </head>
 <body>
 <header class="page-header">
-  <!-- Botón “atrás” -->
-  <a href="index.html" class="back-button" title="Volver al inicio">
-    ←
-  </a>
-  <h1>Analítico de Reservas Interactivo</h1>
+  <div class="header-content-wrapper">
+    <a href="index.html" class="back-button" title="Volver al inicio">
+      ←
+    </a>
+    <div class="title-and-timestamp">
+      <h1>Analítico de Reservas Interactivo</h1>
+      <span class="update-timestamp">Fecha Actualización: 03/06/2025 10:23</span>
+    </div>
+  </div>
 </header>
 
   <div class="glossary">
