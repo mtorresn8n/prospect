@@ -241,6 +241,7 @@
     
     .menu-grid .menu-card:nth-child(1) { animation-delay: 0.3s; }
     .menu-grid .menu-card:nth-child(2) { animation-delay: 0.4s; }
+    .menu-grid .menu-card:nth-child(3) { animation-delay: 0.5s; } /* NUEVO */
     /* Añadir más si tienes más tarjetas de submenú */
 
   </style>
@@ -260,18 +261,26 @@
   <main class="main-content">
     <div class="menu-grid">
       
-      <a href="reservas_futuro.html" class="menu-card"> <!-- Enlace a la página real -->
+      <a href="reservas_futuro.html" class="menu-card">
         <div class="menu-card-icon"><i data-feather="trending-up"></i></div>
         <h3>Reservas a Futuro</h3>
         <p>Proyecciones y análisis de reservas futuras para anticipar la demanda.</p>
       </a>
       
-      <a href="reservas_consolidado.html" class="menu-card"> <!-- Enlace a la página real -->
+      <a href="reservas_consolidado.html" class="menu-card">
         <div class="menu-card-icon"><i data-feather="layers"></i></div>
         <h3>Reservas Consolidadas</h3>
-        <p>Visión general y datos históricos consolidados de todas las reservas(Proximamente...).</p>
+        <p>Visión general y datos históricos consolidados de todas las reservas (Próximamente...).</p>
       </a>
       
+      <!-- NUEVO BLOQUE AÑADIDO -->
+      <a href="reservas_mes_antelacion.html" class="menu-card"> <!-- Cambia el href al nombre de tu archivo HTML real -->
+        <div class="menu-card-icon"><i data-feather="calendar"></i></div> <!-- Icono de calendario -->
+        <h3>Reservas por Mes y Antelación</h3>
+        <p>Analiza las reservas agrupadas por mes y el tiempo de antelación con que se realizan.</p>
+      </a>
+      <!-- FIN DEL NUEVO BLOQUE -->
+
       <!-- Puedes añadir más opciones de submenú aquí si es necesario -->
       <!-- Ejemplo:
       <a href="reservas_por_canal.html" class="menu-card">
@@ -285,7 +294,7 @@
   </main>
 
   <footer class="site-footer">
-    &copy; <span id="year"></span> Localiza Rent a Car &nbsp;&bull;&nbsp; Desarrollado y analizado por Mateus Torres.
+    © <span id="year"></span> Localiza Rent a Car  •  Desarrollado y analizado por Mateus Torres.
   </footer>
 
   <script>
