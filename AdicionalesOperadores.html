@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ranking Detallado de Venta de Adicionales - Localiza</title>
+  <title>Detalle de Venta de Adicionales - Localiza</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/feather-icons"></script><style>
@@ -12,16 +12,20 @@
     --header-bg-dynamic: #065f46; --header-color-dynamic: #f0fdf4;
     --header-border-dynamic: #047857;
     --body-bg-dynamic: #f8fafc;
+    --date-info-color: #fff2cc; /* Amarillo muy claro para las fechas del período */
   }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Poppins', sans-serif; font-size: 14px; line-height: 1.6; background-color: var(--body-bg-dynamic); color: var(--text-dark); margin: 0; padding: 0; }
-    .page-top-bar { background-color: var(--brand-green-dark); color: var(--text-light); padding: 10px 20px; display: flex; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: var(--shadow-sm); }
-    .back-button-bar { color: var(--text-light); text-decoration: none; font-size: 1.5rem; margin-right: 15px; padding: 5px; line-height: 1; transition: opacity 0.2s ease; }
+    .page-top-bar { background-color: var(--brand-green-dark); color: var(--text-light); padding: 8px 20px; display: flex; flex-direction: column; align-items: flex-start; position: sticky; top: 0; z-index: 1000; box-shadow: var(--shadow-sm); }
+    .top-bar-main-line { display: flex; align-items: center; width: 100%; margin-bottom: 4px; }
+    .back-button-bar { color: var(--text-light); text-decoration: none; font-size: 1.6rem; margin-right: 15px; line-height: 1; flex-shrink: 0;transition: opacity 0.2s ease; }
     .back-button-bar:hover { opacity: 0.8; }
-    .page-top-bar h1 { font-size: 1.2rem; font-weight: 500; margin: 0; }
-    .update-timestamp-bar { margin-left: auto; font-size: 0.8em; opacity: 0.9;}
+    .page-top-bar .title-date-wrapper { display: flex; flex-direction: column; align-items: flex-start; flex-grow: 1; }
+    .page-top-bar .title-date-wrapper h1 { font-size: 1.1rem; font-weight: 500; margin: 0 0 2px 0; line-height: 1.2; }
+    .update-timestamp-bar { font-size: 0.75em; opacity: 0.9; line-height: 1.3; }
+    .data-period-bar { font-size: 0.75em; color: var(--date-info-color); width: 100%; text-align: left; line-height: 1.3; }
+    .data-period-bar strong { font-weight: 500;}
     .report-container { max-width: 95%; margin: 20px auto; background-color: var(--bg-section); padding: 25px; border-radius: var(--border-radius-md); box-shadow: var(--shadow-md); }
-    
     .filters-and-actions-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 15px; margin-bottom: 25px; padding: 15px; background-color: #f8f9fa; border: 1px solid var(--border-color); border-radius: var(--border-radius-sm); }
     .advanced-filters-container { display: flex; flex-wrap: wrap; gap: 20px; flex-grow:1; }
     .filter-group { display: flex; flex-direction: column; flex-grow: 1; min-width: 200px; }
@@ -29,13 +33,10 @@
     .filter-input { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: var(--border-radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.9rem; }
     .filter-input:focus { outline: none; border-color: var(--brand-green); box-shadow: 0 0 0 2px rgba(0, 168, 89, 0.15); }
     .action-buttons button { padding: 8px 15px; border: 1px solid var(--border-color); border-radius: var(--border-radius-sm); background-color: #e9ecef; color: var(--text-dark); cursor: pointer; font-family: 'Poppins', sans-serif; font-size: 0.9rem; transition: background-color 0.2s ease;}
-    .action-buttons button:hover { background-color: #ced4da;}
-    .action-buttons button i { vertical-align: middle; margin-right: 5px; width:16px; height:16px;}
-
+    .action-buttons button:hover { background-color: #ced4da;} .action-buttons button i { vertical-align: middle; margin-right: 5px; width:16px; height:16px;}
     .collapsible-main-group summary { display: flex; align-items: center; padding: 12px 18px; font-weight: 600; font-size: 1.5rem; color: var(--brand-green); background-color: #f8f9fa; cursor: pointer; list-style: none; border: 1px solid var(--border-color); border-radius: var(--border-radius-md); margin-bottom: 0px; transition: background-color var(--transition-smooth); }
     .collapsible-main-group[open] summary { background-color: #f1f3f5; border-bottom-left-radius:0; border-bottom-right-radius:0; }
-    .collapsible-main-group summary:hover { background-color: #e9ecef; }
-    .collapsible-main-group summary::-webkit-details-marker { display: none; } 
+    .collapsible-main-group summary:hover { background-color: #e9ecef; } .collapsible-main-group summary::-webkit-details-marker { display: none; } 
     .summary-icon-main { margin-right: 12px; transition: transform 0.2s ease-out; color: var(--brand-green); width: 22px; height: 22px; }
     .collapsible-main-group[open] summary .summary-icon-main { transform: rotate(90deg); }
     .main-group-content { padding: 15px; border: 1px solid var(--border-color); border-top:none; border-bottom-left-radius: var(--border-radius-md); border-bottom-right-radius: var(--border-radius-md); margin-bottom:20px;}
@@ -47,19 +48,18 @@
     .subgroup-title { font-size: 1.3rem; font-weight: 500; color: var(--text-dark); margin-bottom: 10px; margin-top: 5px; }
     .summary-table-wrapper { margin-bottom: 10px; } .summary-table { border: 1px solid #e0e0e0; }
     .summary-table th { font-size: 0.8rem; text-transform: none; background-color: #f8f9fa !important; color: var(--text-medium) !important; font-weight: 500; position: static !important; }
-    .summary-table td { font-size: 0.9rem; padding: 6px 10px; } .summary-data-row td.col-nombre-summary strong { color: var(--brand-green-dark); } /* Ajustado para summary */
-    .table-wrapper { overflow-x: auto; margin-bottom: 20px; position: relative; /* Para sticky header context */ }
-    .data-table { width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-color); border-radius: var(--border-radius-sm); overflow: visible; /* Para que sticky header funcione mejor con sombras */ font-size: 0.85rem; }
+    .summary-table td { font-size: 0.9rem; padding: 6px 10px; } .summary-data-row td.col-nombre-summary strong { color: var(--brand-green-dark); }
+    .table-wrapper { overflow-x: auto; margin-bottom: 20px; position: relative; }
+    .data-table { width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border-color); border-radius: var(--border-radius-sm); overflow: visible; font-size: 0.85rem; }
     .data-table th, .data-table td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border-color); vertical-align: middle; white-space: nowrap; }
     .data-table th.col-pos, .data-table td.col-pos { width: 50px; min-width: 50px; text-align: center !important; }
     .data-table th.col-nombre, .data-table td.col-nombre { text-align: left !important; font-weight: 500; position: sticky; left: 0; background-color: var(--bg-section); z-index: 1; min-width: 230px; max-width: 350px; overflow: hidden; text-overflow: ellipsis; }
     .data-table th.col-contratos-ids, .data-table td.col-contratos-ids { text-align: left !important; min-width: 180px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; user-select: text;}
-    .data-table td.col-contratos-ids.expanded { white-space: normal; overflow: visible; text-overflow: clip; max-width: none; word-break: break-all; background-color: #fdfdef; /* Resaltar expandido */ }
+    .data-table td.col-contratos-ids.expanded { white-space: normal; overflow: visible; text-overflow: clip; max-width: none; word-break: break-all; background-color: #fdfdef; }
     .data-table th.col-numeric, .data-table td.col-numeric, .data-table th.col-percent, .data-table td.col-percent, .data-table th.col-currency, .data-table td.col-currency { text-align: right !important; }
-    .data-table thead th.col-nombre { z-index: 3; background-color: var(--header-bg-dynamic); color: var(--header-color-dynamic); } /* Ajustado z-index */
+    .data-table thead th.col-nombre { z-index: 3; background-color: var(--header-bg-dynamic); color: var(--header-color-dynamic); } 
     .data-table thead th { background-color: var(--header-bg-dynamic); color: var(--header-color-dynamic); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom-width: 2px; border-bottom-color: var(--header-border-dynamic); position: sticky; top: 0; z-index: 2; background-clip: padding-box;}
-    /* .data-table thead th:first-child { z-index: 3; } // Ya manejado por col-nombre */
-    .data-table tbody tr:hover td:not(.col-nombre) { background-color: rgba(0, 168, 89, 0.05); } /* Evitar hover en la primera col sticky */
+    .data-table tbody tr:hover td { background-color: rgba(0, 168, 89, 0.05); }
     .data-table tbody tr:hover td.col-nombre { background-color: #e9ecef; }
     .data-table tbody tr:last-child td { border-bottom: none; }
     .footer-note { text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 30px; padding-top: 15px; border-top: 1px solid var(--border-color); }
@@ -68,8 +68,16 @@
     .glossary-siglas p { margin: 0; line-height: 1.5; } .glossary-siglas strong { color: var(--text-dark); }
   </style></head><body>
   <div class="page-top-bar">
-    <a href="submenu_adicionales.html" class="back-button-bar" title="Volver al Submenú"><i data-feather="arrow-left"></i></a>
-    <h1>Ranking Detallado de Venta de Adicionales</h1><span class="update-timestamp-bar">Actualizado: 02/06/2025 22:32</span>
+    <div class="top-bar-main-line">
+        <a href="submenu_adicionales.html" class="back-button-bar" title="Volver al Submenú"><i data-feather="arrow-left"></i></a>
+        <div class="title-date-wrapper">
+            <h1>Detalle de Venta de Adicionales</h1>
+            <span class="update-timestamp-bar">Actualizado: 02/06/2025 22:44</span>
+        </div>
+    </div>
+    <div class="data-period-bar">
+        <strong>Período del Reporte:</strong> 01/05/2025 - 31/05/2025
+    </div>
   </div>
   <div class="report-container">
     <div class="filters-and-actions-bar">
@@ -85,8 +93,6 @@
     <div class="footer-note">Los datos presentados corresponden al mes de Mayo. Los valores monetarios están expresados en miles.</div>
   </div><script>
     feather.replace(); 
-    
-    // Botón Reset Filtros
     const resetAllFiltersBtn = document.getElementById('resetAllFiltersBtn');
     if (resetAllFiltersBtn) {
         resetAllFiltersBtn.addEventListener('click', () => {
@@ -94,13 +100,10 @@
             document.getElementById('filter-nombre-agencia').value = '';
             document.querySelectorAll('.adicional-filter-select').forEach(select => {
                 select.value = 'todos';
-                // Disparar el evento change para que los subgrupos se actualicen
                 select.dispatchEvent(new Event('change')); 
             });
-            // applyAdvancedFilters(); // Ya se llama desde el 'change' del select
         });
     }
-
     document.querySelectorAll('.collapsible-main-group').forEach(detailsElement => {
         const filterSelect = detailsElement.querySelector('.adicional-filter-select');
         const mainGroupContent = detailsElement.querySelector('.main-group-content');
@@ -110,7 +113,7 @@
                 if (mainGroupContent) { mainGroupContent.querySelectorAll('.sub-group-wrapper').forEach(sg => sg.style.display = 'block'); }
                 applyAdvancedFilters(); 
             }
-            feather.replace(); // Re-inicializar iconos por si alguno se ocultó/mostró dentro del details
+            feather.replace(); 
         });
         if (filterSelect && mainGroupContent) {
             filterSelect.addEventListener('change', function() {
@@ -122,7 +125,6 @@
             });
         }
     });
-
     function initializeContractIdToggle() {
         document.querySelectorAll('.data-table.detail-table td.col-contratos-ids').forEach(cell => {
             cell.addEventListener('dblclick', function() {
@@ -137,18 +139,14 @@
         });
     }
     initializeContractIdToggle(); 
-
-    const searchContratoIdInput = document.getElementById('filter-contrato-id'); // ID corregido
-    const searchNombreAgenciaInput = document.getElementById('filter-nombre-agencia'); // ID corregido
-
+    const searchContratoIdInput = document.getElementById('filter-contrato-id'); 
+    const searchNombreAgenciaInput = document.getElementById('filter-nombre-agencia'); 
     function applyAdvancedFilters() {
         const contratoTerm = searchContratoIdInput ? searchContratoIdInput.value.toLowerCase().trim() : "";
         const nombreAgenciaTerm = searchNombreAgenciaInput ? searchNombreAgenciaInput.value.toLowerCase().trim() : "";
-
         document.querySelectorAll('.data-table.detail-table tbody tr').forEach(row => {
             const parentSubGroupWrapper = row.closest('.sub-group-wrapper');
             const parentMainGroupDetails = row.closest('details.collapsible-main-group');
-
             if ((parentSubGroupWrapper && parentSubGroupWrapper.style.display === 'none') || (parentMainGroupDetails && !parentMainGroupDetails.open)) {
                 row.style.display = 'none'; return;
             }
