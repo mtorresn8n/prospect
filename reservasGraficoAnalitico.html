@@ -1,1 +1,279 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comparación de Periodos - Creación de Reservas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    /* ... (Variables :root y estilos base sin cambios) ... */
+    :root {
+      --brand-green: #00A859; --brand-green-dark: #007F43; --brand-yellow: #FFCC00; --brand-red: #dc3545;
+      --brand-blue: #007bff; --text-secondary: #6c757d;
+      --bg-page: #f4f7f9; --bg-header-grad: linear-gradient(135deg, var(--brand-green), var(--brand-green-dark));
+      --bg-card: #ffffff; --text-light: #FFFFFF; --text-dark: #2c3e50; --text-muted: #7f8c8d;
+      --border-color: #dee2e6; --border-radius: 8px;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04); --shadow-md: 0 4px 8px rgba(0,0,0,0.08);
+    }
+    body { font-family: 'Poppins', sans-serif; margin: 0; background-color: var(--bg-page); color: var(--text-dark); line-height: 1.6; font-size: 14px; }
+    .page-header { background: var(--bg-header-grad); color: var(--text-light); padding: 2rem 1.5rem 3rem; text-align: center; margin-bottom: -1.5rem; }
+    .page-header h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 700; margin-bottom: 0.2rem; }
+    .main-container { max-width: 1100px; margin: 0 auto; padding: 1rem; }
+
+    /* MEJORA: Estilo para el botón de volver */
+    .back-to-menu-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        margin-bottom: 1rem;
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        color: var(--text-dark);
+        font-weight: 500;
+        font-size: 0.9rem;
+        text-decoration: none;
+        box-shadow: var(--shadow-sm);
+        transition: all 0.2s ease-in-out;
+    }
+    .back-to-menu-btn:hover {
+        background-color: #e9ecef;
+        box-shadow: var(--shadow-md);
+        transform: translateY(-1px);
+    }
+    .back-to-menu-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* ... (Estilos de filtros, KPIs, etc. sin cambios) ... */
+    .filters-panel { background-color: var(--bg-card); padding: 1.2rem 1.5rem; border-radius: var(--border-radius); box-shadow: var(--shadow-md); margin-bottom: 1.5rem; }
+    .filters-panel h2 { font-size: 1.1rem; color: var(--brand-green-dark); margin-top: 0; margin-bottom: 1rem; border-bottom: 2px solid var(--brand-yellow); padding-bottom: 0.5rem; font-weight: 600; display:flex; align-items:center; gap: 0.5rem; }
+    .filters-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.2rem; align-items: flex-end; }
+    .filter-group { display: flex; flex-direction: column; position:relative; }
+    .filter-group label { font-size: 0.8rem; font-weight: 500; color: var(--text-muted); margin-bottom: 0.3rem; text-transform: uppercase; }
+    .filter-group select, .multiselect-dropdown-button { width: 100%; box-sizing: border-box; padding: 0.6rem 0.8rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); font-family: 'Poppins', sans-serif; font-size: 0.9rem; background-color: #fff; box-shadow: var(--shadow-sm); }
+    .filter-actions { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 0.8rem; flex-wrap: wrap; }
+    .filter-actions button { background-color: var(--brand-green); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: var(--border-radius); font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: var(--shadow-sm); }
+    .filter-actions button:hover { background-color: var(--brand-green-dark); transform: translateY(-2px); }
+    .filter-actions button.reset-btn { background-color: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); }
+    .filter-actions button.reset-btn:hover { background-color: #e9ecef; }
+    
+    .chart-section { background-color: var(--bg-card); padding: 1.5rem; border-radius: var(--border-radius); box-shadow: var(--shadow-md); }
+    
+    /* MEJORA: Estilos más estéticos para los títulos del gráfico */
+    .chart-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        color: var(--text-dark);
+        letter-spacing: -0.5px;
+    }
+    .chart-subtitle {
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+        color: var(--text-muted);
+        font-weight: 400;
+    }
+
+    .chart-container-comparison { position: relative; height: 400px; margin-bottom: 1.5rem; }
+    .kpi-summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #eef2f5; }
+    .kpi-card { background-color: #f8f9fa; padding: 1rem; border-radius: var(--border-radius); border: 1px solid var(--border-color); text-align: center; }
+    .kpi-card .kpi-title { font-size: 0.85rem; font-weight: 500; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem; }
+    .kpi-card .kpi-value { font-size: 1.8rem; font-weight: 700; color: var(--text-dark); line-height: 1.2; }
+    .kpi-card .kpi-sub-value { font-size: 0.9rem; color: var(--text-muted); }
+    .kpi-card .kpi-change { font-size: 1rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.3rem; margin-top: 0.3rem; }
+    .kpi-change .change-positive { color: var(--brand-green-dark); }
+    .kpi-change .change-negative { color: var(--brand-red); }
+    /* ... (El resto de los estilos se mantienen) ... */
+  </style>
+</head>
+<body>
+  <header class="page-header">
+      <h1>Análisis Comparativo de Creación de Reservas</h1>
+      <p class="subtitle">Periodo Actual vs. Periodo Anterior</p>
+      <span class="update-timestamp">Datos actualizados al: 6 jun 2025, 3:45 p. m.</span>
+  </header>
+  <main class="main-container">
+    <!-- MEJORA: Botón para volver al menú anterior -->
+    <a href="reservas.html" class="back-to-menu-btn">
+        <i data-feather="arrow-left-circle"></i>
+        <span>Volver a Reservas</span>
+    </a>
+
+    <div class="filters-panel">
+        <!-- ... Contenido de los filtros sin cambios ... -->
+    </div>
+
+    <div id="loading-indicator"></div>
+    <div id="no-data-indicator"></div>
+
+    <section class="chart-section" id="comparisonChartContainer" style="display:none;">
+        <h3 class="chart-title" id="dynamicChartTitle"></h3>
+        <p class="chart-subtitle" id="dynamicChartSubtitle"></p>
+        <div class="chart-container-comparison">
+             <canvas id="periodComparisonChart"></canvas>
+        </div>
+        <div class="kpi-summary-grid" id="kpiSummaryGrid"></div>
+    </section>
+  </main>
+  
+  <footer style="text-align:center; padding: 2rem 1rem; font-size:0.85rem; color:var(--text-muted); margin-top:2rem;">
+    © <span id="year"></span> Localiza Rent a Car  •  Desarrollado por Mateus Torres.
+  </footer>
+
+  <script>
+    // --- LÓGICA DE JS ---
+    // (Todo el código JS anterior, EXCEPTO la función renderChart, se mantiene igual)
+
+    // ... (variables globales, funciones de utilidad, lógica de filtros, etc.) ...
+    
+    // MEJORA: Reemplaza tu función renderChart existente con esta nueva versión
+    function renderChart(dataActual, dataAnterior, iA, fA, iB, fB) {
+        if (periodComparisonChartInstance) periodComparisonChartInstance.destroy();
+        const ctx = document.getElementById('periodComparisonChart').getContext('2d');
+        
+        // MEJORA: Nueva paleta de colores: Rojo Pastel y Gris
+        const colorActual = {
+            borde: '#E57373',                   // Un rojo suave y visible
+            fondo: 'rgba(229, 115, 115, 0.25)'  // Relleno rojo muy transparente
+        };
+        const colorAnterior = {
+            borde: '#90A4AE',                   // Un gris azulado (Blue Grey)
+            fondo: 'rgba(144, 164, 174, 0.25)'  // Relleno gris muy transparente
+        };
+
+        periodComparisonChartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: dataActual.labels,
+                datasets: [{
+                    label: `Anterior (${formatDate(iB, 'dd/mm')} - ${formatDate(fB, 'dd/mm')})`,
+                    data: dataAnterior.counts,
+                    borderColor: colorAnterior.borde,
+                    backgroundColor: colorAnterior.fondo,
+                    borderWidth: 2.5,
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: colorAnterior.borde,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                }, {
+                    label: `Actual (${formatDate(iA, 'dd/mm')} - ${formatDate(fA, 'dd/mm')})`,
+                    data: dataActual.counts,
+                    borderColor: colorActual.borde,
+                    backgroundColor: colorActual.fondo,
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: colorActual.borde,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, grid: { color: '#eef2f5' }, ticks: { precision: 0, color: '#555' } },
+                    x: { grid: { display: false }, ticks: { color: '#555' } }
+                },
+                plugins: {
+                    legend: { 
+                        position: 'bottom', 
+                        labels: { 
+                            // MEJORA: Usa cuadros de color en la leyenda en lugar de símbolos
+                            usePointStyle: false, 
+                            padding: 25, 
+                            font: { size: 12 } 
+                        } 
+                    },
+                    tooltip: {
+                        enabled: true, mode: 'index', intersect: false, backgroundColor: 'rgba(44, 62, 80, 0.9)',
+                        titleFont: { weight: 'bold' }, bodySpacing: 8, padding: 12,
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.dataset.label || '';
+                                const value = context.parsed.y;
+                                return ` ${label}: ${value} reservas`;
+                            },
+                            footer: function(tooltipItems) {
+                                const actualItem = tooltipItems.find(i => i.datasetIndex === 1);
+                                const anteriorItem = tooltipItems.find(i => i.datasetIndex === 0);
+                                if (!actualItem || !anteriorItem) return '';
+
+                                const actualValue = actualItem.parsed.y;
+                                const anteriorValue = anteriorItem.parsed.y;
+                                const diff = actualValue - anteriorValue;
+                                const pctChange = anteriorValue !== 0 ? (diff / anteriorValue) * 100 : (actualValue > 0 ? 100 : 0);
+                                
+                                const diffSign = diff > 0 ? '+' : '';
+                                // Usar verde/rojo para la diferencia es universalmente entendido (ganancia/pérdida)
+                                const diffColor = diff > 0 ? 'var(--brand-green-dark)' : 'var(--brand-red)';
+
+                                return `Diferencia: ${diffSign}${diff} (${pctChange.toFixed(1)}%)`;
+                            }
+                        }
+                    }
+                },
+                interaction: { mode: 'nearest', axis: 'x', intersect: false }
+            }
+        });
+    }
+
+    function renderKpiSummary(countsActual, countsAnterior) {
+        const totalActual = countsActual.reduce((a, b) => a + b, 0);
+        const totalAnterior = countsAnterior.reduce((a, b) => a + b, 0);
+        const diff = totalActual - totalAnterior;
+        const pctChange = totalAnterior !== 0 ? (diff / totalAnterior) * 100 : (totalActual > 0 ? Infinity : 0);
+        let changeHtml = '', icon = '';
+        if (pctChange > 0) { icon = '<i data-feather="arrow-up-circle"></i>'; changeHtml = `<span class="change-positive">${pctChange === Infinity ? '+100% (desde 0)' : `+${pctChange.toFixed(1)}%`}</span>`; } 
+        else if (pctChange < 0) { icon = '<i data-feather="arrow-down-circle"></i>'; changeHtml = `<span class="change-negative">${pctChange.toFixed(1)}%</span>`; } 
+        else { icon = '<i data-feather="minus-circle"></i>'; changeHtml = `<span class="change-neutral">0.0%</span>`; }
+        const avgActual = totalActual > 0 ? totalActual / countsActual.length : 0;
+        const avgAnterior = totalAnterior > 0 ? totalAnterior / countsAnterior.length : 0;
+        const peakActual = Math.max(...countsActual);
+        const peakAnterior = Math.max(...countsAnterior);
+
+        dom.kpiGrid.innerHTML = `
+            <div class="kpi-card"><div class="kpi-title">Total Reservas</div><div class="kpi-value">${totalActual}</div><div class="kpi-sub-value">vs. ${totalAnterior} anterior</div><div class="kpi-change">${icon} ${changeHtml}</div></div>
+            <div class="kpi-card"><div class="kpi-title">Promedio Diario</div><div class="kpi-value">${avgActual.toFixed(1)}</div><div class="kpi-sub-value">vs. ${avgAnterior.toFixed(1)} anterior</div></div>
+            <div class="kpi-card"><div class="kpi-title">Pico de Creación</div><div class="kpi-value">${peakActual}</div><div class="kpi-sub-value">vs. ${peakAnterior} anterior</div></div>
+        `;
+    }
+
+    // --- INICIALIZACIÓN ---
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('year').textContent = new Date().getFullYear();
+        if (typeof feather !== 'undefined') { try { feather.replace(); } catch (e) { console.warn(e); }}
+
+        if (Array.isArray(todasLasReservas) && todasLasReservas.length > 0) {
+            populateCompFilters();
+            updateComparisonChart();
+            
+            // Setup Event Listeners
+            dom.aplicarBtn.addEventListener('click', updateComparisonChart);
+            dom.limpiarBtn.addEventListener('click', resetFilters);
+            setupDropdown(dom.segmentoBtn, dom.segmentoContainer);
+            setupDropdown(dom.situacaoBtn, dom.situacaoContainer);
+            document.addEventListener('click', (e) => { 
+                if (!dom.segmentoBtn.contains(e.target) && !dom.segmentoContainer.contains(e.target)) { dom.segmentoContainer.classList.remove('open'); dom.segmentoBtn.setAttribute('aria-expanded', 'false'); }
+                if (!dom.situacaoBtn.contains(e.target) && !dom.situacaoContainer.contains(e.target)) { dom.situacaoContainer.classList.remove('open'); dom.situacaoBtn.setAttribute('aria-expanded', 'false'); }
+            });
+
+        } else {
+            dom.loading.style.display = 'none';
+            dom.noData.innerHTML = '<i data-feather="alert-triangle"></i><span>Error al cargar datos iniciales. Verifique la fuente.</span>';
+            dom.noData.style.display = 'flex';
+            if (typeof feather !== 'undefined') feather.replace();
+        }
+    });
+  </script>
+</body>
+</html>
