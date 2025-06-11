@@ -25,6 +25,8 @@
   
   /* --- Estilo de Tarjetas de Resumen --- */
   .summary-metric, .summary-metric-group { background-color: #fff; border: 1px solid var(--card-accent-color); border-radius: 5px; padding: 8px 12px; flex: 1 1 130px; display: flex; flex-direction: column; gap: 2px; }
+  .summary-metric-group { background-color: var(--theme-bg); filter: brightness(1.03) saturate(0.8); }
+  .summary-metric { background-color: var(--theme-bg); filter: brightness(1.03) saturate(0.8); }
   .metric-label { font-size: 0.75em; font-weight: 700; color: var(--card-accent-color); text-transform: uppercase; }
   .metric-value { font-size: 1.4em; font-weight: 700; }
   .metric-comparison { display: flex; justify-content: space-between; font-size: 0.75em; color: var(--text-secondary); margin-top: 2px; }
@@ -42,7 +44,7 @@
   .btn-group .button-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
   .btn-group button { padding: 4px 10px; background: #fff; color: var(--text-secondary); border: 1px solid var(--border-color); border-radius: 15px; cursor: pointer; font-size: 0.85em; transition: all 0.2s ease; }
   .btn-group button.active { background: var(--hdr1); color: #fff; border-color: var(--hdr1); font-weight: 500; }
-  .agencies-toggle-group { background: none; padding: 0; align-self: center; } /* Quita el fondo del grupo del botón de agencias */
+  .agencies-toggle-group { background: none; padding: 0; align-self: center; margin-left: auto; }
   .btn-primary { background-color: var(--hdr1); color: #fff; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: 500; font-size: 0.9em; }
   
   /* --- Estilos de Tabla --- */
@@ -85,7 +87,7 @@
 </style>
 </head>
 <body>
-<header class="page-header"><div style="display: flex; align-items: center; gap: 16px;"><a href="reservas.html" title="Volver al inicio" style="font-size: 1.5em; color: var(--on-bg); text-decoration: none;">←</a><div><h1>Analítico de Reservas Interactivo</h1><span class="update-timestamp">Fecha Actualización: 10/06/2025 23:40</span></div></div></header>
+<header class="page-header"><div style="display: flex; align-items: center; gap: 16px;"><a href="reservas.html" title="Volver al inicio" style="font-size: 1.5em; color: var(--on-bg); text-decoration: none;">←</a><div><h1>Analítico de Reservas Interactivo</h1><span class="update-timestamp">Fecha Actualización: 10/06/2025 23:43</span></div></div></header>
 <div class="glossary"><p><strong>LY:</strong> Last Year  |  <strong>Act:</strong> Actual  |  <strong>Diff %:</strong> Diferencia Porcentual</p></div>
 <div class="report-body" style="padding: 16px 24px;"><div id="wrapper-junio2025" class="month-wrapper expanded" style="--theme-bg: #d4edda; --theme-border: #28a745;">
       <div class="month-header" data-target="content-junio2025"><div class="month-title-wrapper"><h2>Junio 2025</h2><span class="accordion-indicator"></span></div><div class="month-summary"><div class="summary-metric" style="--card-accent-color: #28a745"><span class="metric-label">Abiertas</span><span class="metric-value">774</span><div class="metric-comparison"><span>LY: 518</span><span class="summary-diff positive">▲ 36.3</span></div></div><div class="summary-metric" style="--card-accent-color: #03662b"><span class="metric-label">Utilizadas</span><span class="metric-value">699</span><div class="metric-comparison"><span>LY: 585</span><span class="summary-diff positive">▲ 8.9</span></div></div><div class="summary-metric" style="--card-accent-color: #dc3545"><span class="metric-label">Canceladas</span><span class="metric-value">728</span><div class="metric-comparison"><span>LY: 821</span><span class="summary-diff negative">▼ -19.5</span></div></div><div class="summary-metric" style="--card-accent-color: #6c757d"><span class="metric-label">Reservas Totales Utab</span><span class="metric-value">1473</span><div class="metric-comparison"><span>LY: 1103</span><span class="summary-diff positive">▲ 33.5</span></div></div><div class="summary-metric-group" style="--card-accent-color: #6c757d"><span class="metric-label">Segmentos</span><div class="segment-list"><div class="segment-item"><span class="segment-label">Propia:</span><span class="segment-value">817</span></div><div class="segment-item"><span class="segment-label">OT:</span><span class="segment-value">576</span></div><div class="segment-item"><span class="segment-label">PJ:</span><span class="segment-value">0</span></div><div class="segment-item"><span class="segment-label">RE:</span><span class="segment-value">39</span></div><div class="segment-item"><span class="segment-label">TR:</span><span class="segment-value">0</span></div></div></div><div class="summary-metric" style="--card-accent-color: #343a40"><span class="metric-label">Total General</span><span class="metric-value">2293</span><div class="metric-comparison"><span>LY: 2086</span><span class="summary-diff positive">▲ 9.9</span></div></div></div></div>
