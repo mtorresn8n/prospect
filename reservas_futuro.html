@@ -28,7 +28,7 @@
   .accordion-indicator::before { content: '▶'; }
   .month-wrapper.expanded .accordion-indicator { transform: rotate(90deg); }
   
-  /* --- NUEVO: Tarjetas de Resumen (Stat Cards) & Grupo de Segmentos --- */
+  /* --- Tarjetas de Resumen (Stat Cards) --- */
   .month-summary { display: none; flex-wrap: wrap; gap: 12px; }
   .month-wrapper:not(.expanded) .month-summary { display: flex; }
   .summary-metric { background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px; flex: 1 1 150px; display: flex; flex-direction: column; gap: 4px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
@@ -39,12 +39,6 @@
   .summary-diff { font-weight: 700; }
   .summary-diff.positive { color: var(--positive); }
   .summary-diff.negative { color: var(--negative); }
-  /* Tarjeta de grupo para segmentos */
-  .summary-metric-group { background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px; flex: 2 1 220px; display: flex; flex-direction: column; gap: 8px; }
-  .segment-list { display: flex; flex-wrap: wrap; gap: 8px 16px; }
-  .segment-item { display: flex; gap: 6px; align-items: baseline; }
-  .segment-label { font-size: 0.9em; font-weight: 500; color: var(--text-secondary); }
-  .segment-value { font-size: 1.1em; font-weight: 700; color: var(--text-primary); }
   
   /* --- Colores de Tema --- */
   .month-theme-0 .month-header { background-color: #D4EFDF; border-left: 6px solid #2ECC71; }
@@ -53,14 +47,21 @@
   .month-theme-3 .month-header { background-color: #E8DAEF; border-left: 6px solid #9B59B6; }
   .month-theme-4 .month-header { background-color: #EAEDED; border-left: 6px solid #95A5A6; }
 
-  /* --- Contenido Interno y Tabla (sin cambios mayores) --- */
+  /* --- Contenido Interno --- */
   .month-content { padding: 16px 24px; background-color: #fff; border-top: 1px solid var(--border); }
+  .col-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .col-controls button { padding: 5px 10px; background: #fff; color: #333; border: 1px solid #ccc; border-radius: 15px; cursor: pointer; font-size: 0.85em; transition: all 0.2s ease; }
+  .col-controls button.active { background: var(--hdr1); color: #fff; border-color: var(--hdr1); font-weight: 500; }
+  .col-controls button:hover:not(.active) { background-color: #f0f0f0; border-color: #bbb; }
+  .btn-group { padding: 12px; border-radius: 8px; background: #fafafa; }
+  .btn-group h4 { margin:0 0 8px 0; font-size: 0.9em; color: var(--hdr1); text-transform: uppercase; letter-spacing: .5px; }
+  .btn-group.estados { border-left: 4px solid #4CAF50; } .btn-group.segmentos { border-left: 4px solid #2196F3; } .btn-group.totales { border-left: 4px solid #757575; }
+  
+  /* --- Estilos de Tabla --- */
   .table-wrapper { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
   th, td { border: 1px solid var(--border); padding: 8px 10px; white-space: nowrap; vertical-align: middle; }
   thead th { position: sticky; top: 0; color: var(--on-bg); text-align: center; font-weight: 700; }
-  .col-controls, .controls { margin-bottom: 16px; }
-  /* (Resto de los estilos de la tabla, botones, etc., sin cambios) */
   thead tr:nth-child(1) th { background: var(--hdr1); z-index: 5; }
   thead tr:nth-child(2) th { background: var(--hdr2); top: 2.6em; z-index: 4; }
   th:first-child, td:first-child { position: sticky; left: 0; z-index: 3; }
@@ -80,13 +81,6 @@
   .act-val-cell { background: var(--act-val-bg); }
   th.is-first-in-group, td.is-first-in-group { border-left: var(--border-grueso-width) solid var(--border-grueso-color) !important; }
   th.is-last-in-group, td.is-last-in-group { border-right: var(--border-grueso-width) solid var(--border-grueso-color) !important; }
-  .col-controls { display: flex; flex-wrap: wrap; gap: 8px; }
-  .col-controls button { padding: 5px 10px; background: #fff; color: #333; border: 1px solid #ccc; border-radius: 15px; cursor: pointer; font-size: 0.85em; transition: all 0.2s ease; }
-  .col-controls button.active { background: var(--hdr1); color: #fff; border-color: var(--hdr1); font-weight: 500; }
-  .col-controls button:hover:not(.active) { background-color: #f0f0f0; border-color: #bbb; }
-  .btn-group { padding: 12px; border-radius: 8px; background: #fafafa; }
-  .btn-group h4 { margin:0 0 8px 0; font-size: 0.9em; color: var(--hdr1); text-transform: uppercase; letter-spacing: .5px; }
-  .btn-group.estados { border-left: 4px solid #4CAF50; } .btn-group.segmentos { border-left: 4px solid #2196F3; } .btn-group.totales { border-left: 4px solid #757575; }
   .hide-distribucion .group-distribucion { display: none; }
   .hide-deldia .group-deldia { display: none; }
   .hide-reservastotalgeneral .group-reservastotalgeneral { display: none; }
@@ -113,89 +107,78 @@
 <body>
 <header class="page-header">
   <div class="header-content-wrapper"><a href="reservas.html" class="back-button" title="Volver al inicio">←</a>
-    <div class="title-and-timestamp"><h1>Analítico de Reservas Interactivo</h1><span class="update-timestamp">Fecha Actualización: 10/06/2025 23:07</span></div>
+    <div class="title-and-timestamp"><h1>Analítico de Reservas Interactivo</h1><span class="update-timestamp">Fecha Actualización: 10/06/2025 23:08</span></div>
   </div>
 </header>
 <div class="glossary"><p><strong>LY:</strong> Last Year (Año Anterior)  |  <strong>Act:</strong> Actual  |  <strong>Diff %:</strong> Diferencia Porcentual (Actual vs. LY)</p></div>
 <div class="report-body" style="padding: 0 24px;">
-    <div id="wrapper-junio2025" class="month-wrapper month-theme-0 expanded" style="--card-bg: #E8F8F5; --theme-border: #2ECC71;">
+    <div id="wrapper-junio2025" class="month-wrapper month-theme-0 expanded" style="--card-bg: #E8F8F5;">
       <div class="month-header" data-target="content-junio2025">
         <div class="month-title-wrapper">
             <h2>Junio 2025</h2>
             <span class="accordion-indicator"></span>
         </div>
         <div class="month-summary">
-          <div class="summary-metric">
-            <span class="metric-label">Total AB + UT</span>
-            <span class="metric-value">1473</span>
-            <div class="metric-comparison">
-              <span>LY: 1103</span>
-              <span class="summary-diff positive">
-                ▲ 33.5
-              </span>
-            </div>
+        <div class="summary-metric">
+          <span class="metric-label">Total General</span>
+          <span class="metric-value">2293</span>
+          <div class="metric-comparison">
+            <span>LY: 2086</span>
+            <span class="summary-diff positive">
+              ▲ 9.9
+            </span>
           </div>
-          <div class="summary-metric">
-            <span class="metric-label">Abiertas</span>
-            <span class="metric-value">774</span>
-            <div class="metric-comparison">
-              <span>LY: 518</span>
-              <span class="summary-diff positive">
-                ▲ 36.3
-              </span>
-            </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Abiertas</span>
+          <span class="metric-value">774</span>
+          <div class="metric-comparison">
+            <span>LY: 518</span>
+            <span class="summary-diff positive">
+              ▲ 36.3
+            </span>
           </div>
-          <div class="summary-metric">
-            <span class="metric-label">Utilizadas</span>
-            <span class="metric-value">699</span>
-            <div class="metric-comparison">
-              <span>LY: 585</span>
-              <span class="summary-diff positive">
-                ▲ 8.9
-              </span>
-            </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Utilizadas</span>
+          <span class="metric-value">699</span>
+          <div class="metric-comparison">
+            <span>LY: 585</span>
+            <span class="summary-diff positive">
+              ▲ 8.9
+            </span>
           </div>
-          <div class="summary-metric">
-            <span class="metric-label">Canceladas</span>
-            <span class="metric-value">728</span>
-            <div class="metric-comparison">
-              <span>LY: 821</span>
-              <span class="summary-diff negative">
-                ▼ -19.5
-              </span>
-            </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Canceladas</span>
+          <span class="metric-value">728</span>
+          <div class="metric-comparison">
+            <span>LY: 821</span>
+            <span class="summary-diff negative">
+              ▼ -19.5
+            </span>
           </div>
-            <div class="summary-metric-group">
-              <span class="metric-label">Segmentos</span>
-              <div class="segment-list">
-                
-              <div class="segment-item">
-                <span class="segment-label">Propia:</span>
-                <span class="segment-value">817</span>
-              </div>
-            
-              <div class="segment-item">
-                <span class="segment-label">OT:</span>
-                <span class="segment-value">576</span>
-              </div>
-            
-              <div class="segment-item">
-                <span class="segment-label">RE:</span>
-                <span class="segment-value">39</span>
-              </div>
-            
-              </div>
-            </div>
-          <div class="summary-metric">
-            <span class="metric-label">Total General</span>
-            <span class="metric-value">2293</span>
-            <div class="metric-comparison">
-              <span>LY: 2086</span>
-              <span class="summary-diff positive">
-                ▲ 9.9
-              </span>
-            </div>
-          </div></div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Propia</span>
+          <span class="metric-value">817</span>
+          <div class="metric-comparison">
+            <span>LY: 918</span>
+            <span class="summary-diff negative">
+              ▼ -33.3
+            </span>
+          </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Total AB + UT</span>
+          <span class="metric-value">1473</span>
+          <div class="metric-comparison">
+            <span>LY: 1103</span>
+            <span class="summary-diff positive">
+              ▲ 33.5
+            </span>
+          </div>
+        </div></div>
       </div>
       <div class="month-content" id="content-junio2025" >
         <section id="junio2025" class="month-section-inner hide-distribucion hide-deldia hide-noshow hide-noconfirmada hide-pendientegds hide-otas hide-pessoajuridica hide-replacement hide-industriadeviagens hide-qdiarias">
@@ -207,74 +190,73 @@
         </section>
       </div>
     </div>
-    <div id="wrapper-julio2025" class="month-wrapper month-theme-1 " style="--card-bg: #EBF5FB; --theme-border: #3498DB;">
+    <div id="wrapper-julio2025" class="month-wrapper month-theme-1 " style="--card-bg: #EBF5FB;">
       <div class="month-header" data-target="content-julio2025">
         <div class="month-title-wrapper">
             <h2>Julio 2025</h2>
             <span class="accordion-indicator"></span>
         </div>
         <div class="month-summary">
-          <div class="summary-metric">
-            <span class="metric-label">Abiertas</span>
-            <span class="metric-value">336</span>
-            <div class="metric-comparison">
-              <span>LY: 287</span>
-              <span class="summary-diff positive">
-                ▲ 49.4
-              </span>
-            </div>
+        <div class="summary-metric">
+          <span class="metric-label">Total General</span>
+          <span class="metric-value">624</span>
+          <div class="metric-comparison">
+            <span>LY: 798</span>
+            <span class="summary-diff negative">
+              ▼ -21.8
+            </span>
           </div>
-          <div class="summary-metric">
-            <span class="metric-label">Canceladas</span>
-            <span class="metric-value">267</span>
-            <div class="metric-comparison">
-              <span>LY: 451</span>
-              <span class="summary-diff negative">
-                ▼ -24.2
-              </span>
-            </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Abiertas</span>
+          <span class="metric-value">336</span>
+          <div class="metric-comparison">
+            <span>LY: 287</span>
+            <span class="summary-diff positive">
+              ▲ 49.4
+            </span>
           </div>
-          <div class="summary-metric">
-            <span class="metric-label">Utilizadas</span>
-            <span class="metric-value">0</span>
-            <div class="metric-comparison">
-              <span>LY: 0</span>
-              <span class="summary-diff negative">
-                ▼ 0
-              </span>
-            </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Utilizadas</span>
+          <span class="metric-value">0</span>
+          <div class="metric-comparison">
+            <span>LY: 0</span>
+            <span class="summary-diff negative">
+              ▼ 0
+            </span>
           </div>
-            <div class="summary-metric-group">
-              <span class="metric-label">Segmentos</span>
-              <div class="segment-list">
-                
-              <div class="segment-item">
-                <span class="segment-label">Propia:</span>
-                <span class="segment-value">182</span>
-              </div>
-            
-              <div class="segment-item">
-                <span class="segment-label">OT:</span>
-                <span class="segment-value">152</span>
-              </div>
-            
-              <div class="segment-item">
-                <span class="segment-label">RE:</span>
-                <span class="segment-value">0</span>
-              </div>
-            
-              </div>
-            </div>
-          <div class="summary-metric">
-            <span class="metric-label">Total General</span>
-            <span class="metric-value">624</span>
-            <div class="metric-comparison">
-              <span>LY: 798</span>
-              <span class="summary-diff negative">
-                ▼ -21.8
-              </span>
-            </div>
-          </div></div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Canceladas</span>
+          <span class="metric-value">267</span>
+          <div class="metric-comparison">
+            <span>LY: 451</span>
+            <span class="summary-diff negative">
+              ▼ -24.2
+            </span>
+          </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Propia</span>
+          <span class="metric-value">182</span>
+          <div class="metric-comparison">
+            <span>LY: 237</span>
+            <span class="summary-diff negative">
+              ▼ -34.4
+            </span>
+          </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Total AB + UT</span>
+          <span class="metric-value">336</span>
+          <div class="metric-comparison">
+            <span>LY: 287</span>
+            <span class="summary-diff positive">
+              ▲ 17.1
+            </span>
+          </div>
+        </div></div>
       </div>
       <div class="month-content" id="content-julio2025" style="display: none;">
         <section id="julio2025" class="month-section-inner hide-distribucion hide-deldia hide-noshow hide-noconfirmada hide-pendientegds hide-otas hide-pessoajuridica hide-replacement hide-industriadeviagens hide-qdiarias">
@@ -286,74 +268,73 @@
         </section>
       </div>
     </div>
-    <div id="wrapper-agosto2025" class="month-wrapper month-theme-2 " style="--card-bg: #FEF9E7; --theme-border: #F39C12;">
+    <div id="wrapper-agosto2025" class="month-wrapper month-theme-2 " style="--card-bg: #FEF9E7;">
       <div class="month-header" data-target="content-agosto2025">
         <div class="month-title-wrapper">
             <h2>Agosto 2025</h2>
             <span class="accordion-indicator"></span>
         </div>
         <div class="month-summary">
-          <div class="summary-metric">
-            <span class="metric-label">Abiertas</span>
-            <span class="metric-value">171</span>
-            <div class="metric-comparison">
-              <span>LY: 79</span>
-              <span class="summary-diff positive">
-                ▲ 81.1
-              </span>
-            </div>
+        <div class="summary-metric">
+          <span class="metric-label">Total General</span>
+          <span class="metric-value">318</span>
+          <div class="metric-comparison">
+            <span>LY: 266</span>
+            <span class="summary-diff positive">
+              ▲ 19.5
+            </span>
           </div>
-          <div class="summary-metric">
-            <span class="metric-label">Canceladas</span>
-            <span class="metric-value">138</span>
-            <div class="metric-comparison">
-              <span>LY: 159</span>
-              <span class="summary-diff negative">
-                ▼ -27.4
-              </span>
-            </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Abiertas</span>
+          <span class="metric-value">171</span>
+          <div class="metric-comparison">
+            <span>LY: 79</span>
+            <span class="summary-diff positive">
+              ▲ 81.1
+            </span>
           </div>
-          <div class="summary-metric">
-            <span class="metric-label">Utilizadas</span>
-            <span class="metric-value">0</span>
-            <div class="metric-comparison">
-              <span>LY: 0</span>
-              <span class="summary-diff negative">
-                ▼ 0
-              </span>
-            </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Utilizadas</span>
+          <span class="metric-value">0</span>
+          <div class="metric-comparison">
+            <span>LY: 0</span>
+            <span class="summary-diff negative">
+              ▼ 0
+            </span>
           </div>
-            <div class="summary-metric-group">
-              <span class="metric-label">Segmentos</span>
-              <div class="segment-list">
-                
-              <div class="segment-item">
-                <span class="segment-label">Propia:</span>
-                <span class="segment-value">77</span>
-              </div>
-            
-              <div class="segment-item">
-                <span class="segment-label">OT:</span>
-                <span class="segment-value">94</span>
-              </div>
-            
-              <div class="segment-item">
-                <span class="segment-label">RE:</span>
-                <span class="segment-value">0</span>
-              </div>
-            
-              </div>
-            </div>
-          <div class="summary-metric">
-            <span class="metric-label">Total General</span>
-            <span class="metric-value">318</span>
-            <div class="metric-comparison">
-              <span>LY: 266</span>
-              <span class="summary-diff positive">
-                ▲ 19.5
-              </span>
-            </div>
-          </div></div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Canceladas</span>
+          <span class="metric-value">138</span>
+          <div class="metric-comparison">
+            <span>LY: 159</span>
+            <span class="summary-diff negative">
+              ▼ -27.4
+            </span>
+          </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Propia</span>
+          <span class="metric-value">77</span>
+          <div class="metric-comparison">
+            <span>LY: 71</span>
+            <span class="summary-diff negative">
+              ▼ -49.9
+            </span>
+          </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Total AB + UT</span>
+          <span class="metric-value">171</span>
+          <div class="metric-comparison">
+            <span>LY: 79</span>
+            <span class="summary-diff positive">
+              ▲ 116.5
+            </span>
+          </div>
+        </div></div>
       </div>
       <div class="month-content" id="content-agosto2025" style="display: none;">
         <section id="agosto2025" class="month-section-inner hide-distribucion hide-deldia hide-noshow hide-noconfirmada hide-pendientegds hide-otas hide-pessoajuridica hide-replacement hide-industriadeviagens hide-qdiarias">
@@ -365,74 +346,73 @@
         </section>
       </div>
     </div>
-    <div id="wrapper-septiembre2025" class="month-wrapper month-theme-3 " style="--card-bg: #F4ECF7; --theme-border: #9B59B6;">
+    <div id="wrapper-septiembre2025" class="month-wrapper month-theme-3 " style="--card-bg: #F4ECF7;">
       <div class="month-header" data-target="content-septiembre2025">
         <div class="month-title-wrapper">
             <h2>Septiembre 2025</h2>
             <span class="accordion-indicator"></span>
         </div>
         <div class="month-summary">
-          <div class="summary-metric">
-            <span class="metric-label">Abiertas</span>
-            <span class="metric-value">46</span>
-            <div class="metric-comparison">
-              <span>LY: 8</span>
-              <span class="summary-diff positive">
-                ▲ 91.4
-              </span>
-            </div>
+        <div class="summary-metric">
+          <span class="metric-label">Total General</span>
+          <span class="metric-value">90</span>
+          <div class="metric-comparison">
+            <span>LY: 30</span>
+            <span class="summary-diff positive">
+              ▲ 200
+            </span>
           </div>
-          <div class="summary-metric">
-            <span class="metric-label">Canceladas</span>
-            <span class="metric-value">43</span>
-            <div class="metric-comparison">
-              <span>LY: 20</span>
-              <span class="summary-diff negative">
-                ▼ -28.3
-              </span>
-            </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Abiertas</span>
+          <span class="metric-value">46</span>
+          <div class="metric-comparison">
+            <span>LY: 8</span>
+            <span class="summary-diff positive">
+              ▲ 91.4
+            </span>
           </div>
-          <div class="summary-metric">
-            <span class="metric-label">Utilizadas</span>
-            <span class="metric-value">0</span>
-            <div class="metric-comparison">
-              <span>LY: 0</span>
-              <span class="summary-diff negative">
-                ▼ 0
-              </span>
-            </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Utilizadas</span>
+          <span class="metric-value">0</span>
+          <div class="metric-comparison">
+            <span>LY: 0</span>
+            <span class="summary-diff negative">
+              ▼ 0
+            </span>
           </div>
-            <div class="summary-metric-group">
-              <span class="metric-label">Segmentos</span>
-              <div class="segment-list">
-                
-              <div class="segment-item">
-                <span class="segment-label">Propia:</span>
-                <span class="segment-value">18</span>
-              </div>
-            
-              <div class="segment-item">
-                <span class="segment-label">OT:</span>
-                <span class="segment-value">28</span>
-              </div>
-            
-              <div class="segment-item">
-                <span class="segment-label">RE:</span>
-                <span class="segment-value">0</span>
-              </div>
-            
-              </div>
-            </div>
-          <div class="summary-metric">
-            <span class="metric-label">Total General</span>
-            <span class="metric-value">90</span>
-            <div class="metric-comparison">
-              <span>LY: 30</span>
-              <span class="summary-diff positive">
-                ▲ 200
-              </span>
-            </div>
-          </div></div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Canceladas</span>
+          <span class="metric-value">43</span>
+          <div class="metric-comparison">
+            <span>LY: 20</span>
+            <span class="summary-diff negative">
+              ▼ -28.3
+            </span>
+          </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Propia</span>
+          <span class="metric-value">18</span>
+          <div class="metric-comparison">
+            <span>LY: 8</span>
+            <span class="summary-diff negative">
+              ▼ -60.9
+            </span>
+          </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Total AB + UT</span>
+          <span class="metric-value">46</span>
+          <div class="metric-comparison">
+            <span>LY: 8</span>
+            <span class="summary-diff positive">
+              ▲ 475
+            </span>
+          </div>
+        </div></div>
       </div>
       <div class="month-content" id="content-septiembre2025" style="display: none;">
         <section id="septiembre2025" class="month-section-inner hide-distribucion hide-deldia hide-noshow hide-noconfirmada hide-pendientegds hide-otas hide-pessoajuridica hide-replacement hide-industriadeviagens hide-qdiarias">
@@ -444,74 +424,73 @@
         </section>
       </div>
     </div>
-    <div id="wrapper-octubre2025" class="month-wrapper month-theme-4 " style="--card-bg: #F4F6F6; --theme-border: #95A5A6;">
+    <div id="wrapper-octubre2025" class="month-wrapper month-theme-4 " style="--card-bg: #F4F6F6;">
       <div class="month-header" data-target="content-octubre2025">
         <div class="month-title-wrapper">
             <h2>Octubre 2025</h2>
             <span class="accordion-indicator"></span>
         </div>
         <div class="month-summary">
-          <div class="summary-metric">
-            <span class="metric-label">Abiertas</span>
-            <span class="metric-value">72</span>
-            <div class="metric-comparison">
-              <span>LY: 2</span>
-              <span class="summary-diff positive">
-                ▲ 66.8
-              </span>
-            </div>
+        <div class="summary-metric">
+          <span class="metric-label">Total General</span>
+          <span class="metric-value">108</span>
+          <div class="metric-comparison">
+            <span>LY: 5</span>
+            <span class="summary-diff positive">
+              ▲ 2060
+            </span>
           </div>
-          <div class="summary-metric">
-            <span class="metric-label">Canceladas</span>
-            <span class="metric-value">32</span>
-            <div class="metric-comparison">
-              <span>LY: 1</span>
-              <span class="summary-diff positive">
-                ▲ 48
-              </span>
-            </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Abiertas</span>
+          <span class="metric-value">72</span>
+          <div class="metric-comparison">
+            <span>LY: 2</span>
+            <span class="summary-diff positive">
+              ▲ 66.8
+            </span>
           </div>
-          <div class="summary-metric">
-            <span class="metric-label">Utilizadas</span>
-            <span class="metric-value">0</span>
-            <div class="metric-comparison">
-              <span>LY: 0</span>
-              <span class="summary-diff negative">
-                ▼ 0
-              </span>
-            </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Utilizadas</span>
+          <span class="metric-value">0</span>
+          <div class="metric-comparison">
+            <span>LY: 0</span>
+            <span class="summary-diff negative">
+              ▼ 0
+            </span>
           </div>
-            <div class="summary-metric-group">
-              <span class="metric-label">Segmentos</span>
-              <div class="segment-list">
-                
-              <div class="segment-item">
-                <span class="segment-label">Propia:</span>
-                <span class="segment-value">19</span>
-              </div>
-            
-              <div class="segment-item">
-                <span class="segment-label">OT:</span>
-                <span class="segment-value">51</span>
-              </div>
-            
-              <div class="segment-item">
-                <span class="segment-label">RE:</span>
-                <span class="segment-value">0</span>
-              </div>
-            
-              </div>
-            </div>
-          <div class="summary-metric">
-            <span class="metric-label">Total General</span>
-            <span class="metric-value">108</span>
-            <div class="metric-comparison">
-              <span>LY: 5</span>
-              <span class="summary-diff positive">
-                ▲ 2060
-              </span>
-            </div>
-          </div></div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Canceladas</span>
+          <span class="metric-value">32</span>
+          <div class="metric-comparison">
+            <span>LY: 1</span>
+            <span class="summary-diff positive">
+              ▲ 48
+            </span>
+          </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Propia</span>
+          <span class="metric-value">19</span>
+          <div class="metric-comparison">
+            <span>LY: 1</span>
+            <span class="summary-diff negative">
+              ▼ -47.2
+            </span>
+          </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Total AB + UT</span>
+          <span class="metric-value">72</span>
+          <div class="metric-comparison">
+            <span>LY: 2</span>
+            <span class="summary-diff positive">
+              ▲ 3500
+            </span>
+          </div>
+        </div></div>
       </div>
       <div class="month-content" id="content-octubre2025" style="display: none;">
         <section id="octubre2025" class="month-section-inner hide-distribucion hide-deldia hide-noshow hide-noconfirmada hide-pendientegds hide-otas hide-pessoajuridica hide-replacement hide-industriadeviagens hide-qdiarias">
@@ -523,74 +502,73 @@
         </section>
       </div>
     </div>
-    <div id="wrapper-noviembre2025" class="month-wrapper month-theme-0 " style="--card-bg: #E8F8F5; --theme-border: #2ECC71;">
+    <div id="wrapper-noviembre2025" class="month-wrapper month-theme-0 " style="--card-bg: #E8F8F5;">
       <div class="month-header" data-target="content-noviembre2025">
         <div class="month-title-wrapper">
             <h2>Noviembre 2025</h2>
             <span class="accordion-indicator"></span>
         </div>
         <div class="month-summary">
-          <div class="summary-metric">
-            <span class="metric-label">Abiertas</span>
-            <span class="metric-value">44</span>
-            <div class="metric-comparison">
-              <span>LY: 2</span>
-              <span class="summary-diff negative">
-                ▼ -26.7
-              </span>
-            </div>
+        <div class="summary-metric">
+          <span class="metric-label">Total General</span>
+          <span class="metric-value">60</span>
+          <div class="metric-comparison">
+            <span>LY: 2</span>
+            <span class="summary-diff positive">
+              ▲ 2900
+            </span>
           </div>
-          <div class="summary-metric">
-            <span class="metric-label">Canceladas</span>
-            <span class="metric-value">15</span>
-            <div class="metric-comparison">
-              <span>LY: 0</span>
-              <span class="summary-diff positive">
-                ▲ 100
-              </span>
-            </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Abiertas</span>
+          <span class="metric-value">44</span>
+          <div class="metric-comparison">
+            <span>LY: 2</span>
+            <span class="summary-diff negative">
+              ▼ -26.7
+            </span>
           </div>
-          <div class="summary-metric">
-            <span class="metric-label">Utilizadas</span>
-            <span class="metric-value">0</span>
-            <div class="metric-comparison">
-              <span>LY: 0</span>
-              <span class="summary-diff negative">
-                ▼ 0
-              </span>
-            </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Utilizadas</span>
+          <span class="metric-value">0</span>
+          <div class="metric-comparison">
+            <span>LY: 0</span>
+            <span class="summary-diff negative">
+              ▼ 0
+            </span>
           </div>
-            <div class="summary-metric-group">
-              <span class="metric-label">Segmentos</span>
-              <div class="segment-list">
-                
-              <div class="segment-item">
-                <span class="segment-label">Propia:</span>
-                <span class="segment-value">7</span>
-              </div>
-            
-              <div class="segment-item">
-                <span class="segment-label">OT:</span>
-                <span class="segment-value">35</span>
-              </div>
-            
-              <div class="segment-item">
-                <span class="segment-label">RE:</span>
-                <span class="segment-value">0</span>
-              </div>
-            
-              </div>
-            </div>
-          <div class="summary-metric">
-            <span class="metric-label">Total General</span>
-            <span class="metric-value">60</span>
-            <div class="metric-comparison">
-              <span>LY: 2</span>
-              <span class="summary-diff positive">
-                ▲ 2900
-              </span>
-            </div>
-          </div></div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Canceladas</span>
+          <span class="metric-value">15</span>
+          <div class="metric-comparison">
+            <span>LY: 0</span>
+            <span class="summary-diff positive">
+              ▲ 100
+            </span>
+          </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Propia</span>
+          <span class="metric-value">7</span>
+          <div class="metric-comparison">
+            <span>LY: 1</span>
+            <span class="summary-diff negative">
+              ▼ -68.2
+            </span>
+          </div>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Total AB + UT</span>
+          <span class="metric-value">44</span>
+          <div class="metric-comparison">
+            <span>LY: 2</span>
+            <span class="summary-diff positive">
+              ▲ 2100
+            </span>
+          </div>
+        </div></div>
       </div>
       <div class="month-content" id="content-noviembre2025" style="display: none;">
         <section id="noviembre2025" class="month-section-inner hide-distribucion hide-deldia hide-noshow hide-noconfirmada hide-pendientegds hide-otas hide-pessoajuridica hide-replacement hide-industriadeviagens hide-qdiarias">
@@ -606,13 +584,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.month-header').forEach(header => {
       header.addEventListener('click', function(e) {
-        if (e.target.closest('.month-summary')) return; 
+        if(e.target.closest('.month-summary')) return; // No colapsar si se clickea en una tarjeta
         const wrapper = this.closest('.month-wrapper');
         const content = document.getElementById(this.dataset.target);
         const isExpanded = wrapper.classList.toggle('expanded');
         content.style.display = isExpanded ? 'block' : 'none';
       });
     });
+    // Lógica para los botones (sin cambios)
     document.querySelectorAll('.controls button[id^="toggle-"]').forEach(btn => {
       btn.addEventListener('click', () => {
         const regionRows = btn.closest('.month-section-inner').querySelectorAll('.region-row:not(.total-row)');
@@ -632,8 +611,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const parentTable = row.closest('table');
         parentTable.querySelectorAll(`.agency-row[data-parent-region="${row.dataset.region}"]`).forEach(agencyRow => { agencyRow.style.display = isExpanded ? 'table-row' : 'none'; });
         const section = row.closest('.month-section-inner');
-        const allRegionRows = section.querySelectorAll('.region-row:not(.total-row)');
-        const allExpanded = allRegionRows.length > 0 && Array.from(allRegionRows).every(r => r.classList.contains('expanded'));
+        const allExpanded = Array.from(section.querySelectorAll('.region-row:not(.total-row)')).every(r => r.classList.contains('expanded'));
         section.querySelector('.controls button').textContent = allExpanded ? 'Ocultar Agencias' : 'Ver Agencias';
       });
     });
