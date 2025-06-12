@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Herramienta de Prospección de Clientes - Localiza</title>
+    <script src="https://unpkg.com/feather-icons"></script>
     <style>
         /* Variables de colores originales de Localiza para el estilo */
         :root {
@@ -24,6 +25,33 @@
             align-items: center;
             justify-content: center; /* Centrar verticalmente en caso de pantallas pequeñas */
             min-height: 100vh; /* Asegura que ocupe al menos toda la altura de la ventana */
+        }
+
+        /* Botón de regreso al menú principal */
+        .back-button {
+            position: fixed;
+            left: 1rem;
+            top: 1rem;
+            color: var(--localiza-on-bg-text);
+            background-color: var(--localiza-bg);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+        .back-button:hover {
+            background-color: #024a20;
+            transform: scale(1.1);
+        }
+        .back-button svg {
+            width: 20px;
+            height: 20px;
         }
 
         /* Contenedor del selector de Ejecutivo */
@@ -246,6 +274,10 @@
     </style>
 </head>
 <body>
+
+    <a href="index.html" class="back-button" title="Volver al Menú Principal">
+        <i data-feather="arrow-left"></i>
+    </a>
 
 <!-- Contenedor para el selector de ejecutivo, fuera del recuadro principal del formulario -->
 <div id="executive-selector-container">
@@ -798,6 +830,9 @@
             displayPendingMessage(); // Asegúrate de que el mensaje se muestre si la conexión se pierde
         });
     });
+</script>
+<script>
+    feather.replace();
 </script>
 </body>
 </html>
