@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   
   <script src="https://unpkg.com/feather-icons"></script>
 
@@ -16,26 +16,28 @@
        VARIABLES Y ESTILOS GLOBALES
     ────────────────────────────────────────────────────────────────────────────── */
     :root {
-      --brand-green: #00A859; 
+      --brand-green: #00A859;
       --brand-green-dark: #007F43;
-      --brand-yellow: #FFCC00; 
-      
-      --bg-page: #E9EEF2; 
-      --bg-header: linear-gradient(135deg, var(--brand-green), var(--brand-green-dark));
-      --bg-card: #FFFFFF;
-      
+      --brand-yellow: #FFCC00;
+
+      --bg-page: #11171a;
+      --bg-header: linear-gradient(135deg, #00552d, #052d1a);
+      --bg-card: #191f23;
+
       --text-light: #F8F9FA;
-      --text-dark: #212529;
-      --text-muted: #6C757D;
-      
-      --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-      --shadow-md: 0 5px 15px rgba(0,0,0,0.1);
-      --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
-      
+      --text-dark: #E0E0E0;
+      --text-muted: #99a2a8;
+
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
+      --shadow-md: 0 5px 15px rgba(0,0,0,0.4);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,0.6);
+
       --border-radius-md: 8px;
       --border-radius-lg: 12px;
-      
+
       --transition-smooth: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      --neon-glow: 0 0 10px rgba(0, 168, 89, 0.6);
+      --heading-font: 'Orbitron', 'Poppins', sans-serif;
     }
 
     *, *::before, *::after {
@@ -50,7 +52,7 @@
 
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: var(--bg-page);
+      background: linear-gradient(180deg, #0d1117 0%, #0a0c10 100%);
       color: var(--text-dark);
       line-height: 1.6;
       overflow-x: hidden;
@@ -65,10 +67,11 @@
     .site-header {
       background: var(--bg-header);
       color: var(--text-light);
-      padding: 4rem 1.5rem 6rem; 
+      padding: 4rem 1.5rem 6rem;
       text-align: center;
       position: relative;
-      overflow: hidden; 
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 168, 89, 0.5);
     }
 
     .site-header::before {
@@ -76,9 +79,9 @@
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background-image: 
-        radial-gradient(circle at 10% 20%, rgba(255,255,255,0.1) 0%, transparent 30%),
-        radial-gradient(circle at 90% 80%, rgba(255,204,0,0.1) 0%, transparent 30%);
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(0,168,89,0.2) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(21,255,120,0.15) 0%, transparent 40%);
       opacity: 0.5;
       z-index: 0;
     }
@@ -91,11 +94,13 @@
     }
 
     .site-header h1 {
-      font-size: clamp(2.5rem, 5vw, 3.5rem); 
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
       font-weight: 700;
       margin-bottom: 0.75rem;
-      letter-spacing: -0.5px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-family: var(--heading-font);
+      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
     }
 
     .site-header p {
@@ -156,8 +161,8 @@
       text-align: center;
       text-decoration: none;
       color: var(--text-dark);
-      transition: 
-        transform var(--transition-smooth), 
+      transition:
+        transform var(--transition-smooth),
         box-shadow var(--transition-smooth);
       overflow: hidden;
       position: relative;
@@ -166,7 +171,7 @@
 
     .menu-card:hover {
       transform: translateY(-8px) scale(1.02);
-      box-shadow: var(--shadow-lg);
+      box-shadow: var(--shadow-lg), var(--neon-glow);
     }
     
     .menu-card-icon {
@@ -176,11 +181,12 @@
       width: 48px;
       height: 48px;
       color: var(--brand-green);
-      stroke-width: 1.5; 
-      transition: color var(--transition-smooth);
+      stroke-width: 1.5;
+      transition: color var(--transition-smooth), filter var(--transition-smooth);
     }
     .menu-card:hover .menu-card-icon svg {
       color: var(--brand-green-dark);
+      filter: drop-shadow(0 0 6px rgba(0, 168, 89, 0.8));
     }
 
     .menu-card h3 {
@@ -209,6 +215,7 @@
     }
     .menu-card:hover::after {
       transform: scaleX(1);
+      box-shadow: var(--neon-glow);
     }
     
     /* ──────────────────────────────────────────────────────────────────────────────
