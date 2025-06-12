@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Score de Vendedor Localiza - Simplificado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilos personalizados para el color institucional de Localiza */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdf4; /* Un verde muy claro de fondo */
+        }
+        .text-localiza-green {
+            color: #2E7D32; /* Verde profundo para textos y acentos */
+        }
+        .bg-localiza-green {
+            background-color: #2E7D32; /* Verde profundo para fondos de elementos */
+        }
+        .border-localiza-green {
+            border-color: #2E7D32; /* Verde profundo para bordes */
+        }
+        .hover\:bg-localiza-green-dark:hover {
+            background-color: #1B5E20; /* Un verde aún más oscuro para el hover de botones */
+        }
+        .shadow-localiza {
+            box-shadow: 0 4px 6px -1px rgba(46, 125, 50, 0.1), 0 2px 4px -1px rgba(46, 125, 50, 0.06);
+        }
+        /* Transiciones suaves para el contenido */
+        #content-display {
+            transition: opacity 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="max-w-4xl w-full bg-white rounded-lg shadow-xl overflow-hidden md:flex md:flex-row">
+        <div class="p-8 flex-1">
+            <h1 class="text-4xl font-bold text-localiza-green mb-6 text-center">
+                Programa de Venta por Adicionales
+            </h1>
+            <div id="content-display" class="transition-opacity duration-500 ease-in-out">
+                <!-- El contenido se cargará aquí mediante JavaScript -->
+            </div>
+            <div class="mt-8 flex justify-between items-center">
+                <button id="prev-btn" class="px-6 py-3 bg-gray-300 text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-400 transition-colors duration-200" disabled>
+                    Anterior
+                </button>
+                <span id="page-indicator" class="text-gray-600 text-sm"></span>
+                <button id="next-btn" class="px-6 py-3 bg-localiza-green text-white font-semibold rounded-lg shadow-md hover:bg-localiza-green-dark transition-colors duration-200">
+                    Siguiente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const contentDisplay = document.getElementById('content-display');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const pageIndicator = document.getElementById('page-indicator');
+        let currentStep = 0;
+
+        // Definición de cada paso de la explicación simplificada
+        const steps = [
+            {
+                title: "Introducción al Score de Vendedor",
+                text: `
+                    <p class="text-lg text-gray-700 mb-4">
+                        El <strong class="text-localiza-green">"Score de Vendedor"</strong> es un indicador clave que mide el rendimiento de ventas de cada colaborador. Combina 4 elementos principales para dar una visión completa.
+                    </p>
+                    <p class="text-lg text-gray-700 mb-4">
+                        Buscamos reconocer un desempeño estratégico y equilibrado, más allá de solo el volumen de ventas.
+                    </p>
+                    <h2 class="text-2xl font-semibold text-localiza-green mb-3">¿Cómo se compone el Score?</h2>
+                    <p class="text-lg text-gray-700 mb-2">El score final se compone sumando un total del 100%:</p>
+                    <ul class="list-disc list-inside text-lg text-gray-700 mb-4 space-y-1">
+                        <li><strong>70%</strong> - Calidad de Venta</li>
+                        <li><strong>5%</strong> - Relevancia Estratégica (Share Agencia)</li>
+                        <li><strong>20%</strong> - Share Valor (Agencia)</li>
+                        <li><strong>5%</strong> - Share Vol. (Agencia)</li>
+                    </ul>
+                    <p class="text-lg text-gray-700">¡Veamos cada parte en detalle!</p>
+                `
+            },
+            {
+                title: "Condiciones para Participar en el Programa",
+                text: `
+                    <p class="text-lg text-gray-700 mb-4">
+                        Para que un colaborador sea considerado en el programa de Score de Vendedor, debe cumplir con las siguientes condiciones mínimas:
+                    </p>
+                    <ul class="list-disc list-inside text-lg text-gray-700 mb-6 space-y-2">
+                        <li>
+                            <strong class="text-localiza-green">Share de Agencia:</strong>
+                            El colaborador debe tener al menos un <strong class="font-bold">5% de participación</strong> sobre los contratos abiertos en su agencia principal. Esto asegura que la actividad sea significativa.
+                        </li>
+                        <li>
+                            <strong class="text-localiza-green">Cumplimiento de NPS:</strong>
+                            El colaborador debe cumplir con los requisitos y estándares de <strong class="font-bold">Net Promoter Score (NPS)</strong> establecidos por la compañía. Esto enfatiza la importancia de la satisfacción del cliente.
+                        </li>
+                    </ul>
+                    <p class="text-lg text-gray-700">
+                        Si un colaborador no cumple con estas condiciones, no participará en el cálculo del score.
+                    </p>
+                `
+            },
+            {
+                title: "KPI Global 1: Calidad de Venta (70%)",
+                text: `
+                    <p class="text-lg text-gray-700 mb-4">
+                        Este indicador compara tu desempeño con <strong class="text-localiza-green">TODOS</strong> los vendedores a nivel nacional.
+                    </p>
+                    <h2 class="text-2xl font-semibold text-localiza-green mb-3">1. Calidad de Venta (Peso: 70%)</h2>
+                    <p class="text-lg text-gray-700 mb-2">
+                        <strong>¿Qué mide?</strong> Tu habilidad para vender adicionales de alto valor. Compara tu <strong class="text-localiza-green">Valor Unitario por Adicionales</strong> con el mejor a nivel nacional para obtener un porcentaje.
+                    </p>
+                    <p class="text-lg text-gray-700 mb-4">
+                        <strong>¿Por qué es importante?</strong> Premia a quienes generan más rentabilidad por cada venta de adicional.
+                    </p>
+                    <div class="bg-lime-100 border-l-4 border-lime-400 text-lime-800 p-4 rounded-md shadow-sm">
+                        <p class="font-semibold mb-2">Ejemplo:</p>
+                        <p>Si el <strong>Valor Unitario por Adicionales</strong> de Juan es $10,000 y el máximo nacional es $20,000, su Calidad de Venta es del <strong>50%</strong>.</p>
+                    </div>
+                `
+            },
+            {
+                title: "KPI Global 2: Relevancia Estratégica (5%)",
+                text: `
+                    <p class="text-lg text-gray-700 mb-4">
+                        Continuamos comparando tu desempeño con <strong class="text-localiza-green">TODOS</strong> los vendedores del país.
+                    </p>
+                    <h2 class="text-2xl font-semibold text-localiza-green mb-3">2. Relevancia Estratégica (Share Agencia) (Peso: 5%)</h2>
+                    <p class="text-lg text-gray-700 mb-2">
+                        <strong>¿Qué mide?</strong> Qué tan relevante eres en tu agencia principal. Es tu porcentaje de los contratos totales abiertos allí.
+                    </p>
+                    <p class="text-lg text-gray-700 mb-4">
+                        <strong>¿Por qué es importante?</strong> Evalúa tu contribución al día a día de tu sucursal.
+                    </p>
+                    <div class="bg-lime-100 border-l-4 border-lime-400 text-lime-800 p-4 rounded-md shadow-sm">
+                        <p class="font-semibold mb-2">Ejemplo:</p>
+                        <p>Si tu Share Agencia es del 19.22%, ese es el valor que se usa directamente en el score.</p>
+                    </div>
+                `
+            },
+            {
+                title: "KPI Local 1: Share Valor (Agencia) (20%)",
+                text: `
+                    <p class="text-lg text-gray-700 mb-4">
+                        Estos indicadores evalúan tu rendimiento <strong class="text-localiza-green">dentro de tu propio equipo de agencia</strong>.
+                    </p>
+                    <h2 class="text-2xl font-semibold text-localiza-green mb-3">3. Share Valor (Agencia) (Peso: 20%)</h2>
+                    <p class="text-lg text-gray-700 mb-2">
+                        <strong>¿Qué mide?</strong> Tu porcentaje del <strong class="text-localiza-green">ingreso total por adicionales</strong> que generó tu agencia.
+                    </p>
+                    <p class="text-lg text-gray-700 mb-4">
+                        <strong>¿Por qué es importante?</strong> Mide tu contribución directa a los resultados económicos de tu sucursal.
+                    </p>
+                    <div class="bg-lime-100 border-l-4 border-lime-400 text-lime-800 p-4 rounded-md shadow-sm">
+                        <p class="font-semibold mb-2">Ejemplo:</p>
+                        <p>Si tu agencia generó $1,000,000 con adicionales y tú contribuiste con $200,000, tu Share Valor (Agencia) es del <strong>20%</strong>.</p>
+                    </div>
+                `
+            },
+            {
+                title: "KPI Local 2: Share Vol. (Agencia) (5%)",
+                text: `
+                    <p class="text-lg text-gray-700 mb-4">
+                        Continuamos evaluando tu impacto <strong class="text-localiza-green">dentro de tu agencia</strong>.
+                    </p>
+                    <h2 class="text-2xl font-semibold text-localiza-green mb-3">4. Share Vol. (Agencia) (Peso: 5%)</h2>
+                    <p class="text-lg text-gray-700 mb-2">
+                        <strong>¿Qué mide?</strong> Tu porcentaje del <strong class="text-localiza-green">volumen total de adicionales vendidos</strong> por tu agencia.
+                    </p>
+                    <p class="text-lg text-gray-700 mb-4">
+                        <strong>¿Por qué es importante?</strong> Identifica a los que más ítems adicionales mueven dentro de su equipo.
+                    </p>
+                    <div class="bg-lime-100 border-l-4 border-lime-400 text-lime-800 p-4 rounded-md shadow-sm">
+                        <p class="font-semibold mb-2">Ejemplo:</p>
+                        <p>Si tu agencia vendió 200 adicionales y tú vendiste 50, tu Share Vol. (Agencia) es del <strong>25%</strong>.</p>
+                    </div>
+                `
+            },
+            {
+                title: "Fórmula del Score Final del Vendedor y Simulador",
+                text: `
+                    <p class="text-lg text-gray-700 mb-4">
+                        El <strong class="text-localiza-green">Score de Vendedor</strong> se calcula sumando tus resultados ponderados:
+                    </p>
+                    <div class="bg-green-50 border border-localiza-green text-localiza-green p-6 rounded-lg mb-6 text-center shadow-lg">
+                        <p class="text-xl font-bold mb-2">
+                            Score = (Calidad de Venta × 0.70) + (Share Agencia × 0.05) + (Share Valor (Agencia) × 0.20) + (Share Vol. (Agencia) × 0.05)
+                        </p>
+                    </div>
+                    <p class="text-lg text-gray-700 mb-6">
+                        El resultado es un porcentaje que te da una visión completa de tu rendimiento.
+                    </p>
+                    <h2 class="text-2xl font-semibold text-localiza-green mb-4">¡Calcula tu Score de Prueba!</h2>
+                    <div class="bg-gray-100 p-6 rounded-lg shadow-md">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label for="seller_name" class="block text-gray-700 text-sm font-bold mb-2">Nombre del Vendedor:</label>
+                                <input type="text" id="seller_name" class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-localiza-green" placeholder="Ej: Juan Pérez">
+                            </div>
+                            <div>
+                                <label for="kpi_valor_unitario" class="block text-gray-700 text-sm font-bold mb-2">Valor Unitario por Adicionales:</label>
+                                <input type="number" id="kpi_valor_unitario" class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-localiza-green" placeholder="Ej: 10000">
+                            </div>
+                            <div>
+                                <label for="kpi_calidad_venta_global" class="block text-gray-700 text-sm font-bold mb-2">Calidad Venta (Global) (%):</label>
+                                <input type="number" id="kpi_calidad_venta_global" class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-localiza-green" placeholder="Ej: 50">
+                            </div>
+                            <div>
+                                <label for="kpi_share_agencia" class="block text-gray-700 text-sm font-bold mb-2">Share Agencia (%):</label>
+                                <input type="number" id="kpi_share_agencia" class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-localiza-green" placeholder="Ej: 19.22">
+                            </div>
+                            <div>
+                                <label for="kpi_share_vol_agencia" class="block text-gray-700 text-sm font-bold mb-2">Share Valor (Agencia) (%):</label>
+                                <input type="number" id="kpi_share_vol_agencia" class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-localiza-green" placeholder="Ej: 20">
+                            </div>
+                            <div>
+                                <label for="kpi_share_valor_agencia" class="block text-gray-700 text-sm font-bold mb-2">Share Vol. (Agencia) (%):</label>
+                                <input type="number" id="kpi_share_valor_agencia" class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-localiza-green" placeholder="Ej: 25">
+                            </div>
+                        </div>
+                        <button id="calculate-btn" class="w-full px-6 py-3 bg-localiza-green text-white font-semibold rounded-lg shadow-md hover:bg-localiza-green-dark transition-colors duration-200">
+                            Calcular Score
+                        </button>
+                        <div id="result" class="mt-4 p-4 bg-localiza-green text-white rounded-lg text-center font-bold text-xl hidden">
+                            <!-- El resultado se mostrará aquí -->
+                        </div>
+                        <div id="error-message" class="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-center hidden">
+                            Por favor, ingrese valores numéricos válidos en todos los campos requeridos para el cálculo del Score.
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Scoring para Agencias y Regiones",
+                text: `
+                    <p class="text-lg text-gray-700 mb-4">
+                        Para evaluar el rendimiento de <strong class="text-localiza-green">Agencias y Regiones</strong>, usamos un modelo similar, midiendo la eficiencia y el impacto total.
+                    </p>
+                    <p class="text-lg text-gray-700 mb-4">
+                        El score se basa en:
+                    </p>
+                    <ul class="list-disc list-inside text-lg text-gray-700 mb-6 space-y-2">
+                        <li>
+                            <strong class="text-localiza-green">Tasa de Penetración Agregada:</strong>
+                            Qué tan eficientes son para vender adicionales $( (\\text{Contratos con Venta} / \\text{Contratos Totales}) \\times 100 )$.
+                        </li>
+                        <li>
+                            <strong class="text-localiza-green">Calidad de Venta Promedio:</strong>
+                            El valor promedio por adicional a nivel de la Agencia/Región.
+                        </li>
+                        <li>
+                            <strong class="text-localiza-green">Contribución al Ingreso Nacional:</strong>
+                            Su porcentaje del valor total de adicionales de la compañía.
+                        </li>
+                    </ul>
+                    <p class="text-lg text-gray-700">
+                        Así, la evaluación es consistente en todos los niveles y enfocada en la rentabilidad.
+                    </p>
+                `
+            }
+        ];
+
+        // Función para renderizar el paso actual en la pantalla
+        function renderStep(stepIndex) {
+            contentDisplay.style.opacity = 0; // Se desvanece el contenido actual
+            setTimeout(() => {
+                contentDisplay.innerHTML = `
+                    <h2 class="text-3xl font-bold text-localiza-green mb-6 text-center">${steps[stepIndex].title}</h2>
+                    ${steps[stepIndex].text}
+                `;
+                updateButtonStates(); // Actualiza el estado de los botones "Anterior" y "Siguiente"
+                if (stepIndex === steps.length - 2) { // Si es el paso de la fórmula (índice 6), adjunta los eventos de la calculadora
+                    attachCalculatorEvents();
+                }
+                // Asegura que MathJax no intente renderizar el texto simple si no hay LaTeX
+                if (window.MathJax) {
+                    MathJax.typesetPromise().then(() => {
+                        // MathJax.typeset() will process any un-typeset math.
+                        // We are actively removing LaTeX in examples, so this may not be strictly necessary for text examples,
+                        // but it's good practice if any other LaTeX might appear.
+                    });
+                }
+                contentDisplay.style.opacity = 1; // Se hace visible el nuevo contenido
+                pageIndicator.textContent = `Página ${currentStep + 1} de ${steps.length}`; // Actualiza el indicador de página
+            }, 500); // Espera a que la transición de desvanecimiento termine
+        }
+
+        // Función para actualizar el estado de los botones de navegación
+        function updateButtonStates() {
+            prevBtn.disabled = currentStep === 0; // Deshabilita "Anterior" en el primer paso
+            nextBtn.disabled = currentStep === steps.length - 1; // Deshabilita "Siguiente" en el último paso
+
+            // Clases para indicar el estado deshabilitado visualmente
+            prevBtn.classList.toggle('opacity-50', prevBtn.disabled);
+            nextBtn.classList.toggle('opacity-50', nextBtn.disabled);
+            prevBtn.classList.toggle('cursor-not-allowed', prevBtn.disabled);
+            nextBtn.classList.toggle('cursor-not-allowed', nextBtn.disabled);
+        }
+
+        // Función para adjuntar los eventos de la calculadora cuando se muestra la sección de fórmula
+        function attachCalculatorEvents() {
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resultDiv = document.getElementById('result');
+            const errorMessageDiv = document.getElementById('error-message');
+
+            const sellerNameInput = document.getElementById('seller_name');
+            const kpiValorUnitarioInput = document.getElementById('kpi_valor_unitario');
+            const kpiCalidadVentaGlobalInput = document.getElementById('kpi_calidad_venta_global');
+            const kpiShareAgenciaInput = document.getElementById('kpi_share_agencia');
+            // kpi_share_valor_agencia ahora representa Share Vol. (Agencia) en la UI (volume)
+            const kpiShareValorAgenciaInput = document.getElementById('kpi_share_valor_agencia');
+            // kpi_share_vol_agencia ahora representa Share Valor (Agencia) en la UI (value)
+            const kpiShareVolAgenciaInput = document.getElementById('kpi_share_vol_agencia');
+
+
+            if (calculateBtn) {
+                calculateBtn.onclick = function() {
+                    // Obtiene los valores de los campos de entrada para el cálculo
+                    const calidadDeVenta = parseFloat(kpiCalidadVentaGlobalInput.value);
+                    const shareAgencia = parseFloat(kpiShareAgenciaInput.value);
+                    // Share Valor (Agencia) en UI (input kpi_share_vol_agencia) se usa con peso 0.20
+                    const shareValorAgencia = parseFloat(kpiShareVolAgenciaInput.value);
+                    // Share Vol. (Agencia) en UI (input kpi_share_valor_agencia) se usa con peso 0.05
+                    const shareVolAgencia = parseFloat(kpiShareValorAgenciaInput.value);
+
+                    // Verifica si todos los campos requeridos para el cálculo son números válidos
+                    if (isNaN(calidadDeVenta) || isNaN(shareAgencia) || isNaN(shareValorAgencia) || isNaN(shareVolAgencia)) {
+                        errorMessageDiv.classList.remove('hidden'); // Muestra mensaje de error
+                        resultDiv.classList.add('hidden'); // Oculta el resultado
+                        return;
+                    }
+
+                    errorMessageDiv.classList.add('hidden'); // Oculta el error si los inputs son válidos
+
+                    // Asegura que los porcentajes estén dentro del rango 0-100 (opcional, si los datos ya vienen como porcentajes directos)
+                    const normalizedCalidadDeVenta = Math.min(100, Math.max(0, calidadDeVenta));
+                    const normalizedShareAgencia = Math.min(100, Math.max(0, shareAgencia));
+                    const normalizedShareValorAgencia = Math.min(100, Math.max(0, shareValorAgencia)); // This is the value share from UI
+                    const normalizedShareVolAgencia = Math.min(100, Math.max(0, shareVolAgencia)); // This is the volume share from UI
+
+
+                    // Calcula el Score final usando los pesos definidos
+                    const score =
+                        (normalizedCalidadDeVenta * 0.70) +
+                        (normalizedShareAgencia * 0.05) +
+                        (normalizedShareValorAgencia * 0.20) + // Share Valor (Agencia) weight
+                        (normalizedShareVolAgencia * 0.05); // Share Vol. (Agencia) weight
+
+                    resultDiv.textContent = `Score del Vendedor: ${score.toFixed(2)}%`; // Muestra el resultado con 2 decimales
+                    resultDiv.classList.remove('hidden'); // Hace visible el resultado
+                };
+            }
+        }
+
+        // Event listeners para los botones de navegación
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 0) {
+                currentStep--;
+                renderStep(currentStep);
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                renderStep(currentStep);
+            }
+        });
+
+        // Desactivamos MathJax ya que no se usará para los ejemplos.
+        // window.MathJax = {
+        //     tex: {
+        //         inlineMath: [['$', '$'], ['\\(', '\\)']] // Define los delimitadores para matemáticas en línea
+        //     },
+        //     svg: {
+        //         fontCache: 'global' // Mejora el rendimiento del renderizado de fuentes SVG
+        //     }
+        // };
+
+        // // Carga de la librería MathJax de forma asíncrona
+        // (function () {
+        //     var script = document.createElement('script');
+        //     script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+        //     script.async = true;
+        //     document.head.appendChild(script);
+        // })();
+
+        // Renderizado inicial del primer paso al cargar la página
+        renderStep(currentStep);
+    </script>
+</body>
+</html>
